@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+> **Working on this codebase?** Read [`DESIGN.md`](./DESIGN.md) for the design system (tokens, type scale, hierarchy) and [`AGENTS.md`](./AGENTS.md) for the stack-specific gotchas before writing code.
+
 ## Getting Started
 
 First, run the development server:
