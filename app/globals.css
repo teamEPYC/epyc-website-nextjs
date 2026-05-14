@@ -271,3 +271,19 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ---------------------------------------------------------------------------
+   Scroll-snap (desktop only).
+   Each top-level section snaps its TOP to the viewport top when scrolling
+   slows near it. `proximity` (not `mandatory`) so the 400vh FeaturedProjects
+   scroll-pinned rail keeps working — the user can scroll freely within it
+   without the browser fighting them.
+--------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  html {
+    scroll-snap-type: y proximity;
+  }
+  body > * {
+    scroll-snap-align: start;
+  }
+}
