@@ -1,22 +1,48 @@
-import Link from "next/link";
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
+import { Hero } from '@/components/sections/hero'
+import { StickyImage } from '@/components/sections/sticky-image'
+import { FeaturedProjects } from '@/components/sections/featured-projects'
+import { MoreProjects } from '@/components/sections/more-projects'
+import { Services } from '@/components/sections/services'
+import { Voices } from '@/components/sections/voices'
+import { Brands } from '@/components/sections/brands'
+import { FAQs } from '@/components/sections/faqs'
+import { CTAFooter } from '@/components/sections/cta-footer'
+import { faqs } from '@/data/faqs'
+import { site } from '@/data/site'
 
 export const metadata: Metadata = {
-  title: "EPYC · port in progress",
-};
+  title: site.tagline,
+  alternates: { canonical: '/' },
+}
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+}
 
 export default function Home() {
   return (
-    <main className="mx-auto flex min-h-[60vh] max-w-prose flex-col items-start justify-center gap-4 px-4 lg:px-15">
-      <p className="text-h5 uppercase text-ink/60">EPYC · port in progress</p>
-      <h1 className="text-h2 text-ink">Homepage arrives in Step 3.</h1>
-      <p className="text-body-lg text-ink/80">
-        While we build it, browse the design system at{" "}
-        <Link className="underline" href="/styleguide">
-          /styleguide
-        </Link>
-        .
-      </p>
-    </main>
-  );
+    <>
+      <Hero />
+      <StickyImage />
+      <FeaturedProjects />
+      <MoreProjects />
+      <Services />
+      <Voices />
+      <Brands />
+      <FAQs />
+      <CTAFooter />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+    </>
+  )
 }

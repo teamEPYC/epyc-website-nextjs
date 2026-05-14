@@ -499,3 +499,119 @@ import { ArrowDown, Star, ClutchWordmark } from "@/components/icons";
 Brand glyphs don't accept `size` because their natural aspect ratio is non-square;
 scale them with `h-*` / `w-*` instead.
 
+> **Note on `EpycMark` vs `EpycWordmark`** — the two EPYC icons are not size
+> variants of each other:
+>
+> - `EpycMark` (86×20 viewBox) = the **wings emblem**, the small bird-like
+>   double-arrow motif that sits above the wordmark on the live site.
+> - `EpycWordmark` (187×45 viewBox) = the **"EPYC" letterforms**, the wordmark
+>   itself.
+>
+> The hero stacks both vertically (wings on top, wordmark below). Use them
+> independently elsewhere as the surface dictates.
+
+---
+
+## 12. Page sections
+
+Live homepage assembled from `components/sections/*`. Each is wrapped in a
+`<Reveal>` for the on-enter fade so the page feels alive without being noisy.
+
+| Section component                     | File                                          | Notes                                                                                          |
+|----------------------------------------|------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| `<Hero />`                             | `components/sections/hero.tsx`                | Paper bg + EpycMark+EpycWordmark logo + Clutch row + 3 partner badges + H1 + CTAs.              |
+| `<StickyImage />`                      | `components/sections/sticky-image.tsx`        | Desktop-only 100vh sticky paper image with top fade-in gradient.                                |
+| `<FeaturedProjects />` (`'use client'`)| `components/sections/featured-projects.tsx`   | 400vh scroll trigger → horizontal rail. Reduced-motion fallback is a horizontal `overflow-x-auto` strip. |
+| `<MoreProjects />`                     | `components/sections/more-projects.tsx`       | List of `<ProjectRow>` + "View All Projects" CTA.                                              |
+| `<Services />`                         | `components/sections/services.tsx`            | 2×2 `<ServiceCard>` grid on paper-dark with the centred `<ServicesStamp>` overlay.             |
+| `<Voices />`                           | `components/sections/voices.tsx`              | Rotated label (desktop) + `<Testimonial>` + Clutch read-more CTA.                              |
+| `<Brands />`                           | `components/sections/brands.tsx`              | 4-col responsive `<BrandTile>` grid.                                                            |
+| `<FAQs />`                             | `components/sections/faqs.tsx`                | `<FAQItem>` list over the dark paper image. SSR-friendly `<details>`.                          |
+| `<CTAFooter />`                        | `components/sections/cta-footer.tsx`          | Bottom CTA + integrated footer with 3 dashed dividers + pronounce-EPYC row.                    |
+| `<ComingSoon />` (helper)              | `components/sections/coming-soon.tsx`         | Shared layout used by the 6 placeholder routes (`/projects`, `/contact`, …).                   |
+
+---
+
+## 13. Data files
+
+Every visible string and asset on the homepage is sourced from typed const
+arrays under `data/*.ts`. Swap a file → swap the section. Future CMS
+integration replaces one collection at a time.
+
+| File                  | Exports                                          | Records      |
+|------------------------|---------------------------------------------------|--------------|
+| `data/site.ts`        | `site` (url, name, tagline, description, social, legal) | 1 object     |
+| `data/projects.ts`    | `featuredProjects`, `moreProjects`              | 9 + 9 = 18   |
+| `data/services.ts`    | `services`                                       | 4            |
+| `data/brands.ts`      | `brands`                                         | 32           |
+| `data/testimonials.ts`| `testimonials`                                   | 1 (extensible) |
+| `data/faqs.ts`        | `faqs`                                           | 9            |
+| `data/nav.ts`         | `footerColumns`, `menuLinks`, `pronunciationLines` | 3 lists     |
+
+Brand-card and project images are currently referenced via Framer's CDN
+(`framerusercontent.com/images/*`). `next.config.ts` whitelists that host
+in `images.remotePatterns`. Swap to self-hosted by changing the `src` field
+in `data/projects.ts` / `data/brands.ts`.
+
+---
+
+## 14. Animations (`motion/react`)
+
+`Reveal` (`components/ui/reveal.tsx`) and `FeaturedProjects` are the only
+motion consumers. Every effect honours `useReducedMotion()` — when the user
+prefers reduced motion, the final state renders immediately with no tween.
+
+### `<Reveal>`
+
+Fade-in + 16px translate-up the first time the element crosses ~10% into the
+viewport. Used to wrap each homepage section.
+
+```tsx
+import { Reveal } from "@/components/ui/reveal";
+
+<Reveal y={16} duration={0.45}>
+  <SectionContent />
+</Reveal>
+```
+
+Props: `y` (translate distance, default 16), `duration` (s, default 0.45),
+`delay`, `amount` (intersection threshold, default 0.1), `as` (HTML tag).
+
+### Featured Projects horizontal rail
+
+The Framer source uses a 400vh-tall scroll trigger containing a 100vh sticky
+inner — vertical scroll progress maps linearly to horizontal translation of
+the rail:
+
+```tsx
+const { scrollYProgress } = useScroll({
+  target: outerRef,
+  offset: ["start start", "end end"],
+});
+const x = useTransform(scrollYProgress, [0, 1], [0, -(railWidth - 1200)]);
+```
+
+The rail width is computed from card count × card width (780) + gaps (20)
++ left gutter (60). `1200` is the desktop viewport baseline; the rail
+translates *almost* its full width over 400vh of scroll, leaving the last
+card resting under the viewport's right edge when the trigger releases.
+
+Reduced-motion fallback: a regular horizontally-scrolling strip with no pin.
+
+---
+
+## 15. SEO surface
+
+| Asset                          | File                          | What it ships                                                              |
+|--------------------------------|-------------------------------|-----------------------------------------------------------------------------|
+| Sitemap                        | `app/sitemap.ts`             | All 8 routes (home + 6 placeholders + styleguide), priorities + lastmod.    |
+| Robots                         | `app/robots.ts`              | Allow all + sitemap pointer.                                                |
+| OG image                       | `app/opengraph-image.tsx`    | Static 1200×630 PNG via `next/og`'s `ImageResponse`. Used as default `og:image` site-wide. |
+| Organization JSON-LD           | `app/layout.tsx`             | name, url, logo, sameAs (X / Instagram / LinkedIn / Clutch).                |
+| WebSite JSON-LD                | `app/layout.tsx`             | name, url, description.                                                     |
+| FAQPage JSON-LD                | `app/page.tsx`               | Schema.org `Question`/`Answer` for every entry in `data/faqs.ts`.           |
+
+> `next/og` reminder: any element with multiple children must set
+> `display: "flex"`. Plain `<span>text</span>` inside a flex parent will
+> fail with *"Invalid value for CSS property 'display'. Received: 'inline-flex'"*.
+

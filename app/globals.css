@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
    Self-hosted display + serif typefaces (proprietary, sourced from Framer).
@@ -6,32 +6,32 @@
    app/layout.tsx and exposed through the CSS variables below.
 --------------------------------------------------------------------------- */
 @font-face {
-  font-family: "TT Rationalist";
+  font-family: 'TT Rationalist';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/fonts/tt-rationalist-regular.woff2") format("woff2");
+  src: url('/fonts/tt-rationalist-regular.woff2') format('woff2');
 }
 @font-face {
-  font-family: "TT Rationalist";
+  font-family: 'TT Rationalist';
   font-style: normal;
   font-weight: 300;
   font-display: swap;
-  src: url("/fonts/tt-rationalist-light.woff2") format("woff2");
+  src: url('/fonts/tt-rationalist-light.woff2') format('woff2');
 }
 @font-face {
-  font-family: "TT Norms Pro Serif";
+  font-family: 'TT Norms Pro Serif';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/fonts/tt-norms-serif-regular.woff2") format("woff2");
+  src: url('/fonts/tt-norms-serif-regular.woff2') format('woff2');
 }
 @font-face {
-  font-family: "TT Norms Pro Serif";
+  font-family: 'TT Norms Pro Serif';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("/fonts/tt-norms-serif-bold.woff2") format("woff2");
+  src: url('/fonts/tt-norms-serif-bold.woff2') format('woff2');
 }
 
 /* ---------------------------------------------------------------------------
@@ -51,11 +51,11 @@
   /* Type families — the local-font variables (--font-rationalist,
      --font-norms-serif) are set by next/font on <html>; the Google fonts
      (--font-inter, --font-plex-serif, --font-fragment-mono) likewise. */
-  --font-display: var(--font-rationalist), "Times New Roman", Times, serif;
-  --font-serif: var(--font-norms-serif), "Times New Roman", Times, serif;
+  --font-display: var(--font-rationalist), 'Times New Roman', Times, serif;
+  --font-serif: var(--font-norms-serif), 'Times New Roman', Times, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-plex-serif: var(--font-plex-serif), "Times New Roman", Times, serif;
-  --font-mono: var(--font-fragment-mono), ui-monospace, "Courier New", monospace;
+  --font-plex-serif: var(--font-plex-serif), 'Times New Roman', Times, serif;
+  --font-mono: var(--font-fragment-mono), ui-monospace, 'Courier New', monospace;
 
   /* Radii */
   --radius-sm: 16px;

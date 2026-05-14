@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, IBM_Plex_Serif, Fragment_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { FloatingMenuButton } from "@/components/ui/floating-menu";
+import { site } from "@/data/site";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -100,9 +102,43 @@ export default function RootLayout({
     normsSerif.variable,
   ].join(" ");
 
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.name,
+    url: site.url,
+    logo: `${site.url}/icons/epyc-wordmark-large.svg`,
+    description: site.description,
+    sameAs: [
+      site.social.x,
+      site.social.instagram,
+      site.social.linkedin,
+      site.social.clutchProfile,
+    ],
+  };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: site.url,
+    description: site.description,
+  };
+
   return (
     <html lang="en" className={`${fontVariables} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <FloatingMenuButton />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+      </body>
     </html>
   );
 }
