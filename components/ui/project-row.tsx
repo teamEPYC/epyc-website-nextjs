@@ -5,8 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '@/lib/cn'
-import { Plus } from '@/components/icons/plus'
-import { Minus } from '@/components/icons/minus'
+import { PlusMinus } from '@/components/icons/plus-minus'
 
 type ProjectRowProps = {
   href: string
@@ -46,7 +45,7 @@ export function ProjectRow({
         </span>
         <span className="flex items-center gap-2 text-body text-ink">
           MORE
-          {open ? <Minus size={13} className="text-ink" /> : <Plus size={13} className="text-ink" />}
+          <PlusMinus open={open} size={13} className="text-ink" />
         </span>
       </button>
       <AnimatePresence initial={false}>

@@ -3,8 +3,7 @@
 import { useState, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { cn } from '@/lib/cn'
-import { Plus } from '@/components/icons/plus'
-import { Minus } from '@/components/icons/minus'
+import { PlusMinus } from '@/components/icons/plus-minus'
 
 type FAQItemProps = {
   question: ReactNode
@@ -39,7 +38,7 @@ export function FAQItem({
       >
         <span className="text-body-lg max-w-[90%]">{question}</span>
         <span className="shrink-0">
-          {open ? <Minus size={24} /> : <Plus size={24} />}
+          <PlusMinus open={open} size={24} />
         </span>
       </button>
       <AnimatePresence initial={false}>
