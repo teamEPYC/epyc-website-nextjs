@@ -13,18 +13,16 @@ type Props = {
   className?: string;
 };
 
-const FRAME_SVG =
-  "https://framerusercontent.com/images/UDA17654NsGwNB4PAZVy4qrxgmc.svg";
-
 /**
- * Voices slider mapped to Framer source (framer-y5vrV).
+ * Voices slider — target design (per user spec).
  *
- *   LEFT  — image card 360×476 with an ornamental SVG frame (framer-1qezum8),
- *           inner photo 340×423 rounded-xl, subtle diagonal shine overlay.
- *           Below: a pair of wide-pill arrow buttons (framer-aKZE1, ~90×55,
- *           rounded-[28px], sand border, thin horizontal arrow).
- *   RIGHT — name / role / ornament / quote / ornament / tags. Single-paragraph
- *           quotes, text-body (Norms 16/16/12).
+ *   LEFT  — portrait photo card (3:4-ish, 300×420 on desktop) with a faint
+ *           offset ghost outline ~8px outside the card edge, same radius.
+ *           Subtle diagonal shine overlay inside the photo. Below: a pair
+ *           of wide-pill arrow buttons (~90×55, rounded-[28px], sand border,
+ *           thin horizontal arrow).
+ *   RIGHT — name (larger, ~56px desktop) / role / ornament / quote / ornament
+ *           / tags. Single-paragraph quotes, text-body (Norms 16/16/12).
  */
 export function TestimonialSlider({ testimonials, className }: Props) {
   const [index, setIndex] = useState(0);
@@ -44,20 +42,16 @@ export function TestimonialSlider({ testimonials, className }: Props) {
       )}
     >
       {/* LEFT — image card + arrows */}
-      <div className="flex w-full flex-col items-center gap-2.5 lg:w-auto">
-        {/* Outer card: ornamental SVG frame behind, photo positioned with 26px top inset */}
-        <div className="relative flex w-full max-w-[360px] flex-col items-center pt-[26px] lg:h-[476px] lg:w-[360px]">
-          {/* Decorative frame SVG — fills the 360×476 container behind everything else */}
-          <Image
-            src={FRAME_SVG}
-            alt=""
-            fill
-            sizes="360px"
-            className="object-contain"
+      <div className="flex w-full flex-col items-center gap-6 lg:w-auto">
+        {/* Photo card with ghost outline ~8px outside */}
+        <div className="relative w-full max-w-[300px] lg:h-[420px] lg:w-[300px]">
+          {/* Ghost outline — faint cream stroke sits 8px outside the card edge */}
+          <div
             aria-hidden
+            className="pointer-events-none absolute -inset-2 rounded-[20px] border border-cream/20"
           />
-          {/* Photo card — sits on top of the frame */}
-          <div className="relative aspect-[340/423] w-full max-w-[340px] overflow-hidden rounded-xl bg-cream/10 lg:h-[423px] lg:w-[340px]">
+          {/* Photo card */}
+          <div className="relative aspect-[300/420] w-full overflow-hidden rounded-xl bg-cream/10 lg:h-[420px] lg:w-[300px]">
             <AnimatePresence initial={false}>
               <motion.div
                 key={current.id}
@@ -71,13 +65,12 @@ export function TestimonialSlider({ testimonials, className }: Props) {
                   src={current.image.src}
                   alt={current.image.alt}
                   fill
-                  sizes="340px"
+                  sizes="300px"
                   className="object-cover"
                 />
               </motion.div>
             </AnimatePresence>
-            {/* Diagonal shine overlay — matches the subtle linear-gradient
-                highlight running across the source photo (framer-1a4bmgs). */}
+            {/* Diagonal shine overlay — subtle highlight across the photo */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0"
@@ -127,7 +120,9 @@ export function TestimonialSlider({ testimonials, className }: Props) {
             className="flex flex-col gap-[30px] lg:absolute lg:inset-0"
           >
             <div className="flex flex-col gap-2.5">
-              <h2 className="text-h2 text-cream">{current.name}</h2>
+              <h2 className="text-h2 text-cream lg:!text-[56px] lg:!leading-[1.1]">
+                {current.name}
+              </h2>
               <p className="text-body text-cream">{current.role}</p>
             </div>
 
