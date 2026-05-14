@@ -1,13 +1,21 @@
-import Image from "next/image";
-import { Container } from "@/components/ui/container";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { FAQItem } from "@/components/ui/faq-item";
-import { Reveal } from "@/components/ui/reveal";
-import { faqs } from "@/data/faqs";
+import Image from 'next/image'
+import { Container } from '@/components/ui/container'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { FAQItem } from '@/components/ui/faq-item'
+import { Reveal } from '@/components/ui/reveal'
+import { faqs } from '@/data/faqs'
+import { PaperBackground } from '../ui/paper-background'
 
 export function FAQs() {
   return (
-    <section className="relative w-full overflow-hidden bg-ink px-6 py-12">
+    <section
+      style={{
+        backgroundImage: `url(${'https://framerusercontent.com/images/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg'})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+      className="relative w-full overflow-hidden bg-ink px-6 py-12"
+    >
       <Image
         src="https://framerusercontent.com/images/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
         alt=""
@@ -30,5 +38,5 @@ export function FAQs() {
         </Reveal>
       </Container>
     </section>
-  );
+  )
 }

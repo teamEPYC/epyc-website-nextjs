@@ -47,6 +47,7 @@
   --color-sand: #dec8a0;
   --color-bone: #e3dece;
   --color-teal-deep: #105652;
+  --color-grey-primary: #212121;
 
   /* Type families — the local-font variables (--font-rationalist,
      --font-norms-serif) are set by next/font on <html>; the Google fonts
