@@ -38,7 +38,7 @@ export function ProjectCard({
     <Wrapper
       {...(wrapperProps as { href: string })}
       className={cn(
-        'group flex w-full flex-col gap-6 border-b border-ink/10 pb-8 no-underline transition-colors duration-200 hover:border-ink/40',
+        'group flex w-full flex-col gap-6 border-b border-ink/10 pb-8 no-underline transition-colors duration-200 hover:border-ink',
         className,
       )}
     >

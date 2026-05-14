@@ -9,14 +9,6 @@ import { PaperBackground } from '../ui/paper-background'
 export function Services() {
   return (
     <PaperBackground className="max-h-[1080p] w-full relative flex h-screen items-center justify-center overflow-hidden bg-ink px-6 py-12">
-      {/* <section className="relative flex min-h-screen w-full overflow-hidden bg-ink px-6 py-12"> */}
-      {/* <Image
-        src="https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp"
-        alt=""
-        fill
-        sizes="100vw"
-        className="-z-10 object-cover opacity-90"
-      /> */}
       <Container width="content" className="relative flex flex-1 flex-col">
         <Reveal as="div" className="flex flex-1 flex-col">
           <div className="relative flex flex-1">
