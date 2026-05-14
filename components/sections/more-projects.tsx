@@ -8,9 +8,9 @@ import { moreProjects } from '@/data/projects'
 
 export function MoreProjects() {
   return (
-    <Section tone="beige" className="lg:py-20">
+    <Section tone="beige" className="py-12">
       <Container width="outer">
-        <Reveal as="div" className="flex flex-col gap-12">
+        <Reveal as="div" className="flex flex-col gap-20">
           <SectionHeading>More Projects</SectionHeading>
           <div className="flex flex-col">
             {moreProjects.map((p) => (

@@ -7,9 +7,9 @@ import { brands } from "@/data/brands";
 
 export function Brands() {
   return (
-    <Section tone="beige" className="lg:py-20">
+    <Section tone="beige" className="py-12">
       <Container width="content">
-        <Reveal className="flex flex-col gap-12">
+        <Reveal className="flex flex-col gap-20">
           <div className="flex justify-center">
             <SectionHeading>Our Brands</SectionHeading>
           </div>

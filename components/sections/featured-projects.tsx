@@ -35,7 +35,7 @@ export function FeaturedProjects() {
   if (reduce) {
     return (
       <section className="hidden bg-beige lg:block">
-        <div className="flex flex-col gap-12 px-15 py-12">
+        <div className="flex flex-col gap-20 px-15 py-12">
           <SectionHeading>Featured Projects</SectionHeading>
           <div className="flex gap-5 overflow-x-auto pb-4">
             {featuredProjects.map((p) => (
@@ -60,7 +60,7 @@ export function FeaturedProjects() {
       className="relative hidden h-[400vh] bg-beige lg:block"
       aria-label="Featured Projects"
     >
-      <div className="sticky top-0 flex h-screen flex-col gap-12 overflow-hidden pt-12">
+      <div className="sticky top-0 flex h-screen flex-col gap-20 overflow-hidden pt-12">
         <div className="px-15">
           <SectionHeading>Featured Projects</SectionHeading>
         </div>

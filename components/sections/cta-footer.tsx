@@ -38,7 +38,7 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 
 export function CTAFooter() {
   return (
-    <section className="relative w-full overflow-hidden bg-ink pt-12 lg:pt-20">
+    <section className="relative w-full overflow-hidden bg-ink px-6 py-12">
       <Image
         src="https://framerusercontent.com/images/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
         alt=""

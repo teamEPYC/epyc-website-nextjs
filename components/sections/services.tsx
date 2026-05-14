@@ -7,7 +7,7 @@ import { services } from '@/data/services'
 
 export function Services() {
   return (
-    <section className="relative flex min-h-screen w-full overflow-hidden bg-ink py-12 lg:py-16">
+    <section className="relative flex min-h-screen w-full overflow-hidden bg-ink px-6 py-12">
       <Image
         src="https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp"
         alt=""
