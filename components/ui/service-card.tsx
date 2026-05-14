@@ -19,7 +19,10 @@ export function ServiceCard({ title, body, className, align = 'center' }: Servic
     >
       <h3 className="text-h3 text-beige">{title}</h3>
       <p
-        className={cn('text-body', align === 'center' ? 'max-w-sm text-beige/80' : 'text-beige/80')}
+        className={cn(
+          'text-body text-[20px]',
+          align === 'center' ? 'max-w-sm text-beige' : 'text-beige',
+        )}
       >
         {body}
       </p>

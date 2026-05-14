@@ -32,12 +32,12 @@ export function ProjectRow({
   const internal = isInternal(href)
 
   return (
-    <div className={cn('border-b border-ink/10 py-8', className)}>
+    <div className={cn('border-b border-ink/10', className)}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-6 text-left"
+        className="flex w-full cursor-pointer items-center justify-between gap-6 py-8 text-left"
       >
         <span className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-8 lg:w-[675px]">
           <span className="text-body-lg text-ink">{title}</span>
@@ -58,7 +58,7 @@ export function ProjectRow({
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="pt-8">
+            <div className="pb-8">
               {internal ? (
                 <Link
                   href={href}

@@ -29,12 +29,12 @@ export function FAQItem({
   const [open, setOpen] = useState(defaultOpen)
 
   return (
-    <div className={cn('w-full border-b border-cream/40 py-6', className)}>
+    <div className={cn('w-full border-b border-cream/40', className)}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full cursor-pointer items-center justify-between gap-6 text-left text-cream"
+        className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left text-cream"
       >
         <span className="text-body-lg max-w-[90%]">{question}</span>
         <span className="shrink-0">
@@ -51,7 +51,7 @@ export function FAQItem({
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="mt-4 max-w-[90%] text-body text-cream/80">{children}</div>
+            <div className="max-w-[90%] pb-6 text-body text-cream/80">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
