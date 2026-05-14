@@ -17,7 +17,7 @@ export function Services() {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-10 left-1/2 hidden w-[2px] -translate-x-1/2 bg-beige sm:block"
+        className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[2px] -translate-x-1/2 bg-beige sm:block"
       />
 
       <Container width="content" className="relative flex h-full flex-1 flex-col items-center justify-center">
