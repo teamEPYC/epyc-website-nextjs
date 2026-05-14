@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/star-rating";
@@ -9,16 +10,15 @@ import { site } from "@/data/site";
 
 export function Voices() {
   return (
-    <section
-      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-ink px-6 py-12"
-      style={{
-        background: `
-          radial-gradient(ellipse at 20% 50%, rgba(30,80,50,0.6) 0%, transparent 60%),
-          radial-gradient(ellipse at 80% 40%, rgba(20,70,40,0.4) 0%, transparent 55%),
-          var(--color-ink)
-        `,
-      }}
-    >
+    <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-ink px-6 py-12">
+      {/* Same paper-texture overlay as Hero and Services */}
+      <Image
+        src="https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        className="-z-10 object-cover opacity-90"
+      />
       <Container width="content" className="relative flex flex-1 flex-col items-center justify-center gap-12">
         <Reveal as="div" className="flex w-full flex-1 items-center">
           <div className="flex w-full flex-col items-stretch gap-8 lg:flex-row lg:items-center lg:gap-[50px]">
