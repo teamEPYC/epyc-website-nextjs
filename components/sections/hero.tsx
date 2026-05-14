@@ -22,9 +22,21 @@ export function Hero() {
           className="relative flex min-h-[calc(90vh-2rem)] flex-col items-center justify-start gap-10 py-10 lg:gap-24  lg:py-12"
         >
           {/* Logo — wings emblem stacked above EPYC wordmark */}
-          <div className="flex flex-col items-center gap-3">
-            <EpycMark className="h-7 w-auto text-cream lg:h-8" />
-            <EpycWordmark className="h-9 w-auto text-cream lg:h-11" />
+          <div className="flex flex-col  items-center gap-3">
+            {/* <EpycMark className="h-7 w-auto text-cream lg:h-5" /> */}
+            <img
+              src="https://framerusercontent.com/images/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg?width=86&height=20"
+              alt="EPYC"
+              loading="lazy"
+              className="w-7 h-auto text-cream lg:w-[87px]"
+            />
+            <img
+              src="https://framerusercontent.com/images/hgI5DqS5OhR7orP2x05J8rY5Lg.svg?width=187&height=45"
+              alt="EPYC"
+              loading="lazy"
+              className="w-9 h-auto text-cream lg:w-[87px]"
+            />
+            {/* <EpycWordmark className="h-9 w-auto text-cream lg:h-4" /> */}
           </div>
 
           {/* Center content */}
@@ -39,7 +51,7 @@ export function Hero() {
               <span className="flex flex-col items-center gap-1.5">
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={10} className="text-cream" />
+                    <Star key={i} size={13} className="text-cream" />
                   ))}
                 </span>
                 <span className="text-body-sm">4.9/5.0</span>
@@ -71,11 +83,11 @@ export function Hero() {
               </Badge>
             </div>
 
-            <h1 className="text-h1 mt-4 text-center text-cream lg:mt-6">
+            <h1 className="text-h1 text-center text-cream ">
               Great Companies Deserve Great Websites &amp; Digital Products
             </h1>
 
-            <p className="text-body max-w-xl text-center text-beige/90">
+            <p className="text-body max-w-sm text-center text-beige">
               SaaS &amp; AI · E-Commerce &amp; Payments · Finance &amp; VC · Education · HealthTech
               · Web3 &amp; Blockchain
             </p>

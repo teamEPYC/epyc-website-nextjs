@@ -4,11 +4,11 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/cn'
 
 const badge = cva(
-  'inline-flex items-center gap-3 rounded-pill border border-cream px-6 py-4 text-body-sm transition-colors',
+  'inline-flex items-center gap-3 rounded-pill border border-cream-light px-6 py-4 text-body-sm transition-colors',
   {
     variants: {
       tone: {
-        'cream-on-dark': 'border-cream/40 text-cream hover:bg-cream/10',
+        'cream-on-dark': 'border-cream text-cream hover:bg-cream/10',
         'ink-on-light': 'border-ink/15 text-ink hover:bg-ink/5',
       },
     },
