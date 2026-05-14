@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { Pill } from '@/components/ui/pill'
 import { OrnamentDivider } from '@/components/ui/ornament-divider'
@@ -14,17 +14,22 @@ type Props = {
 }
 
 /**
- * Voices slider — target design (per user spec).
+ * Voices slider — animation policy:
  *
- *   LEFT  — portrait photo card with ornamental SVG frame. Below: a pair of
- *           wide-pill arrow buttons (~90×55, rounded-[28px], sand border,
- *           thin horizontal arrow).
- *   RIGHT — name / role / ornament / quote / ornament / "What X loved" / pills.
+ * - Photo: subtle 200ms crossfade between slides (AnimatePresence on the
+ *   <motion.div> wrapping next/image, sync mode so old and new are both
+ *   briefly visible).
+ * - Name / role / quote / "What X loved" label: instant swap.
+ * - Ornament dividers: rendered as <motion.div layout>. They stay mounted
+ *   across slide changes; when surrounding text changes height (because
+ *   role/quote length differs), motion detects their new layout position
+ *   and tweens them there instead of cutting.
+ * - Pills: keyed by tag content. Shared tags between slides persist and
+ *   transition position via `layout`; non-matching pills exit/enter via
+ *   AnimatePresence in popLayout mode (siblings reflow without waiting
+ *   for exit completion).
  *
- * Slide-change animation policy: photo and text content swap INSTANTLY when the
- * slide changes. The only animated elements are the two ornament dividers
- * (a quick scale-x draw-in) and the tag pills (staggered fade-up). Both are
- * keyed on `current.id` so they re-run their entry animation on each change.
+ * useReducedMotion zeroes durations on every transition above.
  */
 export function TestimonialSlider({ testimonials, className }: Props) {
   const [index, setIndex] = useState(0)
@@ -36,6 +41,11 @@ export function TestimonialSlider({ testimonials, className }: Props) {
     setIndex((i) => (i + delta + total) % total)
   }
 
+  // Centralized durations so reduced motion is one knob.
+  const dImage = reduce ? 0 : 0.2
+  const dLayout = reduce ? 0 : 0.4
+  const dPill = reduce ? 0 : 0.3
+
   return (
     <div
       className={cn(
@@ -45,28 +55,33 @@ export function TestimonialSlider({ testimonials, className }: Props) {
     >
       {/* LEFT — image card + arrows */}
       <div className="flex w-full flex-col items-center gap-6 lg:w-auto">
-        {/* Photo with ornamental SVG frame. The frame fills the outer container;
-            the photo sits inside an inset area so the frame's decorative edges
-            (top corners + side rails) render around the photograph. */}
+        {/* Photo with ornamental SVG frame. */}
         <div className="relative h-[470px] w-[360px]">
-          {/* Decorative SVG frame — sized to the outer container */}
           <img
             src="https://framerusercontent.com/images/UDA17654NsGwNB4PAZVy4qrxgmc.svg"
             alt=""
             aria-hidden
             className="pointer-events-none absolute inset-0 h-full w-full select-none"
           />
-          {/* Photo — instant swap on slide change (key changes => React remounts
-              the <Image>, which gives an immediate atomic change with no fade). */}
           <div className="absolute inset-x-[10px] bottom-[10px] top-[34px] overflow-hidden rounded-sm bg-cream/10">
-            <Image
-              key={current.id}
-              src={current.image.src}
-              alt={current.image.alt}
-              fill
-              sizes="280px"
-              className="object-cover"
-            />
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={current.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: dImage, ease: 'easeInOut' }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={current.image.src}
+                  alt={current.image.alt}
+                  fill
+                  sizes="280px"
+                  className="object-cover"
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
@@ -94,8 +109,8 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         )}
       </div>
 
-      {/* RIGHT — text column. Text content swaps instantly; only the ornament
-          dividers and the tag pills animate. */}
+      {/* RIGHT — text column. Text content swaps instantly; ornament dividers
+          and pills animate their layout/transform between slides. */}
       <div className="relative flex w-full flex-1 flex-col gap-[30px]">
         <div className="flex flex-col gap-2.5">
           <h2 className="text-h2 text-cream lg:!text-[56px] lg:!leading-[1.1]">
@@ -104,11 +119,17 @@ export function TestimonialSlider({ testimonials, className }: Props) {
           <p className="text-body text-cream">{current.role}</p>
         </div>
 
-        <AnimatedOrnament id={current.id} reduce={!!reduce} side="top" />
+        {/* Top ornament — re-positions smoothly when role/quote heights change */}
+        <motion.div layout transition={{ duration: dLayout, ease: 'easeInOut' }}>
+          <OrnamentDivider className="text-sand/50" />
+        </motion.div>
 
         <p className="text-body text-cream">{current.quote.join(' ')}</p>
 
-        <AnimatedOrnament id={current.id} reduce={!!reduce} side="bottom" />
+        {/* Bottom ornament */}
+        <motion.div layout transition={{ duration: dLayout, ease: 'easeInOut' }}>
+          <OrnamentDivider className="rotate-180 text-sand/50" />
+        </motion.div>
 
         {current.tags && current.tags.length > 0 && (
           <div className="flex flex-col gap-4">
@@ -116,54 +137,25 @@ export function TestimonialSlider({ testimonials, className }: Props) {
               What {current.name.split(' ')[0]} loved about us
             </p>
             <div className="flex flex-wrap gap-2.5">
-              {current.tags.map((tag, i) => (
-                <motion.div
-                  key={`${current.id}-${tag}`}
-                  initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: reduce ? 0 : 0.28,
-                    delay: reduce ? 0 : 0.12 + i * 0.06,
-                    ease: 'easeOut',
-                  }}
-                >
-                  <Pill tone="cream-on-dark">{tag}</Pill>
-                </motion.div>
-              ))}
+              <AnimatePresence mode="popLayout" initial={false}>
+                {current.tags.map((tag) => (
+                  <motion.div
+                    key={tag}
+                    layout
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.92 }}
+                    transition={{ duration: dPill, ease: 'easeOut' }}
+                  >
+                    <Pill tone="cream-on-dark">{tag}</Pill>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </div>
         )}
       </div>
     </div>
-  )
-}
-
-/**
- * Ornament divider that re-draws (scale-x from 0 → 1) on every slide change.
- * Top variant draws from the left edge; bottom variant draws from the right
- * so the two ends "meet" the surrounding content directions.
- */
-function AnimatedOrnament({
-  id,
-  reduce,
-  side,
-}: {
-  id: string
-  reduce: boolean
-  side: 'top' | 'bottom'
-}) {
-  return (
-    <motion.div
-      key={`${side}-${id}`}
-      initial={reduce ? { scaleX: 1 } : { scaleX: 0 }}
-      animate={{ scaleX: 1 }}
-      transition={{ duration: reduce ? 0 : 0.5, ease: 'easeOut' }}
-      style={{ transformOrigin: side === 'top' ? 'left' : 'right' }}
-    >
-      <OrnamentDivider
-        className={cn('text-sand/50', side === 'bottom' && 'rotate-180')}
-      />
-    </motion.div>
   )
 }
 
