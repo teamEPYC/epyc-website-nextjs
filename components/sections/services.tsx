@@ -4,17 +4,19 @@ import { ServiceCard } from '@/components/ui/service-card'
 import { ServicesStamp } from '@/components/ui/services-stamp'
 import { Reveal } from '@/components/ui/reveal'
 import { services } from '@/data/services'
+import { PaperBackground } from '../ui/paper-background'
 
 export function Services() {
   return (
-    <section className="relative flex min-h-screen w-full overflow-hidden bg-ink px-6 py-12">
-      <Image
+    <PaperBackground className="h-full w-full relative flex min-h-screen items-center justify-center overflow-hidden bg-ink px-6 py-12">
+      {/* <section className="relative flex min-h-screen w-full overflow-hidden bg-ink px-6 py-12"> */}
+      {/* <Image
         src="https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp"
         alt=""
         fill
         sizes="100vw"
         className="-z-10 object-cover opacity-90"
-      />
+      /> */}
       <Container width="content" className="relative flex flex-1 flex-col">
         <Reveal as="div" className="flex flex-1 flex-col">
           <div className="relative flex flex-1">
@@ -42,6 +44,7 @@ export function Services() {
           </div>
         </Reveal>
       </Container>
-    </section>
+      {/* </section> */}
+    </PaperBackground>
   )
 }

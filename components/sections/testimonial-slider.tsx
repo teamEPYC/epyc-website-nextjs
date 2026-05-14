@@ -43,15 +43,15 @@ export function TestimonialSlider({ testimonials, className }: Props) {
     >
       {/* LEFT — image card + arrows */}
       <div className="flex w-full flex-col items-center gap-6 lg:w-auto">
-        {/* Photo card with ghost outline ~8px outside */}
+        {/* Photo card with double-border outline: inner card border + offset ghost outline */}
         <div className="relative w-full max-w-[300px] lg:h-[420px] lg:w-[300px]">
-          {/* Ghost outline — faint cream stroke sits 8px outside the card edge */}
+          {/* Ghost outline — 1px stroke sits ~8px outside the card edge */}
           <div
             aria-hidden
             className="pointer-events-none absolute -inset-2 rounded-[20px] border border-cream/20"
           />
-          {/* Photo card */}
-          <div className="relative aspect-[300/420] w-full overflow-hidden rounded-xl bg-cream/10 lg:h-[420px] lg:w-[300px]">
+          {/* Photo card — has its own 1px border (the "first" of the double-border pair) */}
+          <div className="relative aspect-[300/420] w-full overflow-hidden rounded-xl border border-cream/35 bg-cream/10 lg:h-[420px] lg:w-[300px]">
             <AnimatePresence initial={false}>
               <motion.div
                 key={current.id}
