@@ -41,10 +41,14 @@ export function TestimonialSlider({ testimonials, className }: Props) {
     setIndex((i) => (i + delta + total) % total)
   }
 
+  // Snappy out-quint cubic-bezier — no slow start, smooth landing.
+  // Avoids the "lag" feel of easeInOut where the first 30% barely moves.
+  const ease = [0.22, 1, 0.36, 1] as const
+
   // Centralized durations so reduced motion is one knob.
-  const dImage = reduce ? 0 : 0.2
-  const dLayout = reduce ? 0 : 0.4
-  const dPill = reduce ? 0 : 0.3
+  const dImage = reduce ? 0 : 0.18
+  const dLayout = reduce ? 0 : 0.28
+  const dPill = reduce ? 0 : 0.22
 
   return (
     <div
@@ -73,7 +77,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: dImage, ease: 'easeInOut' }}
+                transition={{ duration: dImage, ease }}
                 className="absolute inset-0"
               >
                 <Image
@@ -123,14 +127,14 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         </div>
 
         {/* Top ornament — re-positions smoothly when role/quote heights change */}
-        <motion.div layout transition={{ duration: dLayout, ease: 'easeInOut' }}>
+        <motion.div layout transition={{ duration: dLayout, ease }}>
           <OrnamentDivider className="text-sand/50" />
         </motion.div>
 
         <p className="text-body text-cream">{current.quote.join(' ')}</p>
 
         {/* Bottom ornament */}
-        <motion.div layout transition={{ duration: dLayout, ease: 'easeInOut' }}>
+        <motion.div layout transition={{ duration: dLayout, ease }}>
           <OrnamentDivider className="rotate-180 text-sand/50" />
         </motion.div>
 
@@ -148,7 +152,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
                     initial={{ opacity: 0, scale: 0.92 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.92 }}
-                    transition={{ duration: dPill, ease: 'easeOut' }}
+                    transition={{ duration: dPill, ease }}
                   >
                     <Pill tone="cream-on-dark">{tag}</Pill>
                   </motion.div>
