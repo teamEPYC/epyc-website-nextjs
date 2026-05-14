@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/cn";
-import { Pill } from "@/components/ui/pill";
-import { OrnamentDivider } from "@/components/ui/ornament-divider";
-import type { Testimonial } from "@/data/testimonials";
+import { useState } from 'react'
+import Image from 'next/image'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
+import { cn } from '@/lib/cn'
+import { Pill } from '@/components/ui/pill'
+import { OrnamentDivider } from '@/components/ui/ornament-divider'
+import type { Testimonial } from '@/data/testimonials'
 
 type Props = {
-  testimonials: Testimonial[];
-  className?: string;
-};
+  testimonials: Testimonial[]
+  className?: string
+}
 
 /**
  * Voices slider — target design (per user spec).
@@ -25,62 +25,57 @@ type Props = {
  *           / tags. Single-paragraph quotes, text-body (Norms 16/16/12).
  */
 export function TestimonialSlider({ testimonials, className }: Props) {
-  const [index, setIndex] = useState(0);
-  const reduce = useReducedMotion();
-  const total = testimonials.length;
-  const current = testimonials[index];
+  const [index, setIndex] = useState(0)
+  const reduce = useReducedMotion()
+  const total = testimonials.length
+  const current = testimonials[index]
 
   function go(delta: number) {
-    setIndex((i) => (i + delta + total) % total);
+    setIndex((i) => (i + delta + total) % total)
   }
 
   return (
     <div
       className={cn(
-        "flex w-full flex-col items-start gap-8 lg:flex-row lg:flex-wrap lg:gap-x-[30px] lg:gap-y-[50px]",
+        'flex w-full flex-col items-start gap-8 lg:flex-row lg:flex-wrap lg:gap-x-[30px] lg:gap-y-[50px]',
         className,
       )}
     >
       {/* LEFT — image card + arrows */}
       <div className="flex w-full flex-col items-center gap-6 lg:w-auto">
-        {/* Photo card with double-border outline: inner card border + offset ghost outline */}
-        <div className="relative w-full max-w-[300px] lg:h-[420px] lg:w-[300px]">
-          {/* Ghost outline — 1px stroke sits ~8px outside the card edge */}
-          <div
+        {/* Photo with ornamental SVG frame. The frame fills the outer container;
+            the photo sits inside an inset area so the frame's decorative edges
+            (top corners + side rails) render around the photograph. */}
+        <div className="relative aspect-[300/420] w-full max-w-[300px] lg:h-[420px] lg:w-[300px]">
+          {/* Decorative SVG frame — sized to the outer container */}
+          <img
+            src="https://framerusercontent.com/images/UDA17654NsGwNB4PAZVy4qrxgmc.svg"
+            alt=""
             aria-hidden
-            className="pointer-events-none absolute -inset-2 rounded-[20px] border border-cream/20"
+            className="pointer-events-none absolute inset-0 h-full w-full select-none"
           />
-          {/* Photo card — has its own 1px border (the "first" of the double-border pair) */}
-          <div className="relative aspect-[300/420] w-full overflow-hidden rounded-xl border border-cream/35 bg-cream/10 lg:h-[420px] lg:w-[300px]">
+          {/* Photo — slightly smaller than the frame, centered inside its interior.
+              Inset values mirror the source's 26px top / 10px sides / 10px bottom
+              scaled proportionally to 300x420. */}
+          <div className="absolute inset-x-[10px] bottom-[10px] top-[22px] overflow-hidden  bg-cream/10">
             <AnimatePresence initial={false}>
               <motion.div
                 key={current.id}
                 initial={reduce ? { opacity: 1 } : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={reduce ? { opacity: 0 } : { opacity: 0 }}
-                transition={{ duration: reduce ? 0 : 0.35, ease: "easeOut" }}
+                transition={{ duration: reduce ? 0 : 0.35, ease: 'easeOut' }}
                 className="absolute inset-0"
               >
                 <Image
                   src={current.image.src}
                   alt={current.image.alt}
                   fill
-                  sizes="300px"
+                  sizes="280px"
                   className="object-cover"
                 />
               </motion.div>
             </AnimatePresence>
-            {/* Diagonal shine overlay — subtle highlight across the photo */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(255,240,209,0.18) 49%, rgba(171,171,171,0) 100%)",
-                transform: "translateX(20%) rotate(32deg)",
-                opacity: 0.15,
-              }}
-            />
           </div>
         </div>
 
@@ -116,7 +111,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
             initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
-            transition={{ duration: reduce ? 0 : 0.35, ease: "easeOut" }}
+            transition={{ duration: reduce ? 0 : 0.35, ease: 'easeOut' }}
             className="flex flex-col gap-[30px] lg:absolute lg:inset-0"
           >
             <div className="flex flex-col gap-2.5">
@@ -128,14 +123,14 @@ export function TestimonialSlider({ testimonials, className }: Props) {
 
             <OrnamentDivider className="text-sand/50" />
 
-            <p className="text-body text-cream">{current.quote.join(" ")}</p>
+            <p className="text-body text-cream">{current.quote.join(' ')}</p>
 
             <OrnamentDivider className="rotate-180 text-sand/50" />
 
             {current.tags && current.tags.length > 0 && (
               <div className="flex flex-col gap-4">
                 <p className="text-body text-cream">
-                  What {current.name.split(" ")[0]} loved about us
+                  What {current.name.split(' ')[0]} loved about us
                 </p>
                 <div className="flex flex-wrap gap-2.5">
                   {current.tags.map((tag) => (
@@ -150,11 +145,11 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         </AnimatePresence>
       </div>
     </div>
-  );
+  )
 }
 
 /** Thin horizontal arrow ~42×15, matching the source's WKTkLtAbJiZyKGjLoki6qOZYOY.svg. */
-function ThinArrow({ direction }: { direction: "left" | "right" }) {
+function ThinArrow({ direction }: { direction: 'left' | 'right' }) {
   return (
     <svg
       width={42}
@@ -166,10 +161,10 @@ function ThinArrow({ direction }: { direction: "left" | "right" }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      style={direction === "left" ? { transform: "scaleX(-1)" } : undefined}
+      style={direction === 'left' ? { transform: 'scaleX(-1)' } : undefined}
     >
       <path d="M1 7.5h39" />
       <path d="M33 1.5l6.5 6-6.5 6" />
     </svg>
-  );
+  )
 }

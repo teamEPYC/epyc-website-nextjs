@@ -8,7 +8,7 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function Services() {
   return (
-    <PaperBackground className="h-full w-full relative flex min-h-screen items-center justify-center overflow-hidden bg-ink px-6 py-12">
+    <PaperBackground className="max-h-[1080p] w-full relative flex h-screen items-center justify-center overflow-hidden bg-ink px-6 py-12">
       {/* <section className="relative flex min-h-screen w-full overflow-hidden bg-ink px-6 py-12"> */}
       {/* <Image
         src="https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp"

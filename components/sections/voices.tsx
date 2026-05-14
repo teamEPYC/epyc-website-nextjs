@@ -11,7 +11,7 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function Voices() {
   return (
-    <PaperBackground className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-ink px-6 py-12">
+    <PaperBackground className="max-h-[1080p] w-full relative flex h-screen items-center justify-center overflow-hidden bg-ink px-6 py-12">
       <Container
         width="content"
         className="relative flex flex-1 w-full flex-col items-center justify-center gap-12"
