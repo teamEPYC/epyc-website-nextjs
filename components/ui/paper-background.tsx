@@ -49,7 +49,7 @@ export function PaperBackground({
           }}
         />
       ) : null}
-      <div className="relative z-0 w-full">{children}</div>
+      <div className="relative z-0 w-full h-full">{children}</div>
     </div>
   )
 }

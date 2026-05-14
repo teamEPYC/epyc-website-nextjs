@@ -1,36 +1,28 @@
-import type { ReactNode } from "react";
-import { cn } from "@/lib/cn";
+import type { ReactNode } from 'react'
+import { cn } from '@/lib/cn'
 
 type ServiceCardProps = {
-  title: ReactNode;
-  body: ReactNode;
-  className?: string;
-  align?: "center" | "start";
-};
+  title: ReactNode
+  body: ReactNode
+  className?: string
+  align?: 'center' | 'start'
+}
 
-export function ServiceCard({
-  title,
-  body,
-  className,
-  align = "center",
-}: ServiceCardProps) {
+export function ServiceCard({ title, body, className, align = 'center' }: ServiceCardProps) {
   return (
     <div
       className={cn(
-        "flex h-full flex-col justify-center gap-3 p-8 lg:p-12",
-        align === "center" ? "items-center text-center" : "items-start text-left",
+        'flex flex-col justify-center gap-4 w-full h-full',
+        align === 'center' ? 'items-center text-center' : 'items-start text-left',
         className,
       )}
     >
-      <h3 className="text-h3 text-cream">{title}</h3>
+      <h3 className="text-h3 text-beige">{title}</h3>
       <p
-        className={cn(
-          "text-body-lg",
-          align === "center" ? "max-w-md text-cream/85" : "text-cream/85",
-        )}
+        className={cn('text-body', align === 'center' ? 'max-w-sm text-beige/80' : 'text-beige/80')}
       >
         {body}
       </p>
     </div>
-  );
+  )
 }
