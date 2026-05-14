@@ -49,7 +49,10 @@ export function TestimonialSlider({ testimonials, className }: Props) {
   return (
     <div
       className={cn(
-        'flex w-full flex-col items-start gap-8 lg:flex-row lg:flex-wrap lg:gap-x-[30px] lg:gap-y-[50px]',
+        // items-center on lg so the text column stays vertically centered against
+        // the image card. Content growth/shrinkage extends symmetrically up and
+        // down from the slider's center, not only downward.
+        'flex w-full flex-col items-start gap-8 lg:flex-row lg:flex-wrap lg:items-center lg:gap-x-[30px] lg:gap-y-[50px]',
         className,
       )}
     >
