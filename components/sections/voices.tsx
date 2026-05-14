@@ -11,7 +11,16 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function Voices() {
   return (
-    <PaperBackground className="max-h-[1080p] w-full relative flex h-screen items-center justify-center overflow-hidden bg-ink px-6 py-12">
+    // <PaperBackground className="bg-green-300 w-full flex h-screen items-center justify-center overflow-hidden  px-6 py-12">
+
+    <div
+      style={{
+        backgroundImage: `url(${'https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp'})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+      className="bg-ink w-full relative flex h-screen items-center justify-center overflow-hidden  px-6 py-12"
+    >
       <Container
         width="content"
         className="relative flex flex-1 w-full flex-col items-center justify-center gap-12"
@@ -35,18 +44,19 @@ export function Voices() {
         </Reveal>
 
         {/* Clutch read-more CTA — fixed 505x84 row, label on left + Clutch badge on right */}
-        <div className="flex h-auto w-full max-w-[505px] flex-col items-center justify-center gap-3 sm:h-[84px] sm:flex-row sm:gap-2.5">
-          <p className="text-h5 text-cream">Read more reviews by our clients on</p>
-          <Badge
-            tone="cream-on-dark"
-            href={site.social.clutchProfile}
-            icon={<ClutchWordmark className="h-4 w-auto text-cream" />}
-          >
-            <StarRating score={4.9} className="text-cream" starClassName="text-cream" />
-          </Badge>
-        </div>
       </Container>
-      {/* </section> */}
-    </PaperBackground>
+      <div className="absolute mx-auto bottom-8 inset-x-0 flex h-auto w-full max-w-[505px] flex-col items-center justify-center gap-3 sm:h-[84px] sm:flex-row sm:gap-2.5">
+        <p className="text-h5 text-cream">Read more reviews by our clients on</p>
+        <Badge
+          tone="cream-on-dark"
+          href={site.social.clutchProfile}
+          icon={<ClutchWordmark className="h-4 w-auto text-cream" />}
+        >
+          <StarRating score={4.9} className="text-cream" starClassName="text-cream" />
+        </Badge>
+      </div>
+    </div>
+
+    // </PaperBackground>
   )
 }

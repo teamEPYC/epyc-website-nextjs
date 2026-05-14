@@ -1,19 +1,19 @@
-import { Section } from "@/components/ui/section";
-import { Container } from "@/components/ui/container";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { BrandTile } from "@/components/ui/brand-tile";
-import { Reveal } from "@/components/ui/reveal";
-import { brands } from "@/data/brands";
+import { Section } from '@/components/ui/section'
+import { Container } from '@/components/ui/container'
+import { SectionHeading } from '@/components/ui/section-heading'
+import { BrandTile } from '@/components/ui/brand-tile'
+import { Reveal } from '@/components/ui/reveal'
+import { brands } from '@/data/brands'
 
 export function Brands() {
   return (
-    <Section tone="beige" className="py-12">
-      <Container width="content">
+    <Section tone="beige" className="py-12 ">
+      <Container className="max-w-[1150px] px-0 sm:px-0 lg:px-0">
         <Reveal className="flex flex-col gap-20">
           <div className="flex justify-center">
-            <SectionHeading>Our Brands</SectionHeading>
+            <SectionHeading className="text-left w-full">Our Brands</SectionHeading>
           </div>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid w-full h-min flex-none relative overflow-hidden p-0 gap-[10px] justify-center grid-cols-[repeat(4,minmax(50px,1fr))] grid-rows-[repeat(2,290px)] auto-rows-[290px]">
             {brands.map((b) => (
               <BrandTile key={b.id} src={b.src} alt={b.alt} />
             ))}
@@ -21,5 +21,5 @@ export function Brands() {
         </Reveal>
       </Container>
     </Section>
-  );
+  )
 }
