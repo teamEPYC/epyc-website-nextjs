@@ -36,7 +36,7 @@ export function CTAFooter() {
       <Container width="outer" className="relative">
         <Reveal className="flex  w-full flex-col  gap-12">
           {/* Top CTA strip */}
-          <div className="flex flex-row flex-none content-center justify-center items-center gap-[50px] w-[1150px] h-min p-0 relative overflow-hidden">
+          <div className="flex flex-row flex-none content-center justify-center items-center gap-[50px] w-[1150px] mx-auto h-min p-0 relative overflow-hidden">
             <div className="relative hidden h-[306px] w-[216px] overflow-hidden border-r border-cream/40 lg:block">
               <Image
                 src="https://framerusercontent.com/images/rV5jBk0jBJfsfnlEdgFHud9abY.webp"
