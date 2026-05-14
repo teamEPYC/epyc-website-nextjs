@@ -19,7 +19,7 @@ export function Voices() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
-      className="bg-ink w-full relative flex h-screen items-center justify-center overflow-hidden  px-6 py-12"
+      className="bg-ink w-full relative flex min-h-screen items-center justify-center overflow-hidden pb-36  px-6 py-12"
     >
       <Container
         width="content"

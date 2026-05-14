@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image'
 
 /**
  * Sticky 100vh paper-texture image with a top gradient fade-in from ink.
@@ -7,10 +7,7 @@ import Image from "next/image";
  */
 export function StickyImage() {
   return (
-    <section
-      aria-hidden="true"
-      className="hidden h-screen w-full lg:sticky lg:top-0 lg:block"
-    >
+    <section aria-hidden="true" className="h-screen w-full sticky top-0 block">
       <div className="relative h-full w-full overflow-hidden">
         <Image
           src="https://framerusercontent.com/images/nrsbyLofw3hQwQOWoECajIlhuY.webp"
@@ -22,11 +19,10 @@ export function StickyImage() {
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-[14%]"
           style={{
-            background:
-              "linear-gradient(180deg, var(--color-ink) 0%, rgba(24, 50, 41, 0) 100%)",
+            background: 'linear-gradient(180deg, var(--color-ink) 0%, rgba(24, 50, 41, 0) 100%)',
           }}
         />
       </div>
     </section>
-  );
+  )
 }

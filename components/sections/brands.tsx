@@ -13,7 +13,7 @@ export function Brands() {
           <div className="flex justify-center">
             <SectionHeading className="text-left w-full">Our Brands</SectionHeading>
           </div>
-          <div className="grid w-full h-min flex-none relative overflow-hidden p-0 gap-[10px] justify-center grid-cols-[repeat(4,minmax(50px,1fr))] grid-rows-[repeat(2,290px)] auto-rows-[290px]">
+          <div className="grid w-full p-4 h-min flex-none relative overflow-hidden lg:p-0 gap-[10px] justify-center grid-cols-[repeat(3,minmax(50px,1fr))] lg:grid-cols-[repeat(4,minmax(50px,1fr))] lg:grid-rows-[repeat(2,290px)] lg:auto-rows-[290px]">
             {brands.map((b) => (
               <BrandTile key={b.id} src={b.src} alt={b.alt} />
             ))}
