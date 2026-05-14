@@ -7,20 +7,20 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function Services() {
   return (
-    <PaperBackground className="relative flex h-screen max-h-[1080px] w-full items-center justify-center overflow-hidden bg-ink px-6 py-12">
-      {/* Cross-divider lines — positioned at the section level so the
-          horizontal can span full viewport width (not clipped to the
-          Container's max-width). Hidden on mobile. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-0 right-0 top-1/2 hidden h-[2px] -translate-y-1/2 bg-beige sm:block"
-      />
+    <PaperBackground className="relative flex h-screen  w-full items-center justify-center overflow-hidden bg-ink px-6 py-12">
+      {/* Vertical divider lives at the section level so it spans full
+          height (top to bottom of the viewport-tall section). The
+          horizontal divider is rendered inside the Container/grid below
+          so it stays bounded to Container's max-width. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[2px] -translate-x-1/2 bg-beige sm:block"
       />
 
-      <Container width="content" className="relative flex h-full flex-1 flex-col items-center justify-center">
+      <Container
+        width="content"
+        className="relative flex h-full flex-1 flex-col items-center justify-center"
+      >
         <Reveal as="div" className="flex h-full w-full flex-1 flex-col items-center justify-center">
           <div className="relative grid h-full w-full grid-cols-2 grid-rows-2">
             {services.map((s) => (
@@ -31,6 +31,12 @@ export function Services() {
                 <ServiceCard title={s.title} body={s.body} />
               </div>
             ))}
+            {/* Horizontal divider — inside the grid so it's bounded to the
+                Container's max-width, not edge-to-edge of the section. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-0 right-0 top-1/2 hidden h-[2px] -translate-y-1/2 bg-beige sm:block"
+            />
           </div>
         </Reveal>
       </Container>
