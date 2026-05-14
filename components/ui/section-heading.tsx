@@ -15,7 +15,7 @@ const sectionHeading = cva("", {
       h3: "text-h3",
     },
   },
-  defaultVariants: { tone: "ink", size: "h2" },
+  defaultVariants: { tone: "ink", size: "h2-light" },
 });
 
 type SectionHeadingProps = VariantProps<typeof sectionHeading> & {

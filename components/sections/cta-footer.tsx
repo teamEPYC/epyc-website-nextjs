@@ -62,7 +62,7 @@ export function CTAFooter() {
 
             <div className="flex flex-col items-center justify-center gap-6 text-center">
               <p className="text-body uppercase text-cream/80">/Start Your Project/</p>
-              <SectionHeading tone="cream" size="h2-light" as="h2">
+              <SectionHeading tone="cream" size="h2" as="h2">
                 Its Time, We Create
               </SectionHeading>
               <Button variant="filled" icon="arrow-right" href="/contact">

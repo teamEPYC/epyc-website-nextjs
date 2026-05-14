@@ -23,8 +23,8 @@ export function Hero() {
         >
           {/* Logo — wings emblem stacked above EPYC wordmark */}
           <div className="flex flex-col items-center gap-3">
-            <EpycMark className="h-5 w-auto text-cream" />
-            <EpycWordmark className="h-4 w-auto text-cream lg:h-5" />
+            <EpycMark className="h-7 w-auto text-cream lg:h-8" />
+            <EpycWordmark className="h-9 w-auto text-cream lg:h-11" />
           </div>
 
           {/* Center content */}
@@ -46,8 +46,8 @@ export function Hero() {
               </span>
             </Badge>
 
-            {/* Partner badges — second row, 3 in a line */}
-            <div className="flex flex-wrap items-center justify-center gap-2.5">
+            {/* Partner badges — second row, 3 in a line. Hidden on mobile per source. */}
+            <div className="hidden sm:flex flex-wrap items-center justify-center gap-2.5">
               <Badge
                 tone="cream-on-dark"
                 className="gap-2 py-4 text-body-sm"
@@ -75,16 +75,16 @@ export function Hero() {
               Great Companies Deserve Great Websites &amp; Digital Products
             </h1>
 
-            <p className="text-body-lg max-w-xl text-center text-beige/90">
+            <p className="text-body max-w-xl text-center text-beige/90">
               SaaS &amp; AI · E-Commerce &amp; Payments · Finance &amp; VC · Education · HealthTech
               · Web3 &amp; Blockchain
             </p>
 
             <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-              <Button variant="filled" size="md" icon="arrow-down" href="/projects">
+              <Button variant="filled" icon="arrow-down" href="/projects">
                 See Our Work
               </Button>
-              <Button variant="filled" size="md" icon="arrow-right" href="/contact">
+              <Button variant="filled" icon="arrow-right" href="/contact">
                 Talk to Us
               </Button>
             </div>

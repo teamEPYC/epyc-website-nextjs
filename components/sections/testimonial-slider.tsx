@@ -106,7 +106,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
 
             <OrnamentDivider className="text-sand/50" />
 
-            <div className="flex flex-col gap-4 text-body-lg text-cream/90">
+            <div className="flex flex-col gap-4 text-body text-cream/90">
               {current.quote.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
