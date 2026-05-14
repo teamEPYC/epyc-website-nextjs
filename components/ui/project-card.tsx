@@ -1,19 +1,19 @@
-import Link from "next/link";
-import Image from "next/image";
-import type { ReactNode } from "react";
-import { cn } from "@/lib/cn";
+import Link from 'next/link'
+import Image from 'next/image'
+import type { ReactNode } from 'react'
+import { cn } from '@/lib/cn'
 
 type ProjectCardProps = {
-  href: string;
-  title: ReactNode;
-  tags: string;
-  image: { src: string; alt: string; width: number; height: number };
-  className?: string;
-  aspect?: "wide" | "tall";
-};
+  href: string
+  title: ReactNode
+  tags: string
+  image: { src: string; alt: string; width: number; height: number }
+  className?: string
+  aspect?: 'wide' | 'tall'
+}
 
 function isInternal(href: string) {
-  return href.startsWith("/") || href.startsWith("#");
+  return href.startsWith('/') || href.startsWith('#')
 }
 
 export function ProjectCard({
@@ -22,30 +22,30 @@ export function ProjectCard({
   tags,
   image,
   className,
-  aspect = "wide",
+  aspect = 'wide',
 }: ProjectCardProps) {
-  const internal = isInternal(href);
-  const Wrapper = internal ? Link : "a";
+  const internal = isInternal(href)
+  const Wrapper = internal ? Link : 'a'
   const wrapperProps = internal
     ? { href }
     : ({
         href,
-        target: "_blank",
-        rel: "noopener noreferrer",
-      } as const);
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      } as const)
 
   return (
     <Wrapper
       {...(wrapperProps as { href: string })}
       className={cn(
-        "group flex w-full flex-col gap-6 border-b border-ink/10 pb-8 no-underline",
+        'group flex w-full flex-col gap-6 border-b border-ink/10 pb-8 no-underline transition-colors duration-200 hover:border-ink/40',
         className,
       )}
     >
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-sm bg-cream",
-          aspect === "wide" ? "aspect-[16/9]" : "aspect-[4/5]",
+          'relative w-full overflow-hidden bg-cream',
+          aspect === 'wide' ? 'aspect-[16/9]' : 'aspect-[4/5]',
         )}
       >
         <Image
@@ -61,5 +61,5 @@ export function ProjectCard({
         <p className="text-h5 uppercase text-ink/60">{tags}</p>
       </div>
     </Wrapper>
-  );
+  )
 }
