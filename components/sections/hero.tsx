@@ -13,27 +13,27 @@ import { site } from '@/data/site'
 
 export function Hero() {
   return (
-    <PaperBackground gradient="bottom" className="min-h-[75vh] p-4 lg:min-h-[90vh]">
+    <PaperBackground gradient="bottom" className="min-h-[67vh] p-4 lg:min-h-[90vh]">
       {/* Inner frame with the 1px beige border on top + left + right (no bottom),
           matching the Framer source's `framer-15o8czf` element. */}
-      <div className="min-h-[calc(75vh-2rem)] border-l border-r border-t border-beige lg:min-h-[calc(90vh-2rem)]">
+      <div className="min-h-[calc(67vh-2rem)] border-l border-r border-t border-beige lg:min-h-[calc(90vh-2rem)]">
         <Container
           width="content"
-          className="relative flex min-h-[calc(75vh-2rem)] flex-col items-center justify-start gap-8 py-8 lg:min-h-[calc(90vh-2rem)] lg:gap-24 lg:py-12"
+          className="relative flex min-h-[calc(67vh-2rem)] flex-col items-center justify-start gap-15 py-12 lg:min-h-[calc(90vh-2rem)] lg:gap-24 lg:py-12"
         >
           {/* Logo — wings emblem stacked above EPYC wordmark */}
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-3 md:gap-2">
             <img
               src="https://framerusercontent.com/images/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg?width=86&height=20"
               alt="EPYC"
               loading="lazy"
-              className="h-auto w-[50px] text-cream lg:w-[87px]"
+              className="h-auto w-[70px] text-cream lg:w-[87px]"
             />
             <img
               src="https://framerusercontent.com/images/hgI5DqS5OhR7orP2x05J8rY5Lg.svg?width=187&height=45"
               alt="EPYC"
               loading="lazy"
-              className="h-auto w-[120px] text-cream lg:w-[140px]"
+              className="h-auto w-[70px] text-cream lg:w-[140px]"
             />
           </div>
 
@@ -43,8 +43,8 @@ export function Hero() {
             <Badge
               tone="cream-on-dark"
               href={site.social.clutchProfile}
-              className="gap-2.5 py-2 text-body-sm"
-              icon={<ClutchWordmark className="h-5 w-auto text-cream" />}
+              className="gap-2.5 py-2 px-2 text-body-sm"
+              icon={<ClutchWordmark className="h-3 lg:h-5 w-auto text-cream" />}
             >
               <span className="flex items-center gap-2">
                 <span className="flex items-center gap-0.5">
@@ -81,7 +81,7 @@ export function Hero() {
               </Badge>
             </div>
 
-            <h1 className="text-h1 text-center text-cream ">
+            <h1 className="text-h1 mt-10 lg:mt-0 text-center text-cream ">
               Great Companies Deserve Great Websites &amp; Digital Products
             </h1>
 
@@ -90,11 +90,11 @@ export function Hero() {
               · Web3 &amp; Blockchain
             </p>
 
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-              <Button variant="filled" icon="arrow-down" href="/projects">
+            <div className=" flex w-full items-center justify-center gap-3">
+              <Button variant="filled" className="w-full" icon="arrow-down" href="/projects">
                 See Our Work
               </Button>
-              <Button variant="filled" icon="arrow-right" href="/contact">
+              <Button variant="filled" className="w-full" icon="arrow-right" href="/contact">
                 Talk to Us
               </Button>
             </div>
