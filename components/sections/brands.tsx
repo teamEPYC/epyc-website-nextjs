@@ -9,7 +9,7 @@ export function Brands() {
   return (
     <Section tone="beige" className="py-12 ">
       <Container className="max-w-[1150px] px-0 sm:px-0 lg:px-0">
-        <Reveal className="flex flex-col gap-20">
+        <Reveal className="flex flex-col gap-4 lg:gap-20">
           <div className="flex px-4 lg:px-0 justify-center">
             <SectionHeading className="text-left w-full">Our Brands</SectionHeading>
           </div>

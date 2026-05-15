@@ -7,7 +7,7 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function Services() {
   return (
-    <PaperBackground className="relative flex h-auto w-full flex-col items-center justify-center overflow-hidden bg-ink px-6 py-12 sm:h-screen sm:max-h-[1080px]">
+    <PaperBackground className="relative flex h-auto w-full flex-col items-center justify-center overflow-hidden bg-ink px-0 lg:px-6 lg:py-12 py-6 sm:h-screen sm:max-h-[1080px]">
       {/* Vertical divider — sm+ only, full section height */}
       <div
         aria-hidden
@@ -16,9 +16,7 @@ export function Services() {
 
       {/* Mobile-only heading. Plain h2 (no "/ ... /" slashes) to match the
           design reference; sm+ shows the crimson ServicesStamp instead. */}
-      <h2 className="mb-8 text-center text-h2-light text-cream sm:hidden">
-        Our Services
-      </h2>
+      <h2 className="mb-8 text-center text-h2-light text-cream sm:hidden">Our Services</h2>
 
       <Container
         width="content"
