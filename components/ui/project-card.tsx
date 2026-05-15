@@ -56,7 +56,7 @@ export function ProjectCard({
           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         />
       </div>
-      <div className="flex items-center justify-between px-4">
+      <div className="flex min-h-[2.5rem] items-center justify-between px-4">
         <h4 className="text-h4-alt text-ink">{title}</h4>
         <p className="text-h5 uppercase text-ink/60">{tags}</p>
       </div>
