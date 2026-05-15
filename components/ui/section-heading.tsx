@@ -9,6 +9,7 @@ const sectionHeading = cva("", {
       cream: "text-cream",
     },
     size: {
+      display: "text-display",
       h1: "text-h1",
       h2: "text-h2",
       "h2-light": "text-h2-light",
