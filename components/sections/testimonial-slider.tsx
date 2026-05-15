@@ -85,7 +85,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
                   alt={current.image.alt}
                   fill
                   sizes="280px"
-                  className="object-cover"
+                  className="object-cover object-top"
                 />
               </motion.div>
             </AnimatePresence>
