@@ -13,30 +13,28 @@ import { site } from '@/data/site'
 
 export function Hero() {
   return (
-    <PaperBackground gradient="bottom" className="min-h-none lg:min-h-[90vh] p-4">
+    <PaperBackground gradient="bottom" className="min-h-[75vh] p-4 lg:min-h-[90vh]">
       {/* Inner frame with the 1px beige border on top + left + right (no bottom),
           matching the Framer source's `framer-15o8czf` element. */}
-      <div className="min-h-[calc(90vh-2rem)] border-l border-r border-t border-beige">
+      <div className="min-h-[calc(75vh-2rem)] border-l border-r border-t border-beige lg:min-h-[calc(90vh-2rem)]">
         <Container
           width="content"
-          className="relative flex min-h-[calc(90vh-2rem)] flex-col items-center justify-start gap-10 py-10 lg:gap-24  lg:py-12"
+          className="relative flex min-h-[calc(75vh-2rem)] flex-col items-center justify-start gap-8 py-8 lg:min-h-[calc(90vh-2rem)] lg:gap-24 lg:py-12"
         >
           {/* Logo — wings emblem stacked above EPYC wordmark */}
-          <div className="flex flex-col  items-center gap-3">
-            {/* <EpycMark className="h-7 w-auto text-cream lg:h-5" /> */}
+          <div className="flex flex-col items-center gap-2">
             <img
               src="https://framerusercontent.com/images/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg?width=86&height=20"
               alt="EPYC"
               loading="lazy"
-              className="w-7 h-auto text-cream lg:w-[87px]"
+              className="h-auto w-[50px] text-cream lg:w-[87px]"
             />
             <img
               src="https://framerusercontent.com/images/hgI5DqS5OhR7orP2x05J8rY5Lg.svg?width=187&height=45"
               alt="EPYC"
               loading="lazy"
-              className="w-9 h-auto text-cream lg:w-[87px]"
+              className="h-auto w-[120px] text-cream lg:w-[140px]"
             />
-            {/* <EpycWordmark className="h-9 w-auto text-cream lg:h-4" /> */}
           </div>
 
           {/* Center content */}
@@ -48,7 +46,7 @@ export function Hero() {
               className="gap-2.5 py-2 text-body-sm"
               icon={<ClutchWordmark className="h-5 w-auto text-cream" />}
             >
-              <span className="flex flex-col items-center gap-1.5">
+              <span className="flex items-center gap-2">
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={13} className="text-cream" />

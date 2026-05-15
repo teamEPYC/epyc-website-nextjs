@@ -7,7 +7,10 @@ import Image from 'next/image'
  */
 export function StickyImage() {
   return (
-    <section aria-hidden="true" className="h-screen w-full sticky top-0 block">
+    <section
+      aria-hidden="true"
+      className="relative block h-[510px] w-full lg:sticky lg:top-0 lg:h-screen"
+    >
       <div className="relative h-full w-full overflow-hidden">
         <Image
           src="https://framerusercontent.com/images/nrsbyLofw3hQwQOWoECajIlhuY.webp"
