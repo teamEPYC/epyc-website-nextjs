@@ -120,10 +120,10 @@ export function TestimonialSlider({ testimonials, className }: Props) {
           and pills animate their layout/transform between slides. */}
       <div className="relative flex w-full flex-1 flex-col gap-[30px]">
         <div className="flex flex-col gap-2.5">
-          <h2 className="text-h2 text-cream lg:!text-[56px] lg:!leading-[1.1]">
+          <h2 className="text-h2 text-cream text-center lg:text-left lg:!text-[56px] lg:!leading-[1.1]">
             {current.name}
           </h2>
-          <p className="text-body text-cream">{current.role}</p>
+          <p className="text-body text-center lg:text-left text-cream">{current.role}</p>
         </div>
 
         {/* Top ornament — re-positions smoothly when role/quote heights change */}
@@ -131,7 +131,9 @@ export function TestimonialSlider({ testimonials, className }: Props) {
           <OrnamentDivider className="text-sand/50" />
         </motion.div>
 
-        <p className="text-body text-cream">{current.quote.join(' ')}</p>
+        <p className="text-body max-w-[600px] mx-auto lg:max-w-none text-center lg:text-left text-cream">
+          {current.quote.join(' ')}
+        </p>
 
         {/* Bottom ornament */}
         <motion.div layout transition={{ duration: dLayout, ease }}>
@@ -139,10 +141,8 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         </motion.div>
 
         {current.tags && current.tags.length > 0 && (
-          <div className="flex flex-col gap-4">
-            <p className="text-body text-cream">
-              What {current.name.split(' ')[0]} loved about us
-            </p>
+          <div className="flex max-w-[600px] mx-auto lg:max-w-none flex-col gap-4">
+            <p className="text-body text-cream">What {current.name.split(' ')[0]} loved about us</p>
             <div className="flex flex-wrap gap-2.5">
               <AnimatePresence mode="popLayout" initial={false}>
                 {current.tags.map((tag) => (

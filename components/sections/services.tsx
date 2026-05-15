@@ -7,32 +7,38 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function Services() {
   return (
-    <PaperBackground className="relative flex h-screen  w-full items-center justify-center overflow-hidden bg-ink px-6 py-12">
-      {/* Vertical divider lives at the section level so it spans full
-          height (top to bottom of the viewport-tall section). The
-          horizontal divider is rendered inside the Container/grid below
-          so it stays bounded to Container's max-width. */}
+    <PaperBackground className="relative flex h-auto w-full flex-col items-center justify-center overflow-hidden bg-ink px-6 py-12 sm:h-screen sm:max-h-[1080px]">
+      {/* Vertical divider — sm+ only, full section height */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[2px] -translate-x-1/2 bg-beige sm:block"
       />
 
+      {/* Mobile-only heading. Plain h2 (no "/ ... /" slashes) to match the
+          design reference; sm+ shows the crimson ServicesStamp instead. */}
+      <h2 className="mb-8 text-center text-h2-light text-cream sm:hidden">
+        Our Services
+      </h2>
+
       <Container
         width="content"
-        className="relative flex h-full flex-1 flex-col items-center justify-center"
+        className="relative flex w-full flex-col items-center justify-center sm:h-full sm:flex-1"
       >
-        <Reveal as="div" className="flex h-full w-full flex-1 flex-col items-center justify-center">
-          <div className="relative grid h-full w-full grid-cols-2 grid-rows-2">
+        <Reveal
+          as="div"
+          className="flex w-full flex-col items-center justify-center sm:h-full sm:flex-1"
+        >
+          <div className="relative grid w-full grid-cols-1 gap-12 sm:h-full sm:grid-cols-2 sm:grid-rows-2 sm:gap-0">
             {services.map((s) => (
               <div
                 key={s.title}
-                className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden p-6 sm:p-10 lg:p-16"
+                className="relative flex w-full flex-col items-center justify-center overflow-hidden p-2 sm:h-full sm:p-10 lg:p-16"
               >
                 <ServiceCard title={s.title} body={s.body} />
               </div>
             ))}
-            {/* Horizontal divider — inside the grid so it's bounded to the
-                Container's max-width, not edge-to-edge of the section. */}
+
+            {/* Horizontal divider — sm+ only, bounded to grid width */}
             <div
               aria-hidden
               className="pointer-events-none absolute left-0 right-0 top-1/2 hidden h-[2px] -translate-y-1/2 bg-beige sm:block"
@@ -41,7 +47,7 @@ export function Services() {
         </Reveal>
       </Container>
 
-      {/* Crimson stamp at the section center — sits on top of the cross */}
+      {/* Crimson stamp at section center — sm+ only */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
         <ServicesStamp />
       </div>
