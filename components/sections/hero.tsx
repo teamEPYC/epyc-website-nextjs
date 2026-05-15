@@ -33,7 +33,7 @@ export function Hero() {
               src="https://framerusercontent.com/images/hgI5DqS5OhR7orP2x05J8rY5Lg.svg?width=187&height=45"
               alt="EPYC"
               loading="lazy"
-              className="h-auto w-[70px] text-cream lg:w-[140px]"
+              className="h-auto w-[70px] text-cream lg:w-[87px]"
             />
           </div>
 
@@ -43,10 +43,10 @@ export function Hero() {
             <Badge
               tone="cream-on-dark"
               href={site.social.clutchProfile}
-              className="gap-2.5 py-2 px-2 text-body-sm"
+              className="gap-2.5 py-2 px-2 lg:px-6 text-body-sm"
               icon={<ClutchWordmark className="h-3 lg:h-5 w-auto text-cream" />}
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center lg:flex-col gap-2">
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={13} className="text-cream" />
@@ -90,7 +90,7 @@ export function Hero() {
               · Web3 &amp; Blockchain
             </p>
 
-            <div className=" flex w-full items-center justify-center gap-3">
+            <div className=" flex w-full  lg:w-auto items-center justify-center gap-3">
               <Button variant="filled" className="w-full" icon="arrow-down" href="/projects">
                 See Our Work
               </Button>
