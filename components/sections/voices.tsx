@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { Container } from '@/components/ui/container'
 import { Badge } from '@/components/ui/badge'
 import { StarRating } from '@/components/ui/star-rating'
+import { SectionHeading } from '@/components/ui/section-heading'
 import { ClutchWordmark } from '@/components/icons/clutch-wordmark'
 import { Reveal } from '@/components/ui/reveal'
 import { TestimonialSlider } from '@/components/sections/testimonial-slider'
@@ -25,6 +26,12 @@ export function Voices() {
         width="content"
         className="relative flex flex-1 w-full flex-col items-center justify-center gap-12"
       >
+        {/* Mobile-only heading — hidden on lg where the rotated vertical
+            label inside the row takes over. */}
+        <div className="flex w-full justify-center lg:hidden">
+          <SectionHeading tone="cream">Voices of Delight</SectionHeading>
+        </div>
+
         <Reveal as="div" className="flex w-full flex-1 items-center">
           <div className="flex w-full flex-col items-stretch gap-8 lg:flex-row lg:items-center lg:gap-[50px]">
             {/* Vertical label — single rotated line, height-matched to the card. */}

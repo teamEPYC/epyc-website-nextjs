@@ -37,7 +37,7 @@ export function ProjectRow({
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full cursor-pointer items-center justify-between gap-6 py-8 text-left"
+        className="flex w-full cursor-pointer items-center justify-between gap-6 py-4 lg:py-8 text-left"
       >
         <span className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-8 lg:w-[675px]">
           <span className="text-body-lg text-ink">{title}</span>
