@@ -73,6 +73,7 @@
   /* Responsive breakpoints — mobile-first. sm matches Framer's tablet,
      lg matches Framer's desktop. */
   --breakpoint-sm: 810px;
+  --breakpoint-tablet: 800px;
   --breakpoint-lg: 1200px;
 
   /* Side gutters */

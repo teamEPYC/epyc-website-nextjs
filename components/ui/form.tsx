@@ -12,13 +12,15 @@ const fieldClasses = [
   'border border-ink/10',
   'placeholder:text-ink/60 placeholder:uppercase placeholder:tracking-wide',
   'px-5 py-4',
-  'transition-[box-shadow,border-color] outline-none',
-  'focus:border-ink/30 focus:ring-2 focus:ring-crimson/30',
+  'outline-none transition-shadow',
+  'focus:ring-1 focus:ring-[#0099ff]',
   'disabled:opacity-60',
 ].join(' ')
 
 type FieldProps = {
   label: string
+  /** Kept in the API for caller compatibility but no longer rendered — the
+   *  red outline on the input itself is the only error signal. */
   error?: string
   className?: string
   children: ReactNode
@@ -26,23 +28,14 @@ type FieldProps = {
 
 /**
  * Wraps a single field. Label is screen-reader only (the design uses
- * placeholders). Reserves a fixed-height row for the error message so the
- * form doesn't jump when validation kicks in.
+ * placeholders). Validation feedback is the red outline on the input —
+ * no inline message.
  */
-export function Field({ label, error, className, children }: FieldProps) {
+export function Field({ label, className, children }: FieldProps) {
   return (
-    <label className={cn('flex flex-col gap-1.5', className)}>
+    <label className={cn('flex flex-col', className)}>
       <span className="sr-only">{label}</span>
       {children}
-      <span
-        className={cn(
-          'min-h-[1.25rem] text-body-sm text-crimson',
-          error ? 'opacity-100' : 'opacity-0',
-        )}
-        aria-live="polite"
-      >
-        {error ?? ' '}
-      </span>
     </label>
   )
 }
@@ -56,7 +49,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <input
       ref={ref}
-      className={cn(fieldClasses, invalid && 'border-crimson/60', className)}
+      className={cn(
+        fieldClasses,
+        className,
+        'px-3 py-3 h-16 tracking-tighter leading-[1.2em] font-normal  text-base rounded-sm',
+      )}
       aria-invalid={invalid || undefined}
       {...rest}
     />
@@ -73,7 +70,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     <textarea
       ref={ref}
       rows={rows}
-      className={cn(fieldClasses, 'resize-none', invalid && 'border-crimson/60', className)}
+      className={cn(
+        fieldClasses,
+        'resize-y min-h-[120px] px-3 py-3 h-16 tracking-tigh text-base leading-[1.2em] rounded-sm',
+        className,
+      )}
       aria-invalid={invalid || undefined}
       {...rest}
     />
@@ -91,8 +92,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
       ref={ref}
       className={cn(
         fieldClasses,
-        'appearance-none px-3 font-normal text-[#222222] bg-[#bbbbbb26] text-base font-sans py-2 rounded-[10px] min-h-none pr-10',
-        invalid && 'border-crimson/60',
+        'appearance-none px-3 py-3 text-body flex items-center justify-center h-16 tracking-tighter leading-[1.2em] font-normal  text-base rounded-sm',
+        'invalid:text-ink/60',
         className,
       )}
       aria-invalid={invalid || undefined}
