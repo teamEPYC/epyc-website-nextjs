@@ -9,6 +9,26 @@ export type GalleryItem = {
    *  before the asset loads so the masonry doesn't re-layout. */
   width: number
   height: number
+  title?: string
+  description?: string
+  designers?: string[]
+  previewLink?: string
+}
+
+export function titleFromSlug(slug: string): string {
+  return slug
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+}
+
+export function getRelatedItems(slug: string, count = 3): GalleryItem[] {
+  const i = galleryItems.findIndex((it) => it.slug === slug)
+  if (i === -1) return galleryItems.slice(0, count)
+  return Array.from(
+    { length: count },
+    (_, k) => galleryItems[(i + 1 + k) % galleryItems.length]!,
+  )
 }
 
 export const galleryItems: GalleryItem[] = [
@@ -20,6 +40,10 @@ export const galleryItems: GalleryItem[] = [
     alt: 'EPYC merchandise t-shirt, green variant',
     width: 1080,
     height: 1080,
+    title: 'EPYC Merchandise : T-Shirt Concept & Design (Green Variant)',
+    designers: ['Ashish Kumar', 'Abhishek Aravind'],
+    description:
+      'A studio piece exploring identity through wearable design — the green variant of our in-house tee, photographed flat to let the print do the talking.',
   },
   {
     slug: 'aurevra-bottle',
@@ -28,6 +52,10 @@ export const galleryItems: GalleryItem[] = [
     alt: 'Aurévra bottle design',
     width: 1080,
     height: 1080,
+    title: 'Aurévra — Bottle Design',
+    designers: ['Ashish Kumar'],
+    description:
+      'Packaging concept for Aurévra: a study in restraint, with form, weight, and label hierarchy doing the heavy lifting.',
   },
   {
     slug: 'accessories',
@@ -36,6 +64,10 @@ export const galleryItems: GalleryItem[] = [
     alt: 'Accessories',
     width: 1080,
     height: 1080,
+    title: 'Studio Accessories',
+    designers: ['Abhishek Aravind'],
+    description:
+      'A series of small, branded objects we use around the studio — stickers, pins, and patches that have a life of their own outside the screen.',
   },
   {
     slug: 'community',
@@ -44,6 +76,10 @@ export const galleryItems: GalleryItem[] = [
     alt: 'Community illustration',
     width: 1080,
     height: 1080,
+    title: 'Community',
+    designers: ['Ashish Kumar'],
+    description:
+      'Editorial illustration capturing the energy of the people we build with — collaborators, partners, and the wider creative community.',
   },
   {
     slug: 'team',
@@ -52,6 +88,10 @@ export const galleryItems: GalleryItem[] = [
     alt: 'Team',
     width: 1080,
     height: 1080,
+    title: 'Team',
+    designers: ['Abhishek Aravind'],
+    description:
+      'A look at how we picture ourselves: a small group, big ideas, and a willingness to follow them wherever they lead.',
   },
   {
     slug: 'podcast',
@@ -60,6 +100,10 @@ export const galleryItems: GalleryItem[] = [
     alt: 'Podcast',
     width: 1080,
     height: 1080,
+    title: 'Podcast Cover Art',
+    designers: ['Ashish Kumar', 'Abhishek Aravind'],
+    description:
+      'Cover artwork for the studio podcast — a recurring conversation with people we admire about craft, taste, and the long game.',
   },
 
   // Portrait videos (1080×1350 — ~4:5)
@@ -83,6 +127,12 @@ export const galleryItems: GalleryItem[] = [
     src: 'https://files.epyc.in/videos/P-Post_1.mp4',
     width: 1080,
     height: 1350,
+    title: 'Letter "P"',
+    designers: ['Abhishek Aravind'],
+    previewLink:
+      'https://www.instagram.com/p/Cri9bLOvBt5/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==',
+    description:
+      "Using the incredible combination of Cinema 4D and Redshift by Maxon, with textures by Greyscalegorilla, we've brought this letter to life in a fun and dynamic way for 36 days of type.",
   },
   {
     slug: 'letter-y',

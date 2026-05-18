@@ -273,3 +273,83 @@ body {
   scrollbar-width: none;
 }
 
+/* ---------------------------------------------------------------------------
+   Long-form legal prose (Terms & Conditions, Privacy Policy). Maps bare
+   semantic HTML to the project's typography tokens so the page bodies stay
+   unannotated and a non-frontend hand can edit the JSX directly.
+
+   Wrapped in @layer components so it cleanly overrides Tailwind v4's base
+   preflight (which resets h1-h6 to inherit and `ul` to list-style:none).
+--------------------------------------------------------------------------- */
+@layer components {
+  .legal-prose {
+    color: var(--color-ink);
+  }
+  .legal-prose h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: -0.04em;
+    line-height: 1.4;
+  }
+  @media (min-width: 810px) {
+    .legal-prose h3 {
+      font-size: 26px;
+    }
+  }
+  .legal-prose h3:not(:first-child) {
+    margin-top: 2.5rem;
+  }
+  .legal-prose h4 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+  @media (min-width: 810px) {
+    .legal-prose h4 {
+      font-size: 19px;
+    }
+  }
+  .legal-prose h4:not(:first-child) {
+    margin-top: 1.75rem;
+  }
+  .legal-prose p,
+  .legal-prose li {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  @media (min-width: 810px) {
+    .legal-prose p,
+    .legal-prose li {
+      font-size: 16px;
+    }
+  }
+  .legal-prose p + p,
+  .legal-prose p + ul,
+  .legal-prose ul + p,
+  .legal-prose h3 + p,
+  .legal-prose h4 + p {
+    margin-top: 1rem;
+  }
+  .legal-prose ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .legal-prose ul li {
+    padding-left: 0.25rem;
+    display: list-item;
+  }
+  .legal-prose a {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+

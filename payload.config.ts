@@ -11,6 +11,7 @@ import { Media } from './collections/Media.ts'
 import { Authors } from './collections/Authors.ts'
 import { Blogs } from './collections/Blogs.ts'
 import { Projects } from './collections/Projects.ts'
+import { Gallery } from './collections/Gallery.ts'
 import { Submissions } from './collections/Submissions.ts'
 
 const filename = fileURLToPath(import.meta.url)
@@ -23,7 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Authors, Blogs, Projects, Submissions],
+  collections: [Users, Media, Authors, Blogs, Projects, Gallery, Submissions],
   editor: lexicalEditor(),
   sharp,
   secret: process.env.PAYLOAD_SECRET || '',

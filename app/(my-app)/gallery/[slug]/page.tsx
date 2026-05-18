@@ -1,8 +1,34 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { galleryItems } from '@/data/gallery'
+import { GalleryDetail } from '@/components/sections/gallery-detail'
+import { CTAFooter } from '@/components/sections/cta-footer'
+import {
+  galleryItems,
+  getRelatedItems,
+  titleFromSlug,
+} from '@/data/gallery'
 
 export function generateStaticParams() {
   return galleryItems.map((i) => ({ slug: i.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const item = galleryItems.find((i) => i.slug === slug)
+  if (!item) return { title: 'Gallery' }
+
+  const title = item.title ?? titleFromSlug(item.slug)
+  const description = item.description ?? 'A piece from the EPYC archive.'
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/gallery/${slug}` },
+  }
 }
 
 export default async function GalleryItemPage({
@@ -14,11 +40,12 @@ export default async function GalleryItemPage({
   const item = galleryItems.find((i) => i.slug === slug)
   if (!item) notFound()
 
+  const related = getRelatedItems(slug)
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-beige p-8">
-      <p className="text-body text-ink/60">
-        Gallery item “{item.slug}” — detail page coming next round.
-      </p>
-    </main>
+    <>
+      <GalleryDetail item={item} related={related} />
+      <CTAFooter />
+    </>
   )
 }
