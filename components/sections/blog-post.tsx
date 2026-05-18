@@ -45,7 +45,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           </div>
 
           {/* Banner */}
-          <div className="relative  w-[90%] mx-auto h-[632px] overflow-hidden rounded-[4px]">
+          <div className="relative  w-[90%] mx-auto lg:h-[632px] overflow-hidden rounded-[4px]">
             <Image
               src={blog.image.src}
               alt={blog.image.alt || blog.title}
@@ -67,38 +67,39 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           </article>
 
           {/* Author */}
-          <div className="flex w-full max-w-[820px] flex-col gap-1">
-            <p className="text-h5 uppercase text-ink/60">/AUTHOR</p>
-            <p className="text-h5 uppercase text-ink">{blog.author ?? 'Team EPYC'}</p>
+          <div className="w-[90%] mx-auto max-w-outer flex flex-col gap-10">
+            <div className="flex w-full max-w-[820px] flex-col gap-1">
+              <p className="text-h5 uppercase text-ink/60">/AUTHOR</p>
+              <p className="text-h5 uppercase text-ink">{blog.author ?? 'Team EPYC'}</p>
+            </div>
+            <DotLineDivider />
+
+            {/* More Blogs */}
+            {relatedBlogs.length > 0 && (
+              <>
+                <SectionHeading as="h3" size="h3" tone="ink" className="w-full max-w-[820px]">
+                  More Blogs
+                </SectionHeading>
+                <Reveal
+                  as="div"
+                  className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3"
+                >
+                  {relatedBlogs.map((b) => (
+                    <BlogCard
+                      key={b.slug}
+                      href={`/blogs/${b.slug}`}
+                      title={b.title}
+                      image={b.image}
+                      date={b.date}
+                      publishedAt={b.publishedAt}
+                    />
+                  ))}
+                </Reveal>
+
+                <DotLineDivider />
+              </>
+            )}
           </div>
-
-          <DotLineDivider variant="split" className="max-w-[820px]" />
-
-          {/* More Blogs */}
-          {relatedBlogs.length > 0 && (
-            <>
-              <SectionHeading as="h3" size="h3" tone="ink" className="w-full max-w-[820px]">
-                More Blogs
-              </SectionHeading>
-              <Reveal
-                as="div"
-                className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3"
-              >
-                {relatedBlogs.map((b) => (
-                  <BlogCard
-                    key={b.slug}
-                    href={`/blogs/${b.slug}`}
-                    title={b.title}
-                    image={b.image}
-                    date={b.date}
-                    publishedAt={b.publishedAt}
-                  />
-                ))}
-              </Reveal>
-
-              <DotLineDivider variant="split" className="max-w-[820px]" />
-            </>
-          )}
         </Container>
       </div>
     </Section>
