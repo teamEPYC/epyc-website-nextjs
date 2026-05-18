@@ -4,23 +4,13 @@ import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Reveal } from '@/components/ui/reveal'
 import { BlogCard } from '@/components/ui/blog-card'
+import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { EpycMark } from '@/components/icons/epyc-mark'
-import { blogs } from '@/data/blogs'
+import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
-function DotLineDivider() {
-  return (
-    <div className="flex w-full items-center ">
-      <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-crimson" />
-      <span aria-hidden className="h-px flex-1 bg-crimson" />
-      <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-crimson" />
-    </div>
-  )
-}
+type BlogIndexProps = { blogs: NormalisedBlog[] }
 
-export function BlogIndex() {
-  const sorted = [...blogs].sort(
-    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-  )
+export function BlogIndex({ blogs }: BlogIndexProps) {
 
   return (
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4 ">
@@ -52,7 +42,7 @@ export function BlogIndex() {
           <DotLineDivider />
 
           <Reveal as="div" className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
-            {sorted.map((b) => (
+            {blogs.map((b) => (
               <BlogCard
                 key={b.slug}
                 href={`/blogs/${b.slug}`}

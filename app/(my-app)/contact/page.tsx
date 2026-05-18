@@ -1,18 +1,22 @@
-import type { Metadata } from "next";
-import { ComingSoon } from "@/components/sections/coming-soon";
+import type { Metadata } from 'next'
+import { ContactHero } from '@/components/sections/contact-hero'
+import { FAQs } from '@/components/sections/faqs'
+import { ExclusivityCTA } from '@/components/sections/exclusivity-cta'
+import { CTAFooter } from '@/components/sections/cta-footer'
 
 export const metadata: Metadata = {
-  title: "Contact",
-  description: "Start a project with EPYC — coming soon.",
-  alternates: { canonical: "/contact" },
-};
+  title: 'Contact',
+  description: "Tell us about your project — we'll get back within a business day.",
+  alternates: { canonical: '/contact' },
+}
 
 export default function ContactPage() {
   return (
-    <ComingSoon
-      eyebrow="Contact"
-      title="Let's start a project."
-      body="The full contact form is on its way. Until then, drop a line at hello@epyc.in or DM us on X / LinkedIn."
-    />
-  );
+    <>
+      <ContactHero />
+      <FAQs />
+      <ExclusivityCTA />
+      <CTAFooter />
+    </>
+  )
 }

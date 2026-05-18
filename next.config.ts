@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         hostname: 'framerusercontent.com',
         pathname: '/images/**',
       },
+      {
+        protocol: 'https',
+        hostname: '*.r2.cloudflarestorage.com',
+      },
     ],
   },
 }

@@ -7,7 +7,14 @@ import { Sparkle } from '@/components/icons/sparkle'
 type BlogCardProps = {
   href: string
   title: ReactNode
-  image: { src: string; alt: string; width: number; height: number }
+  image: {
+    src: string
+    alt: string
+    width: number
+    height: number
+    focalX?: number
+    focalY?: number
+  }
   date?: string
   readTime?: string
   publishedAt?: string
@@ -48,6 +55,11 @@ export function BlogCard({
           fill
           sizes="(min-width: 1200px) 540px, (min-width: 810px) 380px, 100vw"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          style={
+            image.focalX !== undefined && image.focalY !== undefined
+              ? { objectPosition: `${image.focalX}% ${image.focalY}%` }
+              : undefined
+          }
         />
       </div>
       <div className="flex flex-col gap-1">
