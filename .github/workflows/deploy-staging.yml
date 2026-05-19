@@ -39,7 +39,16 @@ jobs:
         run: pnpm exec tsc --noEmit
 
       - name: Regenerate Payload importMap
+        # payload.config.ts only registers the s3Storage plugin when
+        # R2_BUCKET && R2_ENDPOINT are set, and the plugin contributes
+        # S3ClientUploadHandler to the import map. Force truthy values so
+        # the regenerated map matches the committed copy (which is
+        # produced locally with real R2 env vars). The values aren't
+        # actually used — generateImportMap walks the static config tree.
         run: pnpm generate:importmap
+        env:
+          R2_BUCKET: importmap-stub
+          R2_ENDPOINT: https://importmap-stub.invalid
 
       - name: Fail if importMap drifted from committed copy
         run: |
