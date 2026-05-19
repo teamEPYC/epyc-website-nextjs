@@ -61,3 +61,27 @@ export function register() {
     g.SharedArrayBuffer = class SharedArrayBuffer {}
   }
 }
+
+/**
+ * Temporary debug logging: Payload's media-file route returns a generic
+ * "Internal Server Error" 500 with no detail when s3Storage's GetObject
+ * fails. Hook every uncaught server-side error and dump its full shape
+ * so `wrangler tail --env staging` shows the actual S3 / R2 / SDK error.
+ *
+ * TODO: remove once the staging image-load issue is diagnosed.
+ */
+export async function onRequestError(
+  err: unknown,
+  request: { path?: string; method?: string },
+  _context: unknown,
+) {
+  const e = err as { name?: string; message?: string; stack?: string; cause?: unknown; $metadata?: unknown; Code?: unknown }
+  console.error('[onRequestError]', request.method, request.path, '→', JSON.stringify({
+    name: e?.name,
+    message: e?.message,
+    Code: e?.Code,
+    $metadata: e?.$metadata,
+    cause: e?.cause,
+    stack: e?.stack,
+  }, null, 2))
+}
