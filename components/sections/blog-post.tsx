@@ -21,10 +21,10 @@ type BlogPostProps = {
 export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
   return (
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4">
-      <div className="relative mx-auto w-full overflow-hidden border-l border-r border-t border-ink px-6 py-11">
+      <div className="relative mx-auto w-full overflow-hidden border-l border-r border-t border-ink px-0 py-11">
         <Container
           width="outer"
-          className="flex w-[90%] flex-col items-center gap-12 px-0 sm:px-0 lg:gap-10 lg:px-0"
+          className="flex w-[90%] flex-col items-center gap-0 px-0 sm:px-0 lg:gap-10 lg:px-0"
         >
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
             <Link href="/" aria-label="EPYC home" className="inline-block">
@@ -33,7 +33,9 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
 
             {/* Hero */}
             <header className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
-              <h1 className="text-display text-center text-ink">{blog.title}</h1>
+              <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal">
+                {blog.title}
+              </h1>
               {(blog.date || blog.readTime) && (
                 <div className="flex flex-row items-center gap-2.5 text-h5 uppercase text-ink/60">
                   {blog.date && <time dateTime={blog.publishedAt}>{blog.date}</time>}
@@ -67,7 +69,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           </article>
 
           {/* Author */}
-          <div className="w-[90%] mx-auto max-w-outer flex flex-col gap-10">
+          <div className="w-full lg:w-[90%] mx-auto flex  flex-col gap-8 mt-10 lg:mx-auto lg:max-w-outer lg:mt-0">
             <div className="flex w-full max-w-[820px] flex-col gap-1">
               <p className="text-h5 uppercase text-ink/60">/AUTHOR</p>
               <p className="text-h5 uppercase text-ink">{blog.author ?? 'Team EPYC'}</p>

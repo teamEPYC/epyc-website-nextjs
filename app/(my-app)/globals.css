@@ -411,7 +411,7 @@ body {
   .blog-prose p {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.6;
     color: var(--color-ink);
   }
@@ -465,7 +465,7 @@ body {
   .blog-prose li {
     font-family: var(--font-serif);
     font-weight: 400;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.6;
     color: var(--color-ink);
     padding-left: 0.25rem;
