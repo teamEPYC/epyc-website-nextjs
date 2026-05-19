@@ -29,6 +29,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Generate Cloudflare env types
+        run: pnpm exec wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - name: Typecheck
         run: pnpm exec tsc --noEmit
 
