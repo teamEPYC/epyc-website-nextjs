@@ -6,7 +6,7 @@
  *
  * Remove this file once staging image fetch is working.
  *
- *   GET /api/_debug-r2/<filename>
+ *   GET /api/debug-r2/<filename>
  *
  * Returns JSON with:
  *   - a redacted preview of the R2 env vars (so we can verify config)
