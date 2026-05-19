@@ -27,11 +27,20 @@ type LoaderArgs = {
 }
 
 export default function imageLoader({ src, width, quality }: LoaderArgs): string {
-  if (src.startsWith('/api/media/file/')) {
+  // Bypass /_next/image for:
+  //   1. Payload-served media — OpenNext routes relative URLs through
+  //      env.ASSETS, which can't see Worker routes (see above).
+  //   2. SVG files — OpenNext's image optimizer only allows formats in
+  //      `images.formats` (defaults to ["image/webp"]) and rejects SVGs
+  //      with "url parameter is valid but image type is not allowed".
+  //      We can't enable them via `dangerouslyAllowSVG` without taking
+  //      on the SVG-script security trade-off, and SVGs don't need
+  //      raster optimization anyway — vector scales for free.
+  if (src.startsWith('/api/media/file/') || /\.svg($|\?)/i.test(src)) {
     return src
   }
-  // Mirror Next.js's default loader so non-Payload images still go
-  // through `/_next/image` and get optimized.
+  // Mirror Next.js's default loader so non-Payload, non-SVG images
+  // still go through `/_next/image` and get optimized.
   const params = new URLSearchParams({
     url: src,
     w: String(width),
