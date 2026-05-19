@@ -10,7 +10,6 @@
  * Re-run after adding new collections / rich-text features / custom admin
  * components.
  */
-import 'dotenv/config'
 import { getPayload } from 'payload'
 import { generateImportMap } from 'payload'
 import config from '../payload.config.ts'

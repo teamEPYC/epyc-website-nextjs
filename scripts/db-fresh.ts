@@ -17,7 +17,11 @@
  *
  * Destructive — wipes blogs/authors/projects/gallery/media. Safe to re-run.
  */
-import 'dotenv/config'
+// Env loading happens via Node's `--env-file-if-exists=.env` flag in
+// the package.json script — works both locally (when .env exists) and
+// in CI (where env vars come from the workflow yml). No `dotenv` dep
+// required.
+
 // Standalone scripts don't go through next.config.ts. OpenNext's
 // `initOpenNextCloudflareForDev()` only runs inside the Next dev process
 // (it checks for `globalThis.AsyncLocalStorage`), so we bootstrap the
