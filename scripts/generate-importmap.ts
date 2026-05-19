@@ -11,7 +11,10 @@
  * Run with:
  *   pnpm generate:importmap
  */
-import 'dotenv/config'
+// No env-var loading needed: generateImportMap walks the static config
+// tree to discover admin components, never opens a DB connection or reads
+// secrets. The lazy D1 Proxy in payload.config.ts is constructed but
+// never dereferenced.
 import { generateImportMap } from 'payload'
 import configPromise from '../payload.config.ts'
 
