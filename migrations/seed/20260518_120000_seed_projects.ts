@@ -10,7 +10,7 @@
  *   left intact because the Blogs seed also writes to `media`; clearing both
  *   collections together is `scripts/db-fresh.ts`'s job.
  */
-import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-vercel-postgres'
+import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-d1-sqlite'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parse } from 'csv-parse/sync'

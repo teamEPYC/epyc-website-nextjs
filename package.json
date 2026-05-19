@@ -9,15 +9,22 @@
     "lint": "eslint",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap",
+    "generate:importmap": "node --experimental-strip-types --no-warnings scripts/generate-importmap.ts",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy:staging": "opennextjs-cloudflare build && wrangler deploy --env staging",
     "deploy:production": "opennextjs-cloudflare build && wrangler deploy --env production",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
+    "db:generate": "PAYLOAD_CLI=1 payload generate:db-schema && drizzle-kit generate --dialect=sqlite --schema=./payload-generated-schema.ts --out=./migrations/schema",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:staging": "wrangler d1 migrations apply DB --remote --env staging",
+    "db:migrate:production": "wrangler d1 migrations apply DB --remote --env production",
+    "db:seed:local": "node --experimental-strip-types --no-warnings scripts/db-fresh.ts",
+    "db:seed:staging": "node --experimental-strip-types --no-warnings scripts/seed-remote.ts staging",
+    "db:seed:production": "node --experimental-strip-types --no-warnings scripts/seed-remote.ts production"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@payloadcms/db-vercel-postgres": "^3.84.1",
+    "@payloadcms/db-d1-sqlite": "^3.84.1",
     "@payloadcms/next": "^3.84.1",
     "@payloadcms/richtext-lexical": "^3.84.1",
     "@payloadcms/storage-s3": "^3.84.1",
@@ -44,11 +51,17 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
     "tsx": "^4.22.0",
     "typescript": "^5",
     "wrangler": "^4.91.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.27.0"
+    }
   }
 }

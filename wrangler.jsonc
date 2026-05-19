@@ -7,23 +7,48 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
-    "run_worker_first": true
+    "run_worker_first": true,
   },
   "observability": {
-    "enabled": true
+    "enabled": true,
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "epyc-website-dev",
+      "database_id": "641a3a02-32e4-4775-8500-4a2ef0307e48",
+      "migrations_dir": "migrations/schema",
+    },
+  ],
+
   "env": {
     "staging": {
       "name": "epyc-website-staging",
       "vars": {
-        "NEXT_PUBLIC_SITE_URL": "https://staging.epyc.in"
-      }
+        "NEXT_PUBLIC_SITE_URL": "https://staging.epyc.in",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "epyc-website-staging",
+          "database_id": "a379666b-17b4-440f-a4a8-22b5550b1e2c",
+          "migrations_dir": "migrations/schema",
+        },
+      ],
     },
     "production": {
-      "name": "epyc-website",
+      "name": "epyc-website-production",
       "vars": {
-        "NEXT_PUBLIC_SITE_URL": "https://epyc.in"
-      }
-    }
-  }
+        "NEXT_PUBLIC_SITE_URL": "https://epyc.in",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "epyc-website-production",
+          "database_id": "d1_database_v1_00000000000000000000000000000000",
+          "migrations_dir": "migrations/schema",
+        },
+      ],
+    },
+  },
 }

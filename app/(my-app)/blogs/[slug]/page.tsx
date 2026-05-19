@@ -11,19 +11,10 @@ type Params = Promise<{ slug: string }>
 
 export const revalidate = 60
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'blogs',
-    limit: 0,
-    depth: 0,
-    pagination: false,
-  })
-  return docs
-    .map((d) => (d as { slug?: string }).slug)
-    .filter((s): s is string => !!s)
-    .map((slug) => ({ slug }))
-}
+// Skip build-time prerendering: the D1 binding only exists inside the
+// Worker runtime. Routes are rendered on-demand by the Worker; OpenNext's
+// incremental cache + `revalidate = 60` gives ISR-style caching at the edge.
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params

@@ -9,7 +9,7 @@
  * Re-run on a fresh DB via `node --experimental-strip-types --no-warnings
  * scripts/db-fresh.ts` (or, once the Payload CLI is fixed, `payload migrate:fresh`).
  */
-import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-vercel-postgres'
+import type { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-d1-sqlite'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parse } from 'csv-parse/sync'

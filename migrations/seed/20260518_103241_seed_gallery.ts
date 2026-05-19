@@ -15,7 +15,7 @@
 import type {
   MigrateUpArgs,
   MigrateDownArgs,
-} from '@payloadcms/db-vercel-postgres'
+} from '@payloadcms/db-d1-sqlite'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parse } from 'csv-parse/sync'
