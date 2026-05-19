@@ -33,6 +33,23 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Validate PRODUCTION_R2_BUCKET format
+        # Same fail-fast bucket-name regex as seed-staging.yml — see
+        # that file for the rationale.
+        env:
+          R2_BUCKET: ${{ secrets.PRODUCTION_R2_BUCKET }}
+        run: |
+          if [ -z "$R2_BUCKET" ]; then
+            echo "::error::PRODUCTION_R2_BUCKET secret is unset or empty"
+            exit 1
+          fi
+          if [[ ! "$R2_BUCKET" =~ ^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$ ]]; then
+            echo "::error::PRODUCTION_R2_BUCKET ('$R2_BUCKET') fails S3 bucket name validation."
+            echo "Rules: 3-63 chars, lowercase letters/digits/dots/hyphens, must start+end with letter or digit."
+            exit 1
+          fi
+          echo "✓ PRODUCTION_R2_BUCKET passes S3 name format check (length=${#R2_BUCKET})"
+
       - name: Apply schema to ephemeral local D1
         run: pnpm db:migrate:local
 

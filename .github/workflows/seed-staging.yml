@@ -35,6 +35,30 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Validate STAGING_R2_BUCKET format
+        # Fail fast with a clear error if the secret isn't a valid S3/R2
+        # bucket name. Previously the seed got partway through, started
+        # uploading, and the AWS SDK rejected it with a stack-trace-y
+        # `InvalidBucketName` — surfacing the actual offending value
+        # here is much easier to act on.
+        # R2 bucket names follow S3 rules: 3-63 chars, lowercase
+        # letters/digits/dots/hyphens, must start+end with letter or digit.
+        # (R2 bucket names aren't sensitive — they're effectively public in
+        # S3 URLs — so it's fine to echo the value back on failure.)
+        env:
+          R2_BUCKET: ${{ secrets.STAGING_R2_BUCKET }}
+        run: |
+          if [ -z "$R2_BUCKET" ]; then
+            echo "::error::STAGING_R2_BUCKET secret is unset or empty"
+            exit 1
+          fi
+          if [[ ! "$R2_BUCKET" =~ ^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$ ]]; then
+            echo "::error::STAGING_R2_BUCKET ('$R2_BUCKET') fails S3 bucket name validation."
+            echo "Rules: 3-63 chars, lowercase letters/digits/dots/hyphens, must start+end with letter or digit."
+            exit 1
+          fi
+          echo "✓ STAGING_R2_BUCKET passes S3 name format check (length=${#R2_BUCKET})"
+
       - name: Apply schema to ephemeral local D1
         # `--local` writes to .wrangler/state/v3/d1 in this runner.
         # No remote calls and no CF creds needed for this step.
