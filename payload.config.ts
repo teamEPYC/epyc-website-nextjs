@@ -4,8 +4,13 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import path from 'path'
 import { buildConfig } from 'payload'
-import sharp from 'sharp'
 import { fileURLToPath } from 'url'
+
+// NOTE: `sharp` is intentionally NOT imported. It's a native module and
+// can't run in the Cloudflare Workers runtime; including it broke the
+// OpenNext bundler. Payload will skip server-side image variant
+// generation as a result. If we ever need image transforms again, the
+// Cloudflare-native path is Cloudflare Images, not sharp.
 
 import { Users } from './collections/Users.ts'
 import { Media } from './collections/Media.ts'
@@ -54,7 +59,6 @@ export default buildConfig({
   },
   collections: [Users, Media, Authors, Blogs, Projects, Gallery, Submissions],
   editor: lexicalEditor(),
-  sharp,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
