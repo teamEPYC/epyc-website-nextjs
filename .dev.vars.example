@@ -3,7 +3,6 @@
 # Copy to `.dev.vars` and fill in real values when you want to test the
 # Workers build locally.
 
-DATABASE_URI=
 PAYLOAD_SECRET=
 R2_BUCKET=
 R2_ENDPOINT=

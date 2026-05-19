@@ -32,6 +32,21 @@ jobs:
       - name: Typecheck
         run: pnpm exec tsc --noEmit
 
+      - name: Regenerate Payload importMap
+        run: pnpm exec payload generate:importmap
+
+      - name: Fail if importMap drifted from committed copy
+        run: |
+          git diff --exit-code app/\(payload\)/admin/importMap.js \
+            || (echo "importMap.js is stale. Run 'pnpm generate:importmap' locally and commit the result." && exit 1)
+
+      - name: Apply D1 schema migrations (production)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 migrations apply DB --remote --env production
+
       - name: OpenNext build
         run: pnpm exec opennextjs-cloudflare build
 
@@ -42,14 +57,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env production
           secrets: |
-            DATABASE_URI
             PAYLOAD_SECRET
             R2_BUCKET
             R2_ENDPOINT
             R2_ACCESS_KEY_ID
             R2_SECRET_ACCESS_KEY
         env:
-          DATABASE_URI: ${{ secrets.PRODUCTION_DATABASE_URI }}
           PAYLOAD_SECRET: ${{ secrets.PRODUCTION_PAYLOAD_SECRET }}
           R2_BUCKET: ${{ secrets.PRODUCTION_R2_BUCKET }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
