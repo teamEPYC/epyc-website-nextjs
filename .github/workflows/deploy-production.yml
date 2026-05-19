@@ -1,8 +1,15 @@
 name: Deploy Production
 
+# Push-on-master trigger intentionally disabled until production is
+# fully provisioned: production D1 still has a placeholder id in
+# wrangler.jsonc (`d1_database_v1_00000000...`) and the production R2
+# bucket + secrets haven't been wired up yet. Re-enable by uncommenting
+# the `push` block once `wrangler d1 create epyc-website-production`
+# is done, `PRODUCTION_R2_BUCKET` is set in GitHub secrets, and the
+# wrangler.jsonc production `database_id` is updated.
 on:
-  push:
-    branches: [master]
+  # push:
+  #   branches: [master]
   workflow_dispatch:
 
 concurrency:
