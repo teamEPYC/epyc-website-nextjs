@@ -63,8 +63,12 @@ jobs:
             R2_ACCESS_KEY_ID
             R2_SECRET_ACCESS_KEY
         env:
-          PAYLOAD_SECRET: ${{ secrets.STAGING_PAYLOAD_SECRET }}
-          R2_BUCKET: ${{ secrets.STAGING_R2_BUCKET }}
+          # PAYLOAD_SECRET and R2_BUCKET come from the `staging` Environment
+          # (Settings → Environments → staging). The other R2_* values are
+          # repo-level secrets (shared across envs since they point at the
+          # same Cloudflare account).
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
