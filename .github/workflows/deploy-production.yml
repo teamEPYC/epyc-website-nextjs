@@ -73,24 +73,44 @@ jobs:
           R2_BUCKET: build-stub
           R2_ENDPOINT: https://build-stub.invalid
 
+      - name: Upload secrets to Cloudflare Workers (production)
+        # wrangler-action's `secrets:` input invokes `wrangler secret bulk`
+        # without --env, so wrangler 4.x targets the top-level worker
+        # (`epyc-website`, our local-dev name) instead of the production
+        # worker and fails authentication. Upload them ourselves with
+        # --env production so the bulk call hits epyc-website-production
+        # directly. Values are passed as positional jq --arg so
+        # quoting/newlines in secret values are safe. Per-env values use
+        # STAGING_ / PRODUCTION_ prefix; values shared across envs (R2
+        # endpoint and access keys, since both envs target the same
+        # Cloudflare account) are unprefixed.
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PAYLOAD_SECRET: ${{ secrets.PRODUCTION_PAYLOAD_SECRET }}
+          R2_BUCKET: ${{ secrets.PRODUCTION_R2_BUCKET }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          jq -n \
+            --arg PAYLOAD_SECRET "$PAYLOAD_SECRET" \
+            --arg R2_BUCKET "$R2_BUCKET" \
+            --arg R2_ENDPOINT "$R2_ENDPOINT" \
+            --arg R2_ACCESS_KEY_ID "$R2_ACCESS_KEY_ID" \
+            --arg R2_SECRET_ACCESS_KEY "$R2_SECRET_ACCESS_KEY" \
+            '{
+              PAYLOAD_SECRET: $PAYLOAD_SECRET,
+              R2_BUCKET: $R2_BUCKET,
+              R2_ENDPOINT: $R2_ENDPOINT,
+              R2_ACCESS_KEY_ID: $R2_ACCESS_KEY_ID,
+              R2_SECRET_ACCESS_KEY: $R2_SECRET_ACCESS_KEY
+            }' \
+          | pnpm exec wrangler secret bulk --env production
+
       - name: Deploy to Cloudflare Workers (production)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env production
-          secrets: |
-            PAYLOAD_SECRET
-            R2_BUCKET
-            R2_ENDPOINT
-            R2_ACCESS_KEY_ID
-            R2_SECRET_ACCESS_KEY
-        env:
-          # All repo-level secrets. Per-env values use STAGING_ / PRODUCTION_
-          # prefix; values shared across envs (R2 endpoint and access keys,
-          # since both envs target the same Cloudflare account) are unprefixed.
-          PAYLOAD_SECRET: ${{ secrets.PRODUCTION_PAYLOAD_SECRET }}
-          R2_BUCKET: ${{ secrets.PRODUCTION_R2_BUCKET }}
-          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
