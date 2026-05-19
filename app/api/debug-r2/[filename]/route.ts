@@ -51,16 +51,25 @@ export async function GET(
 
   try {
     const { S3Client, GetObjectCommand } = await import('@aws-sdk/client-s3')
-    // Function-form credentials + region: skips the SDK's default
-    // provider chain, which on workerd calls unenv's fs.readFile stub
-    // (looking for ~/.aws/credentials) and throws "[unenv] fs.readFile
-    // is not implemented yet!".
+    // Override EVERY config provider that might coalesce through the
+    // shared-config file loader. On workerd, `fs.readFile` is an unenv
+    // stub that throws "not implemented" — the SDK doesn't recover.
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const client = new S3Client({
       region: async () => 'auto',
       endpoint,
       credentials: async () => ({ accessKeyId, secretAccessKey }),
       forcePathStyle: true,
-    })
+      defaultsMode: async () => 'standard' as any,
+      retryMode: async () => 'standard',
+      maxAttempts: 3,
+      useDualstackEndpoint: async () => false,
+      useFipsEndpoint: async () => false,
+      disableHostPrefix: true,
+      endpointDiscoveryEnabled: async () => false,
+      logger: undefined,
+    } as any)
+    /* eslint-enable */
     const out = await client.send(
       new GetObjectCommand({ Bucket: bucket, Key: filename }),
     )
