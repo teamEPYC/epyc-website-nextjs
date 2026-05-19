@@ -9,7 +9,7 @@
     "lint": "eslint",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap",
+    "generate:importmap": "node --experimental-strip-types --no-warnings scripts/generate-importmap.ts",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy:staging": "opennextjs-cloudflare build && wrangler deploy --env staging",
     "deploy:production": "opennextjs-cloudflare build && wrangler deploy --env production",

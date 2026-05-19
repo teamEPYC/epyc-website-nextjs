@@ -39,7 +39,7 @@ jobs:
         run: pnpm exec tsc --noEmit
 
       - name: Regenerate Payload importMap
-        run: pnpm exec payload generate:importmap
+        run: pnpm generate:importmap
 
       - name: Fail if importMap drifted from committed copy
         run: |
