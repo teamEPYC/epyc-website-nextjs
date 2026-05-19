@@ -6,6 +6,13 @@ initOpenNextCloudflareForDev()
 
 const nextConfig: NextConfig = {
   images: {
+    // Custom loader bypasses `/_next/image` for Payload-served media
+    // (`/api/media/file/*`). OpenNext's image handler routes relative
+    // URLs through `env.ASSETS.fetch` (the static-asset binding),
+    // which can't reach our Worker route — it 404s every lookup. See
+    // lib/image-loader.ts for the routing rule.
+    loader: 'custom',
+    loaderFile: './lib/image-loader.ts',
     remotePatterns: [
       {
         protocol: 'https',
