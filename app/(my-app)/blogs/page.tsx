@@ -15,6 +15,12 @@ export const metadata: Metadata = {
 // rare case where direct DB writes bypass the admin.
 export const revalidate = 60
 
+// Skip build-time prerendering: the D1 binding only exists inside the
+// Worker runtime, so querying Payload from the CI build environment
+// would fail. The Worker renders per request; OpenNext's incremental
+// cache + `revalidate = 60` still gives ISR-style caching at the edge.
+export const dynamic = 'force-dynamic'
+
 export default async function BlogsPage() {
   const payload = await getPayload({ config })
   const { docs } = await payload.find({

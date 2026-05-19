@@ -64,6 +64,14 @@ jobs:
 
       - name: OpenNext build
         run: pnpm exec opennextjs-cloudflare build
+        env:
+          # Payload's init reads PAYLOAD_SECRET at module load. Build-time
+          # Next pre-rendering loads payload.config.ts, so it must be set.
+          # R2_* are stubbed for the same reason as the importMap step:
+          # forces the s3 plugin into the config consistently.
+          PAYLOAD_SECRET: ${{ secrets.STAGING_PAYLOAD_SECRET }}
+          R2_BUCKET: build-stub
+          R2_ENDPOINT: https://build-stub.invalid
 
       - name: Deploy to Cloudflare Workers (staging)
         uses: cloudflare/wrangler-action@v3
@@ -78,12 +86,11 @@ jobs:
             R2_ACCESS_KEY_ID
             R2_SECRET_ACCESS_KEY
         env:
-          # PAYLOAD_SECRET and R2_BUCKET come from the `staging` Environment
-          # (Settings → Environments → staging). The other R2_* values are
-          # repo-level secrets (shared across envs since they point at the
-          # same Cloudflare account).
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          # All repo-level secrets. Per-env values use STAGING_ / PRODUCTION_
+          # prefix; values shared across envs (R2 endpoint and access keys,
+          # since both envs target the same Cloudflare account) are unprefixed.
+          PAYLOAD_SECRET: ${{ secrets.STAGING_PAYLOAD_SECRET }}
+          R2_BUCKET: ${{ secrets.STAGING_R2_BUCKET }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
