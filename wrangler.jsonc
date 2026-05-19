@@ -31,7 +31,7 @@
         {
           "binding": "DB",
           "database_name": "epyc-website-staging",
-          "database_id": "f6d1e191-c296-45e5-afeb-a73a29a844b6",
+          "database_id": "a379666b-17b4-440f-a4a8-22b5550b1e2c",
           "migrations_dir": "migrations/schema",
         },
       ],
