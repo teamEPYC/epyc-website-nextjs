@@ -51,10 +51,14 @@ export async function GET(
 
   try {
     const { S3Client, GetObjectCommand } = await import('@aws-sdk/client-s3')
+    // Function-form credentials + region: skips the SDK's default
+    // provider chain, which on workerd calls unenv's fs.readFile stub
+    // (looking for ~/.aws/credentials) and throws "[unenv] fs.readFile
+    // is not implemented yet!".
     const client = new S3Client({
-      region: 'auto',
+      region: async () => 'auto',
       endpoint,
-      credentials: { accessKeyId, secretAccessKey },
+      credentials: async () => ({ accessKeyId, secretAccessKey }),
       forcePathStyle: true,
     })
     const out = await client.send(
