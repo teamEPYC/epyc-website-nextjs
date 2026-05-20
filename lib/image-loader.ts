@@ -39,6 +39,14 @@ export default function imageLoader({ src, width, quality }: LoaderArgs): string
   if (src.startsWith('/api/media/file/') || /\.svg($|\?)/i.test(src)) {
     return src
   }
+  // `next dev` does not serve the `/_next/image` optimizer endpoint when a
+  // custom loader is configured — only the OpenNext worker does, in
+  // `pnpm preview` and production. In local dev, return the original URL so
+  // the browser fetches it directly (unoptimized, but it renders) rather
+  // than pointing at an endpoint that 404s.
+  if (process.env.NODE_ENV === 'development') {
+    return src
+  }
   // Mirror Next.js's default loader so non-Payload, non-SVG images
   // still go through `/_next/image` and get optimized.
   const params = new URLSearchParams({
