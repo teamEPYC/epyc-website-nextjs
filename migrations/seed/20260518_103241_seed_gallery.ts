@@ -19,6 +19,7 @@ import type {
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { parse } from 'csv-parse/sync'
+import { loadSeedImage } from './load-seed-image.ts'
 
 const CSV_PATH = path.resolve(process.cwd(), 'scripts', 'seed', 'Gallery.csv')
 
@@ -83,20 +84,21 @@ export async function up({ payload, req }: MigrateUpArgs): Promise<void> {
   let i = 0
   for (const [url, alt] of urlToAlt) {
     i++
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`Fetch ${url}: ${res.status}`)
-    const buf = Buffer.from(await res.arrayBuffer())
-    const filename = decodeURIComponent(path.basename(new URL(url).pathname))
-    const mimetype = res.headers.get('content-type') ?? 'image/webp'
+    const image = await loadSeedImage(url)
     const doc = await payload.create({
       collection: 'media',
       data: { alt },
-      file: { data: buf, name: filename, mimetype, size: buf.length },
+      file: {
+        data: image.data,
+        name: image.filename,
+        mimetype: image.mimetype,
+        size: image.data.length,
+      },
       req,
     })
     urlToMediaId.set(url, doc.id)
     payload.logger.info(
-      `Seed gallery: [${i}/${urlToAlt.size}] uploaded ${filename}`,
+      `Seed gallery: [${i}/${urlToAlt.size}] uploaded ${image.filename}`,
     )
   }
 
