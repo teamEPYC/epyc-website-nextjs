@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: 'Projects',
   description: 'Selected work from EPYC — design and engineering for ambitious teams.',
   alternates: { canonical: '/projects' },
+  openGraph: {
+    siteName: 'EPYC',
+    images: [{ url: '/og/projects.webp', width: 2400, height: 1260, alt: 'EPYC — Projects' }],
+  },
 }
 
 // Hooks revalidate on demand when a project is edited; this fallback covers

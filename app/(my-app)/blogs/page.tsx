@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: 'Blog',
   description: 'Get into our minds and understand how we do the things we do.',
   alternates: { canonical: '/blogs' },
+  openGraph: {
+    siteName: 'EPYC',
+    images: [{ url: '/og/blogs.webp', width: 2400, height: 1260, alt: 'EPYC — Blog' }],
+  },
 }
 
 // Hooks revalidate on demand when a blog is edited; this fallback covers the

@@ -77,6 +77,14 @@ export const metadata: Metadata = {
     title: 'EPYC | Website Development | Design Studio',
     description:
       'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
+    images: [
+      {
+        url: '/og/default.webp',
+        width: 2400,
+        height: 1260,
+        alt: 'EPYC — Website Development & Design Studio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
