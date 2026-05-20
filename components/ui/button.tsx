@@ -74,7 +74,7 @@ export function Button(props: AnchorProps | ButtonProps) {
       ) : (
         <img
           className="w-[45px]"
-          src="https://framerusercontent.com/images/DIRfZkT5kVvbN5KyZ9HJu326aI.svg"
+          src="/images/site/DIRfZkT5kVvbN5KyZ9HJu326aI.svg"
         ></img>
       )}
     </>

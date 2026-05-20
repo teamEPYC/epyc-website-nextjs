@@ -16,7 +16,7 @@ export function Voices() {
 
     <div
       style={{
-        backgroundImage: `url(${'https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp'})`,
+        backgroundImage: `url(${'/images/site/4svPWouJqvqnznpkeku35FoPOY.webp'})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

@@ -65,7 +65,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         {/* Photo with ornamental SVG frame. */}
         <div className="relative h-[470px] w-[360px]">
           <img
-            src="https://framerusercontent.com/images/UDA17654NsGwNB4PAZVy4qrxgmc.svg"
+            src="/images/site/UDA17654NsGwNB4PAZVy4qrxgmc.svg"
             alt=""
             aria-hidden
             className="pointer-events-none absolute inset-0 h-full w-full select-none"

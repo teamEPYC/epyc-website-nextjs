@@ -10,14 +10,14 @@ export function FAQs() {
   return (
     <section
       style={{
-        backgroundImage: `url(${'https://framerusercontent.com/images/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg'})`,
+        backgroundImage: `url(${'/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg'})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
       className="relative w-full overflow-hidden bg-ink px-6 py-12"
     >
       <Image
-        src="https://framerusercontent.com/images/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
+        src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
         alt=""
         fill
         sizes="100vw"

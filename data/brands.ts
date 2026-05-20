@@ -4,7 +4,7 @@ export type Brand = {
   alt: string;
 };
 
-const FRAMER = "https://framerusercontent.com/images";
+const FRAMER = "/images/brands";
 
 export const brands: Brand[] = [
   { id: "b01", src: `${FRAMER}/YU0shGm539fk6SAKf9F7GB73o0.svg`, alt: "Client logo" },

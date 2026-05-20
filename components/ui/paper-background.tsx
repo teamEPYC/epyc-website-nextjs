@@ -15,7 +15,7 @@ type PaperBackgroundProps = HTMLAttributes<HTMLDivElement> & {
 export function PaperBackground({
   children,
   gradient = 'none',
-  textureUrl = 'https://framerusercontent.com/images/4svPWouJqvqnznpkeku35FoPOY.webp',
+  textureUrl = '/images/site/4svPWouJqvqnznpkeku35FoPOY.webp',
   className,
   style,
   ...rest

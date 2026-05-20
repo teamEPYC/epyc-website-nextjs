@@ -20,8 +20,8 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 // the swap reads as intentional. Padding matches the Framer source (80×40 desktop).
 const CARD_BASE = 'rounded-[16px] border-[0.5px] border-ink bg-bone/10 px-4 py-12 lg:px-10 sm:py-20'
 
-const AVATAR_FRONT = 'https://framerusercontent.com/images/9kfynLGYhcGa9MrgHJQYqrLd4Ww.webp'
-const AVATAR_BACK = 'https://framerusercontent.com/images/pJhRncaatIpf1PdD5SxKHlhOcQ.png'
+const AVATAR_FRONT = '/images/site/9kfynLGYhcGa9MrgHJQYqrLd4Ww.webp'
+const AVATAR_BACK = '/images/site/pJhRncaatIpf1PdD5SxKHlhOcQ.png'
 
 export function ContactForm() {
   const reduceMotion = useReducedMotion()

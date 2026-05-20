@@ -7,7 +7,7 @@ export type Testimonial = {
   tags: string[];
 };
 
-const FRAMER = "https://framerusercontent.com/images";
+const FRAMER = "/images/testimonials";
 
 export const testimonials: Testimonial[] = [
   {

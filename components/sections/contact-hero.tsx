@@ -16,8 +16,8 @@ const SOCIALS = [
   { label: '/LINKEDIN', href: site.social.linkedin },
 ]
 
-const CHECK_ICON = 'https://framerusercontent.com/images/HLCaAHqdvVRPiL21dJddT8CpdJM.svg'
-const BUTTERFLY = 'https://framerusercontent.com/images/ytaCR7YksH4wtdWD4UKUk1bf0Y.png'
+const CHECK_ICON = '/images/site/HLCaAHqdvVRPiL21dJddT8CpdJM.svg'
+const BUTTERFLY = '/images/site/ytaCR7YksH4wtdWD4UKUk1bf0Y.png'
 
 export function ContactHero() {
   return (
@@ -32,7 +32,7 @@ export function ContactHero() {
           className="flex  items-center justify-center h-min-content"
         >
           <img
-            src="https://framerusercontent.com/images/2RD93rcDoffbqvpFPqBTvpXXNAk.svg?width=72&height=20"
+            src="/images/site/2RD93rcDoffbqvpFPqBTvpXXNAk.svg"
             alt="EPYC"
             className=" w-[70px] h-auto text-ink"
           />

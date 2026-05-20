@@ -24,13 +24,13 @@ export function Hero() {
           {/* Logo — wings emblem stacked above EPYC wordmark */}
           <div className="flex flex-col items-center gap-3 md:gap-2">
             <img
-              src="https://framerusercontent.com/images/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg?width=86&height=20"
+              src="/images/site/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg"
               alt="EPYC"
               loading="lazy"
               className="h-auto w-[70px] text-cream lg:w-[87px]"
             />
             <img
-              src="https://framerusercontent.com/images/hgI5DqS5OhR7orP2x05J8rY5Lg.svg?width=187&height=45"
+              src="/images/site/hgI5DqS5OhR7orP2x05J8rY5Lg.svg"
               alt="EPYC"
               loading="lazy"
               className="h-auto w-[70px] text-cream lg:w-[87px]"
