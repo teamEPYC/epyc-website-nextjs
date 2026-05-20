@@ -26,13 +26,11 @@ export function Hero() {
             <img
               src="/images/site/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg"
               alt="EPYC"
-              loading="lazy"
               className="h-auto w-[70px] text-cream lg:w-[87px]"
             />
             <img
               src="/images/site/hgI5DqS5OhR7orP2x05J8rY5Lg.svg"
               alt="EPYC"
-              loading="lazy"
               className="h-auto w-[70px] text-cream lg:w-[87px]"
             />
           </div>

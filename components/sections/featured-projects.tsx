@@ -50,9 +50,15 @@ export function FeaturedProjects() {
           <div className="flex flex-col gap-20 px-15 py-12">
             <SectionHeading>Featured Projects</SectionHeading>
             <div className="flex gap-5 overflow-x-auto pb-4">
-              {featuredProjects.map((p) => (
+              {featuredProjects.map((p, i) => (
                 <div key={p.id} className="w-[780px] shrink-0">
-                  <ProjectCard href={p.href} title={p.name} tags={p.tags} image={p.image} />
+                  <ProjectCard
+                    href={p.href}
+                    title={p.name}
+                    tags={p.tags}
+                    image={p.image}
+                    priority={i === 0}
+                  />
                 </div>
               ))}
             </div>
@@ -69,9 +75,15 @@ export function FeaturedProjects() {
               <SectionHeading>Featured Projects</SectionHeading>
             </div>
             <motion.div ref={railRef} style={{ x }} className="flex shrink-0 gap-5 pl-15">
-              {featuredProjects.map((p) => (
+              {featuredProjects.map((p, i) => (
                 <div key={p.id} className="w-[780px] shrink-0">
-                  <ProjectCard href={p.href} title={p.name} tags={p.tags} image={p.image} />
+                  <ProjectCard
+                    href={p.href}
+                    title={p.name}
+                    tags={p.tags}
+                    image={p.image}
+                    priority={i === 0}
+                  />
                 </div>
               ))}
             </motion.div>

@@ -16,6 +16,7 @@ export function StickyImage() {
           src="/images/site/nrsbyLofw3hQwQOWoECajIlhuY.webp"
           alt=""
           fill
+          priority
           sizes="100vw"
           className="object-cover"
         />

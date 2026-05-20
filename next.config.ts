@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     // lib/image-loader.ts for the routing rule.
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
+    // AVIF first (best compression), WebP fallback. Applies to the
+    // `/_next/image` path (local images); the media route always emits WebP.
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',

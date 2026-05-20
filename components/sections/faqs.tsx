@@ -8,14 +8,9 @@ import { PaperBackground } from '../ui/paper-background'
 
 export function FAQs() {
   return (
-    <section
-      style={{
-        backgroundImage: `url(${'/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg'})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-      className="relative w-full overflow-hidden bg-ink px-6 py-12"
-    >
+    <section className="relative w-full overflow-hidden bg-ink px-6 py-12">
+      {/* Single optimized copy of the background — the `<Image>` replaces a
+          former duplicate CSS `background-image` of the same file. */}
       <Image
         src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
         alt=""

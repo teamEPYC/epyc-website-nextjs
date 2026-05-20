@@ -10,6 +10,8 @@ type ProjectCardProps = {
   image: { src: string; alt: string; width: number; height: number }
   className?: string
   aspect?: 'wide' | 'tall'
+  /** Eager-load this card's image (use for the first card in a list). */
+  priority?: boolean
 }
 
 function isInternal(href: string) {
@@ -23,6 +25,7 @@ export function ProjectCard({
   image,
   className,
   aspect = 'wide',
+  priority,
 }: ProjectCardProps) {
   const internal = isInternal(href)
   const Wrapper = internal ? Link : 'a'
@@ -52,6 +55,7 @@ export function ProjectCard({
           src={image.src}
           alt={image.alt}
           fill
+          priority={priority}
           sizes="(min-width: 1200px) 780px, (min-width: 810px) 681px, 100vw"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
         />

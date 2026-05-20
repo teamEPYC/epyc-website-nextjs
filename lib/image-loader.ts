@@ -1,24 +1,25 @@
 /**
  * Next.js custom image loader.
  *
- * Bypasses `/_next/image` for Payload-served media (`/api/media/file/*`)
- * because OpenNext's image handler routes relative URLs through
- * `env.ASSETS.fetch` (Cloudflare's static-asset binding), which can't see
- * Worker route handlers — it just 404s the lookup and returns
- * `"url" parameter is valid but upstream response is invalid`. Verified by
- * reading `.open-next/cloudflare/images.js` (the bundled image worker).
+ * Three routing rules, in order:
  *
- * For everything else (remote URLs like framerusercontent.com), we still
- * route through `/_next/image` so OpenNext's image handler can fetch +
- * optimize them — that branch uses regular fetch, which works.
+ *   1. SVG — returned untouched. Vectors scale losslessly and the
+ *      optimizer rejects non-raster formats.
  *
- * Trade-off: media served from R2 via Payload is no longer responsive-
- * resized by the image optimizer. Browsers still pick a format based on
- * the file we stored (we're shipping the original; thumb/card/banner
- * variants aren't generated because we dropped `sharp` from the bundle).
- * Acceptable until either (a) we route media through Cloudflare Images
- * or (b) we move Payload to absolute URLs (which would let the existing
- * optimizer work for media too).
+ *   2. Payload media (`/api/media/file/*`, served from R2) — the requested
+ *      width is handed to the media route as a `?w=` query param. That
+ *      route resizes + re-encodes to WebP via the Cloudflare Images binding
+ *      (`env.IMAGES`). Media can't go through `/_next/image`: OpenNext's
+ *      image handler resolves relative URLs against `env.ASSETS` (static
+ *      assets), which can't see Worker route handlers — it 404s the lookup.
+ *
+ *   3. Everything else (local `/images/*` raster) — routed through
+ *      `/_next/image`, where OpenNext's image handler resizes + re-encodes
+ *      via `env.IMAGES`.
+ *
+ * In `next dev` the OpenNext worker isn't in the request path, so the
+ * original URL is returned unoptimized — optimization is exercised under
+ * `pnpm preview` and in production.
  */
 type LoaderArgs = {
   src: string
@@ -27,32 +28,26 @@ type LoaderArgs = {
 }
 
 export default function imageLoader({ src, width, quality }: LoaderArgs): string {
-  // Bypass /_next/image for:
-  //   1. Payload-served media — OpenNext routes relative URLs through
-  //      env.ASSETS, which can't see Worker routes (see above).
-  //   2. SVG files — OpenNext's image optimizer only allows formats in
-  //      `images.formats` (defaults to ["image/webp"]) and rejects SVGs
-  //      with "url parameter is valid but image type is not allowed".
-  //      We can't enable them via `dangerouslyAllowSVG` without taking
-  //      on the SVG-script security trade-off, and SVGs don't need
-  //      raster optimization anyway — vector scales for free.
-  if (src.startsWith('/api/media/file/') || /\.svg($|\?)/i.test(src)) {
+  const w = String(width)
+  const q = String(quality ?? 75)
+
+  // 1. SVGs are never raster-optimized.
+  if (/\.svg($|\?)/i.test(src)) {
     return src
   }
-  // `next dev` does not serve the `/_next/image` optimizer endpoint when a
-  // custom loader is configured — only the OpenNext worker does, in
-  // `pnpm preview` and production. In local dev, return the original URL so
-  // the browser fetches it directly (unoptimized, but it renders) rather
-  // than pointing at an endpoint that 404s.
+
+  // In local dev the OpenNext worker (which serves `/_next/image` and runs
+  // the media-route resize) isn't in the request path — hand the browser
+  // the original URL so it renders, just unoptimized.
   if (process.env.NODE_ENV === 'development') {
     return src
   }
-  // Mirror Next.js's default loader so non-Payload, non-SVG images
-  // still go through `/_next/image` and get optimized.
-  const params = new URLSearchParams({
-    url: src,
-    w: String(width),
-    q: String(quality ?? 75),
-  })
-  return `/_next/image?${params.toString()}`
+
+  // 2. Payload media — resized by the media route via Cloudflare Images.
+  if (src.startsWith('/api/media/file/')) {
+    return `${src}?${new URLSearchParams({ w, q }).toString()}`
+  }
+
+  // 3. Local images — optimized by OpenNext's `/_next/image` handler.
+  return `/_next/image?${new URLSearchParams({ url: src, w, q }).toString()}`
 }

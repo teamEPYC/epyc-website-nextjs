@@ -133,13 +133,14 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
             <p className="text-body py-12 text-ink/60">No projects in this category yet.</p>
           ) : (
             <div className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
-              {filtered.map((p) => (
+              {filtered.map((p, i) => (
                 <ProjectCard
                   key={p.slug}
                   href={p.redirectLink}
                   title={p.title}
                   tags={p.typesDisplay}
                   image={p.image}
+                  priority={i === 0}
                 />
               ))}
             </div>

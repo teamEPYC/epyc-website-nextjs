@@ -13,7 +13,9 @@ export const Media: CollectionConfig = {
   ],
   upload: {
     mimeTypes: ['image/*'],
-    crop: true,
+    // No `crop`: the admin crop tool needs `sharp` to apply the crop, and
+    // `sharp` isn't wired to Payload (it can't run in workerd) — so it was a
+    // dead control. `focalPoint` is kept; the normalise helpers use it.
     focalPoint: true,
     adminThumbnail: 'thumbnail',
     imageSizes: [
