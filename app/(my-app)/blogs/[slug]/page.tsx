@@ -22,16 +22,31 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { docs } = await payload.find({
     collection: 'blogs',
     where: { slug: { equals: slug } },
-    depth: 0,
+    // depth 1 populates the `cover` relationship — needed for the OG image.
+    depth: 1,
     limit: 1,
   })
   const blog = docs[0] as unknown as PayloadBlog | undefined
   if (!blog) return {}
-  const description = blog.meta?.description ?? blog.excerpt ?? undefined
+
+  // The blog's cover doubles as its Open Graph image. `cover.url` is a
+  // relative `/api/media/file/...` path; metadataBase resolves it to absolute.
+  const cover = typeof blog.cover === 'object' ? blog.cover : null
+  const ogImage =
+    cover && cover.url
+      ? {
+          url: cover.url,
+          width: cover.width ?? undefined,
+          height: cover.height ?? undefined,
+          alt: cover.alt ?? blog.title,
+        }
+      : { url: '/og/default.webp', width: 2400, height: 1260, alt: blog.title }
+
   return {
-    title: `${blog.title} - Blog`,
-    description: description ?? undefined,
+    title: blog.meta?.title ?? blog.title,
+    description: blog.meta?.description ?? blog.excerpt ?? undefined,
     alternates: { canonical: `/blogs/${slug}` },
+    openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
 }
 
