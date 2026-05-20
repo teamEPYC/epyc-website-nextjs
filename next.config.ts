@@ -16,11 +16,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'framerusercontent.com',
-        pathname: '/images/**',
-      },
-      {
-        protocol: 'https',
         hostname: '*.r2.cloudflarestorage.com',
       },
     ],
