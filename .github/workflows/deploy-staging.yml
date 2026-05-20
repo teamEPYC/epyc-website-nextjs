@@ -65,6 +65,10 @@ jobs:
       - name: OpenNext build
         run: pnpm exec opennextjs-cloudflare build
         env:
+          # Selects the per-environment site origin in data/site.ts. Next.js
+          # inlines NEXT_PUBLIC_* at build time, freezing the staging origin
+          # into the bundle for metadataBase / OG image / canonical URLs.
+          NEXT_PUBLIC_DEPLOY_ENV: staging
           # Payload's init reads PAYLOAD_SECRET at module load. Build-time
           # Next pre-rendering loads payload.config.ts, so it must be set.
           # R2_* are stubbed for the same reason as the importMap step:

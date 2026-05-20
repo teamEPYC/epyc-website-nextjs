@@ -61,10 +61,8 @@ const normsSerif = localFont({
   display: 'swap',
 })
 
-const siteUrl = 'https://epyc.in'
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(site.url),
   title: {
     default: 'EPYC | Website Development | Design Studio',
     template: '%s | EPYC',
@@ -74,7 +72,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
-    url: siteUrl,
+    url: site.url,
     siteName: 'EPYC',
     title: 'EPYC | Website Development | Design Studio',
     description:

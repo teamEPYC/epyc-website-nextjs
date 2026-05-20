@@ -24,9 +24,6 @@
   "env": {
     "staging": {
       "name": "epyc-website-staging",
-      "vars": {
-        "NEXT_PUBLIC_SITE_URL": "https://staging.epyc.in",
-      },
       "d1_databases": [
         {
           "binding": "DB",
@@ -38,9 +35,6 @@
     },
     "production": {
       "name": "epyc-website-production",
-      "vars": {
-        "NEXT_PUBLIC_SITE_URL": "https://epyc.in",
-      },
       "d1_databases": [
         {
           "binding": "DB",
