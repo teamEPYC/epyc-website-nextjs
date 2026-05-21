@@ -89,7 +89,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
-  robots: { index: true, follow: true, 'max-image-preview': 'large' },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({
