@@ -30,7 +30,7 @@ export function GalleryIndex() {
             {/* Masonry — CSS multi-column auto-balances varying-height items.
             Each card has break-inside-avoid + mb-2.5 to produce 10px gutters. */}
             <DotLineDivider />
-            <div className="gap-2.5 columns-2 lg:columns-3">
+            <div className="load-fade-up gap-2.5 columns-2 lg:columns-3">
               {galleryItems.map((item) => (
                 <GalleryCard key={item.slug} item={item} />
               ))}

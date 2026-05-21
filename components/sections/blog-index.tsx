@@ -40,10 +40,11 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
 
           <DotLineDivider />
 
-          {/* No scroll-reveal here: on tall monitors the grid is one large
-              element and never crosses the IntersectionObserver threshold
-              until you scroll, leaving the page looking empty. */}
-          <div className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
+          {/* Simple on-load entrance (`.load-fade-up` in globals.css) — runs
+              once when the page renders, not on scroll. A scroll-reveal here
+              broke on tall monitors: the grid is one large element that never
+              crossed the IntersectionObserver threshold until you scrolled. */}
+          <div className="load-fade-up grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
             {blogs.map((b) => (
               <BlogCard
                 key={b.slug}
