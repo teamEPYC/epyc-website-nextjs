@@ -108,9 +108,16 @@ function MobileStrip() {
         {/* -mr-4 + pr-4 lets the last card scroll flush against the
             section's right padding edge instead of getting clipped early. */}
         <div className="-mr-4 flex gap-5 overflow-x-auto pb-4 pr-4">
-          {featuredProjects.map((p) => (
+          {featuredProjects.map((p, i) => (
             <div key={p.id} className="w-[330px] shrink-0">
-              <ProjectCard href={p.href} title={p.name} tags={p.tags} image={p.image} />
+              <ProjectCard
+                href={p.href}
+                title={p.name}
+                tags={p.tags}
+                image={p.image}
+                priority={i === 0}
+                eager
+              />
             </div>
           ))}
         </div>
