@@ -48,7 +48,7 @@ export const testimonials: Testimonial[] = [
     name: 'Asis Panda',
     role: 'Director of Design, Nova Benefits',
     image: {
-      src: `${FRAMER}/xziMdc8W7hAvTPRS4XfK04o9E.avif`,
+      src: `${FRAMER}/xziMdc8W7hAvTPRS4XfK04o9E.webp`,
       alt: 'Asis Panda, Director of Design at Nova Benefits',
     },
     quote: (
