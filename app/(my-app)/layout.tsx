@@ -80,8 +80,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/og/default.jpg',
-        width: 2400,
-        height: 1260,
+        width: 1200,
+        height: 630,
         alt: 'EPYC — Website Development & Design Studio',
       },
     ],
