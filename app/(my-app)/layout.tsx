@@ -70,13 +70,13 @@ export const metadata: Metadata = {
   description:
     'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
   alternates: { canonical: '/' },
+  // openGraph / twitter intentionally omit `title` & `description`: Next replaces
+  // these nested objects wholesale per route (they are not deep-merged), so each
+  // page's own `title`/`description` auto-populates its og:/twitter: tags.
   openGraph: {
     type: 'website',
     url: site.url,
     siteName: 'EPYC',
-    title: 'EPYC | Website Development | Design Studio',
-    description:
-      'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
     images: [
       {
         url: '/og/default.jpg',
@@ -88,9 +88,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EPYC | Website Development | Design Studio',
-    description:
-      'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
   },
   robots: { index: true, follow: true, 'max-image-preview': 'large' },
 }

@@ -6,6 +6,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import { BlogPost } from '@/components/sections/blog-post'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { normalise, type PayloadBlog } from '@/lib/blogs/normalise'
+import { site } from '@/data/site'
 
 type Params = Promise<{ slug: string }>
 
@@ -44,7 +45,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   return {
     title: blog.meta?.title ?? blog.title,
-    description: blog.meta?.description ?? blog.excerpt ?? undefined,
+    // Prefer the blog's own SEO description / excerpt; fall back to the site
+    // description so the link preview always has a description.
+    description: blog.meta?.description ?? blog.excerpt ?? site.description,
     alternates: { canonical: `/blogs/${slug}` },
     openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
