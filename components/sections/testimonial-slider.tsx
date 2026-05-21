@@ -84,6 +84,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
                   src={current.image.src}
                   alt={current.image.alt}
                   fill
+                  loading="eager"
                   sizes="280px"
                   className="object-cover object-top"
                 />

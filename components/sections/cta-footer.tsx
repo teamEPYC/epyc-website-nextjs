@@ -41,6 +41,7 @@ export function CTAFooter() {
                 src="/images/site/rV5jBk0jBJfsfnlEdgFHud9abY.webp"
                 alt=""
                 fill
+                loading="eager"
                 sizes="216px"
                 className="object-cover"
               />
@@ -61,6 +62,7 @@ export function CTAFooter() {
                 src="/images/site/c7C4RZlnVXgsMtYKORFY3DNffs.webp"
                 alt=""
                 fill
+                loading="eager"
                 sizes="216px"
                 className="object-cover"
               />

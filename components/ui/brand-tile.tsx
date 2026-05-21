@@ -14,6 +14,7 @@ export function BrandTile({ src, alt, className }: BrandTileProps) {
       alt={alt}
       width={290}
       height={290}
+      loading="eager"
       className="object-cover w-full h-full object-center rounded-sm"
     />
   )

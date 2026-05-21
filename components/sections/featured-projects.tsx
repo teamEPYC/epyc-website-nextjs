@@ -58,6 +58,7 @@ export function FeaturedProjects() {
                     tags={p.tags}
                     image={p.image}
                     priority={i === 0}
+                    eager
                   />
                 </div>
               ))}
@@ -83,6 +84,7 @@ export function FeaturedProjects() {
                     tags={p.tags}
                     image={p.image}
                     priority={i === 0}
+                    eager
                   />
                 </div>
               ))}

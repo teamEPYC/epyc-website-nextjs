@@ -68,6 +68,7 @@ export function ProjectRow({
                     src={image.src}
                     alt={image.alt}
                     fill
+                    loading="eager"
                     sizes="(min-width: 1200px) 1150px, 100vw"
                     className="object-cover"
                   />
@@ -83,6 +84,7 @@ export function ProjectRow({
                     src={image.src}
                     alt={image.alt}
                     fill
+                    loading="eager"
                     sizes="(min-width: 1200px) 1150px, 100vw"
                     className="object-cover"
                   />

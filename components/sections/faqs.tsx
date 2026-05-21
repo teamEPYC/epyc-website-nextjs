@@ -15,6 +15,7 @@ export function FAQs() {
         src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
         alt=""
         fill
+        loading="eager"
         sizes="100vw"
         className="-z-10 object-cover"
       />
