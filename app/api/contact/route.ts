@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 import config from '@payload-config'
 import { contactSchema } from '@/lib/contact/schema'
 
@@ -26,6 +27,15 @@ export async function POST(req: Request) {
     data,
     overrideAccess: false,
   })
+
+  // Hand the submission to the webhook background job (Cloudflare Queue —
+  // consumed by workers/contact-webhook). A queue failure must not fail the
+  // request: the enquiry is already persisted to Payload above.
+  try {
+    await getCloudflareContext().env.CONTACT_QUEUE.send(data)
+  } catch (err) {
+    console.error('contact webhook enqueue failed', err)
+  }
 
   return NextResponse.json({ ok: true })
 }

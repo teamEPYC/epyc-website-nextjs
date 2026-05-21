@@ -20,6 +20,12 @@
       "migrations_dir": "migrations/schema",
     },
   ],
+  // Producer side of the contact-form webhook job. The consumer is a separate
+  // worker — see workers/contact-webhook/. Named environments do NOT inherit
+  // `queues`, so each env repeats its own producer binding below.
+  "queues": {
+    "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-dev" }],
+  },
 
   "env": {
     "staging": {
@@ -32,6 +38,9 @@
           "migrations_dir": "migrations/schema",
         },
       ],
+      "queues": {
+        "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
+      },
     },
     "production": {
       "name": "epyc-website-production",
@@ -43,6 +52,9 @@
           "migrations_dir": "migrations/schema",
         },
       ],
+      "queues": {
+        "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-production" }],
+      },
     },
   },
 }

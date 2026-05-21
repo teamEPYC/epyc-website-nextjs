@@ -1,0 +1,5 @@
+# Local secrets for `wrangler dev` of the contact-webhook consumer worker.
+# Copy to `.dev.vars` (gitignored) and fill in a real value to test locally —
+# e.g. a https://webhook.site/ URL.
+
+CONTACT_WEBHOOK_URL=
