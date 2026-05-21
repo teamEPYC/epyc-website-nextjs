@@ -1,3 +1,4 @@
+import { SiteNav } from '@/components/site-nav'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { GalleryCard } from '@/components/ui/gallery-card'
@@ -7,6 +8,7 @@ export function GalleryIndex() {
   return (
     <section className="w-full bg-beige p-4">
       <div className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 py-8 sm:px-6 sm:py-10 lg:gap-24">
+        <SiteNav className="self-stretch -mx-4 -mt-8 sm:-mx-6 sm:-mt-10" />
         <div className="flex flex-col gap-10 items-center">
           <div className="flex w-full max-w-outer flex-col items-center gap-6">
             <SectionHeading

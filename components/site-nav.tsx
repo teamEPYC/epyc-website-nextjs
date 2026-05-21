@@ -13,12 +13,13 @@ import { menuLinks } from '@/data/nav'
 /**
  * Site navigation bar.
  *
+ * Rendered inside each page's bordered frame, as the first child — the
+ * negative-margin `className` lets it break out flush to the frame's top and
+ * side borders. Transparent, so it blends with the page background.
  * Route-aware via `usePathname()`; not sticky (scrolls with the page):
  *
- *  - Homepage: rendered inside the hero's golden frame (`<SiteNav inFrame />`)
- *    — transparent over the hero background, cream content, mark + wordmark.
- *  - Every other page: a beige bar from the `(my-app)` layout, ink content,
- *    mark only.
+ *  - Homepage: cream content over the dark hero, EPYC mark + wordmark.
+ *  - Every other page: ink content over beige, mark only.
  *
  * Desktop (≥810px): the four links sit at the far right, each with an
  * underline that grows from the left on hover/focus; the link for the current
@@ -34,7 +35,7 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export function SiteNav({ inFrame = false }: { inFrame?: boolean }) {
+export function SiteNav({ className }: { className?: string }) {
   const pathname = usePathname()
   const isHome = pathname === '/'
   const [open, setOpen] = useState(false)
@@ -45,23 +46,9 @@ export function SiteNav({ inFrame = false }: { inFrame?: boolean }) {
     setOpen(false)
   }, [pathname])
 
-  // On the homepage the bar is rendered inside the hero frame
-  // (`<SiteNav inFrame />`); the layout-level instance skips it there.
-  if (isHome && !inFrame) return null
-
   return (
-    <header
-      className={cn(
-        'w-full',
-        isHome ? 'text-cream' : 'bg-beige text-ink',
-      )}
-    >
-      <div
-        className={cn(
-          'flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15',
-          !inFrame && 'mx-auto max-w-[var(--container-outer)]',
-        )}
-      >
+    <header className={cn(isHome ? 'text-cream' : 'text-ink', className)}>
+      <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15">
         {/* Logo — mark always; the wordmark joins it on the homepage. */}
         <Link
           href="/"

@@ -1,4 +1,5 @@
 import { Section } from '@/components/ui/section'
+import { SiteNav } from '@/components/site-nav'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { BlogCard } from '@/components/ui/blog-card'
@@ -12,6 +13,7 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
   return (
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4 ">
       <div className="relative mx-auto w-full px-6 py-11  overflow-hidden border-l border-r border-t border-ink ">
+        <SiteNav className="-mx-6 -mt-11" />
         <Container
           width="outer"
           className="flex flex-col px-0 sm:px-0 lg:px-0 items-center gap-12 lg:gap-10 max-w-outter w-[90%]"

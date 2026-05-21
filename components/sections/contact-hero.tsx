@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { SiteNav } from '@/components/site-nav'
 import { ContactForm } from './contact-form'
 import { site } from '@/data/site'
 
@@ -24,6 +25,7 @@ export function ContactHero() {
         id="form"
         className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 lg:px-6 py-10 lg:gap-24"
       >
+        <SiteNav className="self-stretch -mx-4 -mt-10 lg:-mx-6" />
         <h1 className="tablet:hidden text-center text-display text-ink">
           Start your <br />
           EPYC Journey

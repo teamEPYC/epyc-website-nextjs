@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { Section } from '@/components/ui/section'
+import { SiteNav } from '@/components/site-nav'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { ProjectCard } from '@/components/ui/project-card'
@@ -43,6 +44,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
   return (
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4">
       <div className="relative mx-auto w-full overflow-hidden border-t border-r border-l border-ink lg:px-6  py-11">
+        <SiteNav className="-mt-11 lg:-mx-6" />
         <Container
           width="outer"
           className="flex w-[90%] max-w-outter flex-col items-center gap-12 px-0 sm:px-0 lg:gap-10 lg:px-0"

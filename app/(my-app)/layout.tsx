@@ -3,7 +3,6 @@ import { Inter, IBM_Plex_Serif, Fragment_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import './globals.css'
 import { FloatingMenuButton } from '@/components/ui/floating-menu'
-import { SiteNav } from '@/components/site-nav'
 import { site } from '@/data/site'
 
 const inter = Inter({
@@ -130,7 +129,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fontVariables} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <SiteNav />
         {children}
         {/* <FloatingMenuButton /> */}
         <script

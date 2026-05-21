@@ -16,7 +16,7 @@ export function Hero() {
       {/* Inner frame with the 1px beige border on top + left + right (no bottom),
           matching the Framer source's `framer-15o8czf` element. */}
       <div className="min-h-[calc(67vh-2rem)] border-l border-r border-t border-beige lg:min-h-[calc(90vh-2rem)]">
-        <SiteNav inFrame />
+        <SiteNav />
         <Container
           width="content"
           className="relative flex min-h-[calc(67vh-2rem)] flex-col items-center justify-start gap-15 py-12 lg:min-h-[calc(90vh-2rem)] lg:gap-24 lg:py-12"
