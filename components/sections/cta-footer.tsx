@@ -32,7 +32,17 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 export function CTAFooter() {
   return (
     <section className="relative w-full overflow-hidden bg-grey-primary px-6 py-12">
-      <Container width="outer" className="relative">
+      {/* Full-bleed background texture. `z-0` keeps it above the section's
+          `bg-grey-primary` fill but below the content. */}
+      <Image
+        src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
+        alt=""
+        fill
+        loading="eager"
+        sizes="100vw"
+        className="z-0 object-cover"
+      />
+      <Container width="outer" className="relative z-10">
         <Reveal className="flex  w-full flex-col  gap-12">
           {/* Top CTA strip */}
           <div className="flex flex-row flex-none content-center justify-center items-center gap-[50px] w-[1150px] mx-auto w-full h-min p-0 relative overflow-hidden">

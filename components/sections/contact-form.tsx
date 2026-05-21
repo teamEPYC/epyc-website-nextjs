@@ -231,8 +231,7 @@ export function ContactForm() {
           <div className="flex flex-col gap-3">
             <h3 className="text-h3 text-ink">Thanks — we&apos;ll be in touch.</h3>
             <p className="text-body text-ink/70">
-              We&apos;ve logged your enquiry. Mayank &amp; Keshav will reply within one business
-              day.
+              We&apos;ve logged your enquiry. Our team will reply within one business day.
             </p>
           </div>
         </div>

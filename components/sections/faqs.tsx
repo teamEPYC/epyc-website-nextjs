@@ -9,17 +9,18 @@ import { PaperBackground } from '../ui/paper-background'
 export function FAQs() {
   return (
     <section className="relative w-full overflow-hidden bg-ink px-6 py-12">
-      {/* Single optimized copy of the background — the `<Image>` replaces a
-          former duplicate CSS `background-image` of the same file. */}
+      {/* Full-bleed background texture. `z-0` keeps it above the section's
+          `bg-ink` fill but below the content — a negative z-index sinks it
+          behind `bg-ink` and hides it entirely. */}
       <Image
         src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
         alt=""
         fill
         loading="eager"
         sizes="100vw"
-        className="-z-10 object-cover"
+        className="z-0 object-cover"
       />
-      <Container width="content" className="relative">
+      <Container width="content" className="relative z-10">
         <Reveal className="flex flex-col gap-20">
           <div className="flex justify-center">
             <SectionHeading tone="cream">Questions?</SectionHeading>
