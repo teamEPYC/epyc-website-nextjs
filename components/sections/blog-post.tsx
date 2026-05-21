@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
@@ -8,7 +7,6 @@ import { Reveal } from '@/components/ui/reveal'
 import { BlogCard } from '@/components/ui/blog-card'
 import { BlogProse } from '@/components/ui/blog-prose'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { Sparkle } from '@/components/icons/sparkle'
 import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
@@ -27,10 +25,6 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           className="flex w-[90%] flex-col items-center gap-0 px-0 sm:px-0 lg:gap-10 lg:px-0"
         >
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
-            <Link href="/" aria-label="EPYC home" className="inline-block">
-              <EpycMark className="h-auto w-[72px] text-ink" />
-            </Link>
-
             {/* Hero */}
             <header className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
               <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal">

@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import Image from 'next/image'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { ContactForm } from './contact-form'
 import { site } from '@/data/site'
 
@@ -26,18 +24,6 @@ export function ContactHero() {
         id="form"
         className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 lg:px-6 py-10 lg:gap-24"
       >
-        <Link
-          href="/"
-          aria-label="EPYC home"
-          className="flex  items-center justify-center h-min-content"
-        >
-          <img
-            src="/images/site/2RD93rcDoffbqvpFPqBTvpXXNAk.svg"
-            alt="EPYC"
-            className=" w-[70px] h-auto text-ink"
-          />
-        </Link>
-
         <h1 className="tablet:hidden text-center text-display text-ink">
           Start your <br />
           EPYC Journey

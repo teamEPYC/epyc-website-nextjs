@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { GalleryRelatedCard } from '@/components/ui/gallery-related-card'
@@ -19,9 +18,6 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
     <section className="w-full bg-beige p-4">
       <div className="flex flex-col items-center gap-12 border-t border-r border-l border-ink px-4 py-8 sm:px-6 sm:py-10 lg:gap-16">
         <div className="flex flex-col gap-10 w-full items-center">
-          <Link href="/" aria-label="EPYC home" className="flex w-[72px] py-[0.5px] items-center">
-            <EpycMark className="h-auto w-full text-ink" />
-          </Link>
           <div className="flex w-full items-center justify-start max-w-[90%] mx-auto">
             <Link href="/gallery" className="text-body-lg text-ink underline underline-offset-2">
               BACK

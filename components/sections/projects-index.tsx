@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
@@ -8,7 +7,6 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { ProjectCard } from '@/components/ui/project-card'
 import { Select } from '@/components/ui/form'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { cn } from '@/lib/cn'
 import type { NormalisedProject, ProjectIndustry } from '@/lib/projects/normalise'
 
@@ -50,10 +48,6 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
           className="flex w-[90%] max-w-outter flex-col items-center gap-12 px-0 sm:px-0 lg:gap-10 lg:px-0"
         >
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
-            <Link href="/" aria-label="EPYC home" className="inline-block">
-              <EpycMark className="h-auto w-[72px] text-ink" />
-            </Link>
-
             <div className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
               <SectionHeading
                 as="h1"

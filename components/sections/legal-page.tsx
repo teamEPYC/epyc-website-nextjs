@@ -1,6 +1,4 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { SectionHeading } from '@/components/ui/section-heading'
 
 type LegalPageProps = { title: string; children: ReactNode }
@@ -9,10 +7,6 @@ export function LegalPage({ title, children }: LegalPageProps) {
   return (
     <section className="w-full bg-beige p-4">
       <div className="relative flex flex-col items-center gap-10 border-t border-r border-l border-ink px-0 py-10 sm:px-6 sm:py-12 lg:gap-14">
-        <Link href="/" aria-label="EPYC home" className="flex w-[72px] items-center">
-          <EpycMark className="h-auto w-full text-ink" />
-        </Link>
-
         <SectionHeading
           as="h1"
           size="display"

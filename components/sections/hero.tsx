@@ -3,8 +3,6 @@ import { Container } from '@/components/ui/container'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Star } from '@/components/icons/star'
-import { EpycMark } from '@/components/icons/epyc-mark'
-import { EpycWordmark } from '@/components/icons/epyc-wordmark'
 import { ClutchWordmark } from '@/components/icons/clutch-wordmark'
 import { BubbleGlyph } from '@/components/icons/bubble-glyph'
 import { WebflowGlyph } from '@/components/icons/webflow-glyph'
@@ -21,20 +19,6 @@ export function Hero() {
           width="content"
           className="relative flex min-h-[calc(67vh-2rem)] flex-col items-center justify-start gap-15 py-12 lg:min-h-[calc(90vh-2rem)] lg:gap-24 lg:py-12"
         >
-          {/* Logo — wings emblem stacked above EPYC wordmark */}
-          <div className="flex flex-col items-center gap-3 md:gap-2">
-            <img
-              src="/images/site/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg"
-              alt="EPYC"
-              className="h-auto w-[70px] text-cream lg:w-[87px]"
-            />
-            <img
-              src="/images/site/hgI5DqS5OhR7orP2x05J8rY5Lg.svg"
-              alt="EPYC"
-              className="h-auto w-[70px] text-cream lg:w-[87px]"
-            />
-          </div>
-
           {/* Center content */}
           <div className="flex w-full max-w-[780px] flex-col items-center gap-5 lg:gap-6">
             {/* Clutch badge — its own row */}

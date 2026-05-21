@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { GalleryCard } from '@/components/ui/gallery-card'
@@ -9,9 +7,6 @@ export function GalleryIndex() {
   return (
     <section className="w-full bg-beige p-4">
       <div className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 py-8 sm:px-6 sm:py-10 lg:gap-24">
-        <Link href="/" aria-label="EPYC home" className="flex w-[72px] items-center justify-center">
-          <EpycMark className="h-auto w-full text-ink" />
-        </Link>
         <div className="flex flex-col gap-10 items-center">
           <div className="flex w-full max-w-outer flex-col items-center gap-6">
             <SectionHeading

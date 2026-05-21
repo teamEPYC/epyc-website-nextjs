@@ -1,10 +1,8 @@
-import Link from 'next/link'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { BlogCard } from '@/components/ui/blog-card'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
 type BlogIndexProps = { blogs: NormalisedBlog[] }
@@ -19,10 +17,6 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
           className="flex flex-col px-0 sm:px-0 lg:px-0 items-center gap-12 lg:gap-10 max-w-outter w-[90%]"
         >
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
-            <Link href="/" aria-label="EPYC home" className="inline-block">
-              <EpycMark className="h-auto w-[72px] text-ink" />
-            </Link>
-
             <div className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
               <SectionHeading
                 as="h1"
