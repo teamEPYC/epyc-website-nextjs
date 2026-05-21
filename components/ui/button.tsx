@@ -11,15 +11,20 @@ const button = cva(
   // Color comes from the `variant` (text-cream / text-ink). The icon inherits
   // color via currentColor because it's rendered without an own `text-*` class.
   [
-    'inline-flex items-center justify-center gap-3 rounded-pill whitespace-nowrap',
-    'transition-colors',
+    'group inline-flex items-center justify-center gap-3 rounded-pill whitespace-nowrap',
+    // `transition` (not `-colors`) so transform + box-shadow animate too.
+    'transition duration-200 ease-out motion-reduce:transition-none',
+    // Lift on hover, press back down + shrink slightly on click.
+    'hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.97]',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson/40 focus-visible:ring-offset-2 focus-visible:ring-offset-beige',
     'disabled:pointer-events-none disabled:opacity-50',
   ].join(' '),
   {
     variants: {
       variant: {
-        filled: 'bg-crimson text-cream hover:bg-crimson/90',
+        // Hover lifts the button (base) and adds a soft crimson glow.
+        filled:
+          'bg-crimson text-cream hover:shadow-[0_10px_24px_-8px_rgba(185,22,70,0.55)]',
         outline:
           'border border-ink/15 bg-transparent text-ink hover:bg-ink/5 data-[on-dark=true]:border-cream/40 data-[on-dark=true]:text-cream data-[on-dark=true]:hover:bg-cream/10',
       },
@@ -65,17 +70,23 @@ export function Button(props: AnchorProps | ButtonProps) {
   const { variant, size, icon, className, children, ...rest } = props
   const classes = cn(button({ variant, size }), className)
   const Icon = icon ? iconMap[icon] : null
+  // Icon slides toward its own direction while the button is hovered.
+  const iconNudge = cn(
+    'transition-transform duration-200 ease-out motion-reduce:transition-none',
+    icon === 'arrow-down' ? 'group-hover:translate-y-0.5' : 'group-hover:translate-x-0.5',
+  )
   const content = (
     <>
       <span>{children}</span>
       {/* Icon has no own `text-*` class — inherits parent color via currentColor. */}
       {Icon ? (
-        <Icon size={14} className="shrink-0" />
+        <Icon size={14} className={cn('shrink-0', iconNudge)} />
       ) : (
         <img
-          className="w-[45px]"
+          alt=""
+          className={cn('w-[45px]', iconNudge)}
           src="/images/site/DIRfZkT5kVvbN5KyZ9HJu326aI.svg"
-        ></img>
+        />
       )}
     </>
   )

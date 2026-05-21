@@ -273,6 +273,17 @@ body {
   scrollbar-width: none;
 }
 
+/* Restore the pointer cursor on interactive controls. Tailwind v4's Preflight
+   ships `button, [role="button"] { cursor: default }`, so without this every
+   <button> shows the default arrow. Disabled buttons keep the default cursor. */
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled),
+  a[href] {
+    cursor: pointer;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Long-form legal prose (Terms & Conditions, Privacy Policy). Maps bare
    semantic HTML to the project's typography tokens so the page bodies stay

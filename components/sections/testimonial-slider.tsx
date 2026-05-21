@@ -101,7 +101,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
               type="button"
               onClick={() => go(-1)}
               aria-label="Previous testimonial"
-              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition-colors hover:bg-cream/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
+              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition duration-200 ease-out motion-reduce:transition-none hover:bg-cream/10 active:scale-[0.94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
             >
               <ThinArrow direction="left" />
             </button>
@@ -109,7 +109,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
               type="button"
               onClick={() => go(1)}
               aria-label="Next testimonial"
-              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition-colors hover:bg-cream/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
+              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition duration-200 ease-out motion-reduce:transition-none hover:bg-cream/10 active:scale-[0.94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
             >
               <ThinArrow direction="right" />
             </button>
