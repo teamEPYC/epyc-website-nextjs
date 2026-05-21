@@ -202,7 +202,7 @@ export function ContactForm() {
               size="lg"
               // icon="arrow-right"
               disabled={state === 'submitting'}
-              className="absolute -bottom-10  left-1/2 h-[80px] text-cream text-base tablet:text-[20px] tracking-[-0.02em] w-[280px] max-w-[80%] -translate-x-1/2 sm:w-[338px] sm:max-w-none"
+              className="absolute -bottom-10 disabled:opacity-100  cursor-pointer left-1/2 h-[80px] text-cream text-base tablet:text-[20px] tracking-[-0.02em] w-[280px] max-w-[80%] -translate-x-1/2 sm:w-[338px] sm:max-w-none"
             >
               {state === 'submitting' ? 'SENDING…' : 'SUBMIT ENQUIRY'}
             </Button>

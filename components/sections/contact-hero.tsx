@@ -34,7 +34,7 @@ export function ContactHero() {
         <div className="flex w-full  lg:w-[90%]  max-w-outer flex-col-reverse items-start justify-between lg:gap-12 tablet:flex-row">
           {/* Left column */}
 
-          <div className="flex w-full flex-col gap-12 lg:h-[649px] lg:w-[40%] justify-between">
+          <div className="hidden tablet:flex w-full  flex-col gap-12 lg:h-[649px] lg:w-[40%] justify-between">
             {/* Heading */}
             <div className="relative flex flex-col gap-[30px]">
               <h1 className="hidden tablet:block text-display text-ink">
@@ -92,7 +92,7 @@ export function ContactHero() {
           </div>
 
           {/* Right column — form + caption */}
-          <div className="flex w-full  flex-col items-center gap-15 lg:w-auto">
+          <div className="flex w-full justify-start  flex-col items-center gap-15 lg:w-auto">
             <ContactForm />
             <p className="text-body-lg text-ink text-center">
               We only work with 3 new customers at a time.
