@@ -59,7 +59,11 @@ export function Voices() {
           href={site.social.clutchProfile}
           icon={<ClutchWordmark className="h-4 w-auto text-cream" />}
         >
-          <StarRating score={4.9} className="text-cream" starClassName="text-cream" />
+          <StarRating
+            score={4.9}
+            className="text-cream flex flex-col h-fit gap-1 py-0"
+            starClassName="text-cream"
+          />
         </Badge>
       </div>
     </div>

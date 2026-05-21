@@ -30,7 +30,7 @@ export async function generateMetadata({
   const ogImage =
     item.kind === 'image'
       ? { url: item.src, width: item.width, height: item.height, alt: item.alt ?? title }
-      : { url: '/og/default.webp', width: 2400, height: 1260, alt: title }
+      : { url: '/og/default.jpg', width: 2400, height: 1260, alt: title }
 
   return {
     title,

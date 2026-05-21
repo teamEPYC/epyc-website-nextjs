@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/blogs' },
   openGraph: {
     siteName: 'EPYC',
-    images: [{ url: '/og/blogs.webp', width: 2400, height: 1260, alt: 'EPYC — Blog' }],
+    images: [{ url: '/og/blogs.jpg', width: 2400, height: 1260, alt: 'EPYC — Blog' }],
   },
 }
 

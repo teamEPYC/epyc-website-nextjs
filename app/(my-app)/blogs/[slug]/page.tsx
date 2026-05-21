@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
           height: cover.height ?? undefined,
           alt: cover.alt ?? blog.title,
         }
-      : { url: '/og/default.webp', width: 2400, height: 1260, alt: blog.title }
+      : { url: '/og/default.jpg', width: 2400, height: 1260, alt: blog.title }
 
   return {
     title: blog.meta?.title ?? blog.title,

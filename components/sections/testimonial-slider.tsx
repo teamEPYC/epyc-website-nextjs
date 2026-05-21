@@ -132,8 +132,8 @@ export function TestimonialSlider({ testimonials, className }: Props) {
           <OrnamentDivider className="text-sand/50" />
         </motion.div>
 
-        <p className="text-body max-w-[600px] mx-auto lg:max-w-none text-center lg:text-left text-cream">
-          {current.quote.join(' ')}
+        <p className="text-body max-w-[600px] mx-auto  text-center lg:text-left text-cream">
+          {current.quote}
         </p>
 
         {/* Bottom ornament */}
