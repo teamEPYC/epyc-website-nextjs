@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { Reveal } from '@/components/ui/reveal'
 import { BlogCard } from '@/components/ui/blog-card'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { EpycMark } from '@/components/icons/epyc-mark'
@@ -41,7 +40,10 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
 
           <DotLineDivider />
 
-          <Reveal as="div" className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
+          {/* No scroll-reveal here: on tall monitors the grid is one large
+              element and never crosses the IntersectionObserver threshold
+              until you scroll, leaving the page looking empty. */}
+          <div className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
             {blogs.map((b) => (
               <BlogCard
                 key={b.slug}
@@ -53,7 +55,7 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
                 publishedAt={b.publishedAt}
               />
             ))}
-          </Reveal>
+          </div>
         </Container>
       </div>
     </Section>
