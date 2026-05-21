@@ -359,61 +359,70 @@ body {
   ------------------------------------------------------------------------- */
   .blog-prose {
     color: var(--color-ink);
-    display: flex;
-    flex-direction: column;
   }
 
-  .blog-prose > * + * {
-    margin-top: 1rem;
+  /* The Lexical renderer wraps its output in `.payload-richtext`, so the
+     prose elements are NOT direct children of `.blog-prose`. Spacing is
+     therefore explicit per-element margins (collapsing block flow), not a
+     `> * + *` child-combinator rule — that rule only saw the wrapper. */
+  .blog-prose .payload-richtext > :first-child {
+    margin-top: 0;
+  }
+  .blog-prose .payload-richtext > :last-child {
+    margin-bottom: 0;
   }
 
+  /* Headings — display family, sized clearly above the 16/20px body so the
+     hierarchy reads at every breakpoint (body < h3 < h2). */
   .blog-prose h2 {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 20px;
-    letter-spacing: -0.04em;
-    line-height: 1.4;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
     color: var(--color-ink);
-    margin-top: 2.5rem;
-    margin-bottom: 0.5rem;
+    margin: 2.25rem 0 0.5rem;
   }
   @media (min-width: 810px) {
     .blog-prose h2 {
-      font-size: 26px;
+      font-size: 32px;
     }
   }
   @media (min-width: 1200px) {
     .blog-prose h2 {
-      font-size: 32px;
+      font-size: 38px;
     }
   }
 
   .blog-prose h3 {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 14px;
-    line-height: 1.2;
+    font-size: 20px;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
     color: var(--color-ink);
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
+    margin: 1.75rem 0 0.5rem;
   }
   @media (min-width: 810px) {
-    .blog-prose h3 {
-      font-size: 16px;
-    }
-  }
-  @media (min-width: 1200px) {
     .blog-prose h3 {
       font-size: 24px;
     }
   }
+  @media (min-width: 1200px) {
+    .blog-prose h3 {
+      font-size: 28px;
+    }
+  }
 
+  /* Body copy — the customised base: 16px, 20px from 810px up. The bottom
+     margin is the paragraph separation. */
   .blog-prose p {
     font-family: var(--font-serif);
     font-weight: 400;
     font-size: 16px;
     line-height: 1.6;
     color: var(--color-ink);
+    margin: 0 0 1em;
   }
   @media (min-width: 810px) {
     .blog-prose p {
@@ -455,6 +464,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin: 0 0 1em;
   }
   .blog-prose ul {
     list-style: disc;
@@ -480,13 +490,18 @@ body {
   .blog-prose blockquote {
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: 16px;
-    line-height: 1.8;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    line-height: 1.6;
     border-left: 2px solid var(--color-ink);
     padding-left: 1.25rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin: 1.5rem 0;
     color: var(--color-ink);
+  }
+  @media (min-width: 810px) {
+    .blog-prose blockquote {
+      font-size: 22px;
+    }
   }
 
   .blog-prose code {
