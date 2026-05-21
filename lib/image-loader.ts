@@ -1,25 +1,20 @@
 /**
  * Next.js custom image loader.
  *
- * Three routing rules, in order:
+ * Routes every non-SVG image through Cloudflare's zone-level image
+ * transformations: `/cdn-cgi/image/<options>/<source>`. Cloudflare's edge
+ * intercepts these URLs (the request never reaches the Worker), resizes to the
+ * requested width, and re-encodes to AVIF/WebP — `format=auto` negotiates from
+ * the browser's `Accept` header. This covers both local `/images/*` assets and
+ * CMS media served from `/api/media/file/*`.
  *
- *   1. SVG — returned untouched. Vectors scale losslessly and the
- *      optimizer rejects non-raster formats.
+ *   - SVG: returned as-is — vectors scale losslessly.
+ *   - `next dev`: returned as-is — `/cdn-cgi/image/` only works behind a
+ *     Cloudflare zone, not the local dev server.
  *
- *   2. Payload media (`/api/media/file/*`, served from R2) — the requested
- *      width is handed to the media route as a `?w=` query param. That
- *      route resizes + re-encodes to WebP via the Cloudflare Images binding
- *      (`env.IMAGES`). Media can't go through `/_next/image`: OpenNext's
- *      image handler resolves relative URLs against `env.ASSETS` (static
- *      assets), which can't see Worker route handlers — it 404s the lookup.
- *
- *   3. Everything else (local `/images/*` raster) — routed through
- *      `/_next/image`, where OpenNext's image handler resizes + re-encodes
- *      via `env.IMAGES`.
- *
- * In `next dev` the OpenNext worker isn't in the request path, so the
- * original URL is returned unoptimized — optimization is exercised under
- * `pnpm preview` and in production.
+ * `/cdn-cgi/image/` requires a Cloudflare zone with Transformations enabled
+ * (epyc.in / website-staging.epyc.in). On a plain `*.workers.dev` host the
+ * Worker serves the original unoptimized — never an error.
  */
 type LoaderArgs = {
   src: string
@@ -28,26 +23,18 @@ type LoaderArgs = {
 }
 
 export default function imageLoader({ src, width, quality }: LoaderArgs): string {
-  const w = String(width)
-  const q = String(quality ?? 75)
-
-  // 1. SVGs are never raster-optimized.
+  // SVGs are vector — never raster-optimized.
   if (/\.svg($|\?)/i.test(src)) {
     return src
   }
-
-  // In local dev the OpenNext worker (which serves `/_next/image` and runs
-  // the media-route resize) isn't in the request path — hand the browser
-  // the original URL so it renders, just unoptimized.
+  // `/cdn-cgi/image/` is a Cloudflare-zone feature; `next dev` isn't behind
+  // one, so hand back the original URL there.
   if (process.env.NODE_ENV === 'development') {
     return src
   }
-
-  // 2. Payload media — resized by the media route via Cloudflare Images.
-  if (src.startsWith('/api/media/file/')) {
-    return `${src}?${new URLSearchParams({ w, q }).toString()}`
-  }
-
-  // 3. Local images — optimized by OpenNext's `/_next/image` handler.
-  return `/_next/image?${new URLSearchParams({ url: src, w, q }).toString()}`
+  // Cloudflare zone image transformations — edge-side resize + re-encode.
+  // `src` is always a `/`-prefixed path (local `/images/*` or
+  // `/api/media/file/*`), so it concatenates straight onto the options.
+  const options = `width=${width},quality=${quality ?? 75},format=auto`
+  return `/cdn-cgi/image/${options}${src}`
 }

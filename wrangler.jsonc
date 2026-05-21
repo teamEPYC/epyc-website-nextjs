@@ -12,9 +12,6 @@
   "observability": {
     "enabled": true,
   },
-  "images": {
-    "binding": "IMAGES",
-  },
   "d1_databases": [
     {
       "binding": "DB",
@@ -27,9 +24,6 @@
   "env": {
     "staging": {
       "name": "epyc-website-staging",
-      "images": {
-        "binding": "IMAGES",
-      },
       "d1_databases": [
         {
           "binding": "DB",
@@ -41,9 +35,6 @@
     },
     "production": {
       "name": "epyc-website-production",
-      "images": {
-        "binding": "IMAGES",
-      },
       "d1_databases": [
         {
           "binding": "DB",
