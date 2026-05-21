@@ -7,7 +7,6 @@ import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { EpycMark } from '@/components/icons/epyc-mark'
 import { EpycWordmark } from '@/components/icons/epyc-wordmark'
-import { MenuLines } from '@/components/icons/menu-lines'
 import { menuLinks } from '@/data/nav'
 
 /**
@@ -82,7 +81,7 @@ export function SiteNav({ className }: { className?: string }) {
           onClick={() => setOpen((v) => !v)}
           className="-mr-2 flex h-10 w-10 items-center justify-center sm:hidden"
         >
-          {open ? <CloseIcon /> : <MenuLines size={32} />}
+          {open ? <CloseIcon /> : <MenuIcon />}
         </button>
       </div>
 
@@ -153,6 +152,24 @@ function NavLink({
         )}
       />
     </Link>
+  )
+}
+
+/** Hamburger icon — three equal lines — for the closed mobile toggle. */
+function MenuIcon() {
+  return (
+    <svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <path d="M3 6h18M3 12h18M3 18h18" />
+    </svg>
   )
 }
 
