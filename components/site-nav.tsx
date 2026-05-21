@@ -13,12 +13,12 @@ import { menuLinks } from '@/data/nav'
 /**
  * Site navigation bar.
  *
- * Mounted once in the `(my-app)` layout, above the page content. Not sticky —
- * it scrolls away with the page. Route-aware via `usePathname()`:
+ * Route-aware via `usePathname()`; not sticky (scrolls with the page):
  *
- *  - Homepage: dark (ink) bar, cream content, EPYC mark + wordmark — reads
- *    continuous with the dark hero below it.
- *  - Every other page: beige bar, ink content, mark only.
+ *  - Homepage: rendered inside the hero's golden frame (`<SiteNav inFrame />`)
+ *    — transparent over the hero background, cream content, mark + wordmark.
+ *  - Every other page: a beige bar from the `(my-app)` layout, ink content,
+ *    mark only.
  *
  * Desktop (≥810px): the four links sit at the far right, each with an
  * underline that grows from the left on hover/focus; the link for the current
@@ -34,7 +34,7 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export function SiteNav() {
+export function SiteNav({ inFrame = false }: { inFrame?: boolean }) {
   const pathname = usePathname()
   const isHome = pathname === '/'
   const [open, setOpen] = useState(false)
@@ -45,14 +45,23 @@ export function SiteNav() {
     setOpen(false)
   }, [pathname])
 
+  // On the homepage the bar is rendered inside the hero frame
+  // (`<SiteNav inFrame />`); the layout-level instance skips it there.
+  if (isHome && !inFrame) return null
+
   return (
     <header
       className={cn(
         'w-full',
-        isHome ? 'bg-ink text-cream' : 'bg-beige text-ink',
+        isHome ? 'text-cream' : 'bg-beige text-ink',
       )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-[var(--container-outer)] items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15">
+      <div
+        className={cn(
+          'flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15',
+          !inFrame && 'mx-auto max-w-[var(--container-outer)]',
+        )}
+      >
         {/* Logo — mark always; the wordmark joins it on the homepage. */}
         <Link
           href="/"
