@@ -117,3 +117,34 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env staging
+
+      - name: Deploy contact-webhook consumer (staging)
+        # Separate Worker that drains CONTACT_QUEUE and POSTs each contact
+        # submission to the webhook. Requires the Cloudflare queues
+        # epyc-contact-webhook-staging + -dlq to exist already
+        # (`wrangler queues create ...`) — this step fails until they do.
+        # The CONTACT_WEBHOOK_URL secret is applied by the next step.
+        # Runs after the main deploy so a missing queue can't block the site.
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env staging --config workers/contact-webhook/wrangler.jsonc
+
+      - name: Set contact-webhook secret (staging)
+        # CONTACT_WEBHOOK_URL — the endpoint the consumer POSTs submissions to.
+        # `secret put` needs the Worker to exist, so this runs after the deploy
+        # above. Re-applied every run to stay in sync with the GitHub secret.
+        # Requires the STAGING_CONTACT_WEBHOOK_URL repo Actions secret.
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CONTACT_WEBHOOK_URL: ${{ secrets.STAGING_CONTACT_WEBHOOK_URL }}
+        run: |
+          if [ -z "$CONTACT_WEBHOOK_URL" ]; then
+            echo "::error::STAGING_CONTACT_WEBHOOK_URL is unset — add it in the repo's GitHub Actions secrets."
+            exit 1
+          fi
+          printf '%s' "$CONTACT_WEBHOOK_URL" \
+            | pnpm exec wrangler secret put CONTACT_WEBHOOK_URL \
+                --env staging --config workers/contact-webhook/wrangler.jsonc

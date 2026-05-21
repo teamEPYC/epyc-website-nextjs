@@ -24,7 +24,7 @@
   // worker — see workers/contact-webhook/. Named environments do NOT inherit
   // `queues`, so each env repeats its own producer binding below.
   "queues": {
-    "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-dev" }],
+    "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
   },
 
   "env": {

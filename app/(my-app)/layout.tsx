@@ -80,8 +80,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/og/default.jpg',
-        width: 1200,
-        height: 630,
+        width: 2400,
+        height: 1260,
         alt: 'EPYC — Website Development & Design Studio',
       },
     ],
@@ -89,7 +89,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, 'max-image-preview': 'large' },
 }
 
 export default function RootLayout({
