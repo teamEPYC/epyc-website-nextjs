@@ -37,39 +37,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-const payloadConfig = withPayload(nextConfig)
-
-// withPayload injects Accept-CH / Vary / Critical-CH for Sec-CH-Prefers-Color-Scheme
-// on `/:path*` (every route). On a custom Cloudflare zone these headers land on
-// static JPEG responses too, which confuses social-media scrapers: some implement
-// the Critical-CH spec and discard the first image response waiting for a retry
-// that never comes, causing OG preview images to fail. Payload only actually needs
-// the hint on its own admin routes, so we split the rule: client-hint headers go
-// to /payload/* only, everything else (marketing pages, static assets) is left clean.
-const _upstreamHeaders = payloadConfig.headers
-const CLIENT_HINT_KEYS = new Set(['Accept-CH', 'Critical-CH', 'Vary'])
-
-payloadConfig.headers = async () => {
-  const upstream = (await _upstreamHeaders?.()) ?? []
-  const result: NonNullable<Awaited<ReturnType<NonNullable<typeof _upstreamHeaders>>>> = []
-
-  for (const rule of upstream) {
-    const hasClientHints = rule.headers.some((h) => CLIENT_HINT_KEYS.has(h.key))
-
-    if (rule.source === '/:path*' && hasClientHints) {
-      const hintHeaders = rule.headers.filter((h) => CLIENT_HINT_KEYS.has(h.key))
-      const otherHeaders = rule.headers.filter((h) => !CLIENT_HINT_KEYS.has(h.key))
-
-      // Payload admin keeps the color-scheme hint for server-side dark-mode detection.
-      result.push({ ...rule, source: '/payload/:path*', headers: hintHeaders })
-      // All other routes (pages, OG images, static assets) get the rest (X-Powered-By etc).
-      if (otherHeaders.length) result.push({ ...rule, headers: otherHeaders })
-    } else {
-      result.push(rule)
-    }
-  }
-
-  return result
-}
-
-export default payloadConfig
+export default withPayload(nextConfig)
