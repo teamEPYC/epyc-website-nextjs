@@ -1,0 +1,6 @@
+# Cloudflare Workers Assets header rules (served directly from the edge,
+# bypassing the Worker — see `run_worker_first: false` in wrangler.jsonc).
+# Long-lived caching for OG preview images so social scrapers and their
+# CDNs cache the fetch instead of re-hitting the origin on every unfurl.
+/og/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
