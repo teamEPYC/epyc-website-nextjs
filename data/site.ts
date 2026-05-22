@@ -5,17 +5,17 @@
 
 
 
-const ORIGINS = {
-  production: "https://epyc.in",
-  staging: "https://website-staging.epyc.in",
-  development: "http://localhost:3000",
-} as const;
-
 // const ORIGINS = {
 //   production: "https://epyc.in",
-//   staging: "https://epyc-website-staging.epyc.workers.dev",
+//   staging: "https://website-staging.epyc.in",
 //   development: "http://localhost:3000",
 // } as const;
+
+const ORIGINS = {
+  production: "https://epyc.in",
+  staging: "https://epyc-website-staging.epyc.workers.dev",
+  development: "http://localhost:3000",
+} as const;
 
 
 
