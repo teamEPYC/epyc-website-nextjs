@@ -2,9 +2,9 @@ import { SiteNav } from '@/components/site-nav'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { GalleryCard } from '@/components/ui/gallery-card'
-import { galleryItems } from '@/data/gallery'
+import type { GalleryItem } from '@/data/gallery'
 
-export function GalleryIndex() {
+export function GalleryIndex({ items }: { items: GalleryItem[] }) {
   return (
     <section className="w-full bg-beige p-4">
       <div className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 py-8 sm:px-6 sm:py-10 lg:gap-24">
@@ -28,7 +28,7 @@ export function GalleryIndex() {
             Each card has break-inside-avoid + mb-2.5 to produce 10px gutters. */}
             <DotLineDivider />
             <div className="load-fade-up gap-2.5 columns-2 lg:columns-3">
-              {galleryItems.map((item) => (
+              {items.map((item) => (
                 <GalleryCard key={item.slug} item={item} />
               ))}
             </div>

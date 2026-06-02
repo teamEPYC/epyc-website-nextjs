@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getPayload } from 'payload'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
-import config from '@payload-config'
 import { contactSchema } from '@/lib/contact/schema'
 
 export const runtime = 'nodejs'
@@ -21,16 +19,18 @@ export async function POST(req: Request) {
   // Honeypot tripped — pretend success, drop on the floor.
   if (website) return NextResponse.json({ ok: true })
 
-  const payload = await getPayload({ config })
-  await payload.create({
-    collection: 'submissions',
-    data,
-    overrideAccess: false,
+  await fetch(`${process.env.STRAPI_URL}/api/submissions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+    },
+    body: JSON.stringify({ data }),
   })
 
   // Hand the submission to the webhook background job (Cloudflare Queue —
   // consumed by workers/contact-webhook). A queue failure must not fail the
-  // request: the enquiry is already persisted to Payload above.
+  // request: the enquiry is already persisted to Strapi above.
   try {
     await getCloudflareContext().env.CONTACT_QUEUE.send(data)
   } catch (err) {

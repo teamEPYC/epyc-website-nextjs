@@ -19,14 +19,6 @@
   "observability": {
     "enabled": true,
   },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "epyc-website-dev",
-      "database_id": "641a3a02-32e4-4775-8500-4a2ef0307e48",
-      "migrations_dir": "migrations/schema",
-    },
-  ],
   // Producer side of the contact-form webhook job. The consumer is a separate
   // worker — see workers/contact-webhook/. Named environments do NOT inherit
   // `queues`, so each env repeats its own producer binding below.
@@ -37,28 +29,12 @@
   "env": {
     "staging": {
       "name": "epyc-website-staging",
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "epyc-website-staging",
-          "database_id": "a379666b-17b4-440f-a4a8-22b5550b1e2c",
-          "migrations_dir": "migrations/schema",
-        },
-      ],
       "queues": {
         "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
       },
     },
     "production": {
       "name": "epyc-website-production",
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "epyc-website-production",
-          "database_id": "d1_database_v1_00000000000000000000000000000000",
-          "migrations_dir": "migrations/schema",
-        },
-      ],
       "queues": {
         "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-production" }],
       },
