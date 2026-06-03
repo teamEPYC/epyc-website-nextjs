@@ -9,7 +9,7 @@ import { BlogCard } from '@/components/ui/blog-card'
 import { BlogProse } from '@/components/ui/blog-prose'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { Sparkle } from '@/components/icons/sparkle'
-import type { NormalisedBlog } from '@/lib/blogs/normalise'
+import type { NormalisedBlog } from '@/lib/blog/normalise'
 
 type BlogPostProps = {
   blog: NormalisedBlog
@@ -85,7 +85,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
                   {relatedBlogs.map((b) => (
                     <BlogCard
                       key={b.slug}
-                      href={`/blogs/${b.slug}`}
+                      href={`/blog/${b.slug}`}
                       title={b.title}
                       image={b.image}
                       date={b.date}

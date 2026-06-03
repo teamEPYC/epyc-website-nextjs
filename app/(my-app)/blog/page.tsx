@@ -8,7 +8,7 @@ import { normalise } from '@/lib/blogs/normalise'
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Get into our minds and understand how we do the things we do.',
-  alternates: { canonical: '/blogs' },
+  alternates: { canonical: '/blog' },
   openGraph: {
     siteName: 'EPYC',
     images: [{ url: '/og/blogs.jpg', width: 2400, height: 1260, alt: 'EPYC — Blog' }],

@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: blog.metaTitle ?? blog.title,
     description: blog.metaDescription ?? site.description,
-    alternates: { canonical: `/blogs/${slug}` },
+    alternates: { canonical: `/blog/${slug}` },
     openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
 }
@@ -82,7 +82,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
     description: blog.metaDescription ?? site.description,
     datePublished: blog.publishedDate ?? blog.publishedAt,
     dateModified: blog.publishedAt,
-    url: `${site.url}/blogs/${slug}`,
+    url: `${site.url}/blog/${slug}`,
     image: blog.coverImage
       ? toAbsoluteMediaUrl(blog.coverImage.url)
       : `${site.url}/og/default.jpg`,

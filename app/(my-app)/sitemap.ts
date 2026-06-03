@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const blogEntries = blogs.data.map(({ slug, publishedAt }) =>
-    make(`/blogs/${slug}`, 0.6, "monthly", new Date(publishedAt)),
+    make(`/blog/${slug}`, 0.6, "monthly", new Date(publishedAt)),
   );
   const galleryEntries = gallery.data.map(({ slug }) =>
     make(`/gallery/${slug}`, 0.5),
@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     make("/", 1.0, "weekly"),
     make("/projects", 0.8),
-    make("/blogs", 0.7),
+    make("/blog", 0.7),
     make("/gallery", 0.6),
     make("/contact", 0.8),
     make("/privacy-policy", 0.3, "yearly"),

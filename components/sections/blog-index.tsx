@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { BlogCard } from '@/components/ui/blog-card'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import type { NormalisedBlog } from '@/lib/blogs/normalise'
+import type { NormalisedBlog } from '@/lib/blog/normalise'
 
 type BlogIndexProps = { blogs: NormalisedBlog[] }
 
@@ -44,7 +44,7 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
             {blogs.map((b) => (
               <BlogCard
                 key={b.slug}
-                href={`/blogs/${b.slug}`}
+                href={`/blog/${b.slug}`}
                 title={b.title}
                 image={b.image}
                 date={b.date}
