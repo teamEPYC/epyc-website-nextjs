@@ -6,7 +6,7 @@ export type NavLink = {
 export const footerColumns: NavLink[][] = [
   [
     { label: "Projects", href: "/projects" },
-    { label: "Blog", href: "/blogs" },
+    { label: "Blog", href: "/blog" },
     { label: "Gallery", href: "/gallery" },
   ],
   [
@@ -23,7 +23,7 @@ export const footerColumns: NavLink[][] = [
 
 export const menuLinks: NavLink[] = [
   { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blogs" },
+  { label: "Blog", href: "/blog" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
 ];

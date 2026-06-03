@@ -44,7 +44,7 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
             {blogs.map((b) => (
               <BlogCard
                 key={b.slug}
-                href={`/blogs/${b.slug}`}
+                href={`/blog/${b.slug}`}
                 title={b.title}
                 image={b.image}
                 date={b.date}

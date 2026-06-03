@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { contactSchema } from '@/lib/contact/schema'
 
-export const runtime = 'nodejs'
+export const runtime = 'edge'
 
 export async function POST(req: Request) {
   const json = await req.json().catch(() => null)
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   // Honeypot tripped — pretend success, drop on the floor.
   if (website) return NextResponse.json({ ok: true })
 
-  await fetch(`${process.env.STRAPI_URL}/api/submissions`, {
+  const strapiRes = await fetch(`${process.env.STRAPI_URL}/api/submissions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -27,6 +27,11 @@ export async function POST(req: Request) {
     },
     body: JSON.stringify({ data }),
   })
+
+  if (!strapiRes.ok) {
+    console.error('Strapi submission failed', strapiRes.status, await strapiRes.text().catch(() => ''))
+    return NextResponse.json({ ok: false }, { status: 502 })
+  }
 
   // Hand the submission to the webhook background job (Cloudflare Queue —
   // consumed by workers/contact-webhook). A queue failure must not fail the

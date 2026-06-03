@@ -85,7 +85,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
                   {relatedBlogs.map((b) => (
                     <BlogCard
                       key={b.slug}
-                      href={`/blogs/${b.slug}`}
+                      href={`/blog/${b.slug}`}
                       title={b.title}
                       image={b.image}
                       date={b.date}
