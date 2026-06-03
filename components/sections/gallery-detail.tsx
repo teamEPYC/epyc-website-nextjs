@@ -28,7 +28,10 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
         </div>
 
         <div className="grid  w-[90%] max-w-outer mx-auto gap-8 lg:grid-cols-2 lg:gap-[30px]">
-          <figure className="relative w-full overflow-hidden rounded-[12px] h-fit  bg-bone shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+          <figure
+            className="relative w-full overflow-hidden rounded-[12px] bg-bone shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            style={item.kind === 'image' ? { aspectRatio: item.width / item.height } : undefined}
+          >
             {item.kind === 'video' ? (
               <video
                 src={item.src}
@@ -36,7 +39,7 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
                 loop
                 muted
                 playsInline
-                className="h-[40%] aspect-square w-full object-cover"
+                className="aspect-square w-full object-cover"
               />
             ) : (
               <Image
@@ -44,7 +47,7 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
                 alt={item.alt ?? title}
                 fill
                 sizes="(min-width: 1200px) 45vw, (min-width: 810px) 50vw, 90vw"
-                className="object-cover aspect-square h-[40%] w-full"
+                className="object-cover"
                 priority
               />
             )}
