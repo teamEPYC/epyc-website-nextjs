@@ -74,7 +74,7 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
               </a>
             ) : null}
 
-            <p className="text-body-lg text-ink">{description}</p>
+            <div className="text-body-lg text-ink" dangerouslySetInnerHTML={{ __html: description }} />
           </div>
         </div>
         <DotLineDivider className="max-w-[90%] mx-auto" />
