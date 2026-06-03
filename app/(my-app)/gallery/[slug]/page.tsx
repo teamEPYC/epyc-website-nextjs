@@ -16,14 +16,6 @@ const POPULATE_PARAMS = {
   'populate[image][fields]': 'url,width,height,alternativeText',
 }
 
-export async function generateStaticParams() {
-  const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
-    'fields': 'slug',
-    'pagination[limit]': '500',
-  })
-  return data.map((item) => ({ slug: item.slug }))
-}
-
 export async function generateMetadata({
   params,
 }: {
