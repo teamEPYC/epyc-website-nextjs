@@ -11,11 +11,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '*.r2.cloudflarestorage.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'pub-b1d053c780d14d2fb1a94a1e74ea5ecd.r2.dev',
+        hostname: 'website-media.epyc.in',
       },
     ],
   },

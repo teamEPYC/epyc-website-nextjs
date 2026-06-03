@@ -10,10 +10,13 @@ export const metadata: Metadata = {
   title: 'Gallery',
   description: 'Stills, motion clips, and prototypes from the EPYC studio.',
   alternates: { canonical: '/gallery' },
+  openGraph: {
+    siteName: 'EPYC',
+    images: [{ url: '/og/gallery.webp', width: 2400, height: 1260 }],
+  },
 }
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 export default async function GalleryPage() {
   const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {

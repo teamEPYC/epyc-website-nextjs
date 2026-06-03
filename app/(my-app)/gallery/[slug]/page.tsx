@@ -7,21 +7,12 @@ import { GalleryDetail } from '@/components/sections/gallery-detail'
 import { CTAFooter } from '@/components/sections/cta-footer'
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 const GALLERY_TITLE = 'Gallery'
 const GALLERY_DESCRIPTION = 'Stills, motion clips, and prototypes from the EPYC studio.'
 
 const POPULATE_PARAMS = {
   'populate[image][fields]': 'url,width,height,alternativeText',
-}
-
-export async function generateStaticParams() {
-  const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
-    'fields': 'slug',
-    'pagination[limit]': '500',
-  })
-  return data.map((item) => ({ slug: item.slug }))
 }
 
 export async function generateMetadata({
@@ -42,9 +33,15 @@ export async function generateMetadata({
   const title = item.title ?? GALLERY_TITLE
   const description = item.description ?? GALLERY_DESCRIPTION
 
+  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
   const ogImage =
     item.kind === 'image'
-      ? { url: item.src, width: item.width, height: item.height, alt: item.alt ?? title }
+      ? {
+          url: item.src.startsWith('http') ? item.src : `${mediaBase}${item.src}`,
+          width: item.width,
+          height: item.height,
+          alt: item.alt ?? title,
+        }
       : { url: '/og/default.jpg', width: 2400, height: 1260, alt: title }
 
   return {

@@ -10,7 +10,19 @@ import { site } from '@/data/site'
 type Params = Promise<{ slug: string }>
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
+
+const MEDIA_BASE = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
+
+function toAbsoluteMediaUrl(url: string): string {
+  return url.startsWith('http') ? url : `${MEDIA_BASE}${url}`
+}
+
+function rewriteMediaUrls(html: string): string {
+  return html.replace(
+    /(<img\b[^>]*?\bsrc\s*=\s*(["']))(\/[^"']+)\2/gi,
+    (_, prefix, quote, path) => `${prefix}${MEDIA_BASE}${path}${quote}`,
+  )
+}
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
@@ -24,7 +36,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const ogImage = blog.coverImage
     ? {
-        url: blog.coverImage.url,
+        url: toAbsoluteMediaUrl(blog.coverImage.url),
         width: blog.coverImage.width,
         height: blog.coverImage.height,
         alt: blog.coverImageAlt ?? blog.coverImage.alternativeText ?? blog.title,
@@ -63,11 +75,31 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
 
   const relatedBlogs = relatedData.map((b) => normalise(b))
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blog.metaDescription ?? site.description,
+    datePublished: blog.publishedDate ?? blog.publishedAt,
+    dateModified: blog.publishedAt,
+    url: `${site.url}/blogs/${slug}`,
+    image: blog.coverImage
+      ? toAbsoluteMediaUrl(blog.coverImage.url)
+      : `${site.url}/og/default.jpg`,
+    author: { '@type': 'Person', name: blog.author.name },
+    publisher: {
+      '@type': 'Organization',
+      name: site.name,
+      logo: { '@type': 'ImageObject', url: `${site.url}/icons/epyc-wordmark-large.svg` },
+    },
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogPost
         blog={normalise(blog, 'banner')}
-        body={<div dangerouslySetInnerHTML={{ __html: blog.content }} className="prose" />}
+        body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content) }} className="prose" />}
         relatedBlogs={relatedBlogs}
       />
       <CTAFooter />
