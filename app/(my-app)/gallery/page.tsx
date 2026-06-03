@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 export default async function GalleryPage() {
   const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {

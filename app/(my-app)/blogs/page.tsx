@@ -16,7 +16,6 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 export default async function BlogsPage() {
   const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
