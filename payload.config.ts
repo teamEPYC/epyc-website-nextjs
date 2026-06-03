@@ -2,6 +2,7 @@ import { sqliteD1Adapter } from '@payloadcms/db-d1-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
+import type { D1Database } from '@cloudflare/workers-types'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -42,10 +43,10 @@ function getD1Binding(): D1Database {
   return new Proxy({} as D1Database, {
     get(_target, prop) {
       if (!cached) {
-        cached = getCloudflareContext().env.DB as D1Database
+        cached = (getCloudflareContext().env as CloudflareEnv & { DB: D1Database }).DB
       }
       const value = (cached as unknown as Record<PropertyKey, unknown>)[prop]
-      return typeof value === 'function' ? (value as Function).bind(cached) : value
+      return typeof value === 'function' ? (value as (...args: unknown[]) => unknown).bind(cached) : value
     },
   })
 }
