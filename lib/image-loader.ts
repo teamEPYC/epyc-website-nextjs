@@ -36,5 +36,7 @@ export default function imageLoader({ src, width, quality }: LoaderArgs): string
   // `src` is always a `/`-prefixed path (local `/images/*` or
   // `/api/media/file/*`), so it concatenates straight onto the options.
   const options = `width=${width},quality=${quality ?? 75},format=auto`
-  return `/cdn-cgi/image/${options}${src}`
+  // Relative paths already start with `/`; absolute URLs (Strapi R2) need one added.
+  const separator = src.startsWith('http') ? '/' : ''
+  return `/cdn-cgi/image/${options}${separator}${src}`
 }
