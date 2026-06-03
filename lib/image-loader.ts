@@ -23,20 +23,25 @@ type LoaderArgs = {
 }
 
 export default function imageLoader({ src, width, quality }: LoaderArgs): string {
-  // SVGs are vector — never raster-optimized.
-  if (/\.svg($|\?)/i.test(src)) {
-    return src
-  }
-  // `/cdn-cgi/image/` is a Cloudflare-zone feature; `next dev` isn't behind
-  // one, so hand back the original URL there.
-  if (process.env.NODE_ENV === 'development') {
-    return src
-  }
-  // Cloudflare zone image transformations — edge-side resize + re-encode.
-  // `src` is always a `/`-prefixed path (local `/images/*` or
-  // `/api/media/file/*`), so it concatenates straight onto the options.
+  if (/\.svg($|\?)/i.test(src)) return src
+
+  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
   const options = `width=${width},quality=${quality ?? 75},format=auto`
-  // Relative paths already start with `/`; absolute URLs (Strapi R2) need one added.
-  const separator = src.startsWith('http') ? '/' : ''
-  return `/cdn-cgi/image/${options}${separator}${src}`
+
+  // `next dev` isn't behind a Cloudflare zone — cdn-cgi doesn't work.
+  // Bare Strapi paths need the media base prepended so they're fetchable.
+  if (process.env.NODE_ENV === 'development') {
+    if (!src.startsWith('/images/') && !src.startsWith('http')) return `${mediaBase}${src}`
+    return src
+  }
+
+  // Public folder assets (/images/site/...) — cdn-cgi on the main zone.
+  if (src.startsWith('/images/')) return `/cdn-cgi/image/${options}${src}`
+
+  // Absolute URL fallback — shouldn't happen with Strapi bare paths but handle gracefully.
+  if (src.startsWith('http')) return `/cdn-cgi/image/${options}/${src}`
+
+  // Strapi bare path (/hash.webp) — route through website-media.epyc.in cdn-cgi.
+  // Source and cdn-cgi are on the same Cloudflare zone so "this zone only" is satisfied.
+  return `${mediaBase}/cdn-cgi/image/${options}${src}`
 }

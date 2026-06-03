@@ -41,6 +41,7 @@ jobs:
         run: pnpm exec opennextjs-cloudflare build
         env:
           NEXT_PUBLIC_DEPLOY_ENV: staging
+          NEXT_PUBLIC_MEDIA_BASE_URL: https://website-media.epyc.in
           STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
 
