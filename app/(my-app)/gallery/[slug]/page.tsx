@@ -34,9 +34,15 @@ export async function generateMetadata({
   const title = item.title ?? GALLERY_TITLE
   const description = item.description ?? GALLERY_DESCRIPTION
 
+  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
   const ogImage =
     item.kind === 'image'
-      ? { url: item.src, width: item.width, height: item.height, alt: item.alt ?? title }
+      ? {
+          url: item.src.startsWith('http') ? item.src : `${mediaBase}${item.src}`,
+          width: item.width,
+          height: item.height,
+          alt: item.alt ?? title,
+        }
       : { url: '/og/default.jpg', width: 2400, height: 1260, alt: title }
 
   return {
