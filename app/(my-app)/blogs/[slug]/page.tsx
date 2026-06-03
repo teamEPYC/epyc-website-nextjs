@@ -1,66 +1,73 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getPayload } from 'payload'
-import config from '@payload-config'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { fetchStrapi } from '@/lib/strapi/client'
+import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
 import { BlogPost } from '@/components/sections/blog-post'
 import { CTAFooter } from '@/components/sections/cta-footer'
-import { normalise, type PayloadBlog } from '@/lib/blogs/normalise'
+import { normalise } from '@/lib/blogs/normalise'
+import { site } from '@/data/site'
 
 type Params = Promise<{ slug: string }>
 
 export const revalidate = 60
-
-// Skip build-time prerendering: the D1 binding only exists inside the
-// Worker runtime. Routes are rendered on-demand by the Worker; OpenNext's
-// incremental cache + `revalidate = 60` gives ISR-style caching at the edge.
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'blogs',
-    where: { slug: { equals: slug } },
-    depth: 0,
-    limit: 1,
+  const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
+    'filters[slug][$eq]': slug,
+    'populate[coverImage][fields]': 'url,width,height,alternativeText',
+    'pagination[limit]': '1',
   })
-  const blog = docs[0] as unknown as PayloadBlog | undefined
+  const blog = data[0]
   if (!blog) return {}
-  const description = blog.meta?.description ?? blog.excerpt ?? undefined
+
+  const ogImage = blog.coverImage
+    ? {
+        url: blog.coverImage.url,
+        width: blog.coverImage.width,
+        height: blog.coverImage.height,
+        alt: blog.coverImageAlt ?? blog.coverImage.alternativeText ?? blog.title,
+      }
+    : { url: '/og/default.jpg', width: 2400, height: 1260, alt: blog.title }
+
   return {
-    title: `${blog.title} - Blog`,
-    description: description ?? undefined,
+    title: blog.metaTitle ?? blog.title,
+    description: blog.metaDescription ?? site.description,
     alternates: { canonical: `/blogs/${slug}` },
+    openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
 }
 
 export default async function BlogDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'blogs',
-    where: { slug: { equals: slug } },
-    depth: 1,
-    limit: 1,
-  })
-  const blog = docs[0] as unknown as PayloadBlog | undefined
+
+  const [{ data }, { data: relatedData }] = await Promise.all([
+    fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
+      'filters[slug][$eq]': slug,
+      'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
+      'populate[author][fields]': 'name,slug',
+      'pagination[limit]': '1',
+    }),
+    fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
+      'filters[slug][$ne]': slug,
+      'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
+      'populate[author][fields]': 'name,slug',
+      'sort': 'publishedDate:desc',
+      'pagination[limit]': '3',
+    }),
+  ])
+
+  const blog = data[0]
   if (!blog) notFound()
 
-  const { docs: relatedDocs } = await payload.find({
-    collection: 'blogs',
-    where: { slug: { not_equals: slug } },
-    sort: ['-publishedAt', '-createdAt'],
-    depth: 1,
-    limit: 3,
-  })
-  const relatedBlogs = (relatedDocs as unknown as PayloadBlog[]).map((b) => normalise(b))
+  const relatedBlogs = relatedData.map((b) => normalise(b))
 
   return (
     <>
       <BlogPost
         blog={normalise(blog, 'banner')}
-        body={<RichText data={blog.content as Parameters<typeof RichText>[0]['data']} />}
+        body={<div dangerouslySetInnerHTML={{ __html: blog.content }} className="prose" />}
         relatedBlogs={relatedBlogs}
       />
       <CTAFooter />

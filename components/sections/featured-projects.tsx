@@ -52,7 +52,12 @@ export function FeaturedProjects() {
             <div className="flex gap-5 overflow-x-auto pb-4">
               {featuredProjects.map((p) => (
                 <div key={p.id} className="w-[780px] shrink-0">
-                  <ProjectCard href={p.href} title={p.name} tags={p.tags} image={p.image} />
+                  <ProjectCard
+                    href={p.href}
+                    title={p.name}
+                    tags={p.tags}
+                    image={p.image}
+                  />
                 </div>
               ))}
             </div>
@@ -71,7 +76,12 @@ export function FeaturedProjects() {
             <motion.div ref={railRef} style={{ x }} className="flex shrink-0 gap-5 pl-15">
               {featuredProjects.map((p) => (
                 <div key={p.id} className="w-[780px] shrink-0">
-                  <ProjectCard href={p.href} title={p.name} tags={p.tags} image={p.image} />
+                  <ProjectCard
+                    href={p.href}
+                    title={p.name}
+                    tags={p.tags}
+                    image={p.image}
+                  />
                 </div>
               ))}
             </motion.div>
@@ -96,7 +106,12 @@ function MobileStrip() {
         <div className="-mr-4 flex gap-5 overflow-x-auto pb-4 pr-4">
           {featuredProjects.map((p) => (
             <div key={p.id} className="w-[330px] shrink-0">
-              <ProjectCard href={p.href} title={p.name} tags={p.tags} image={p.image} />
+              <ProjectCard
+                href={p.href}
+                title={p.name}
+                tags={p.tags}
+                image={p.image}
+              />
             </div>
           ))}
         </div>

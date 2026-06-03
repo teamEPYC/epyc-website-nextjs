@@ -9,10 +9,10 @@ import { Brands } from '@/components/sections/brands'
 import { FAQs } from '@/components/sections/faqs'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { faqs } from '@/data/faqs'
-import { site } from '@/data/site'
 
+// No `title` here: the home page inherits the layout's `title.default`
+// ('EPYC | Website Development | Design Studio'), matching production.
 export const metadata: Metadata = {
-  title: site.tagline,
   alternates: { canonical: '/' },
 }
 

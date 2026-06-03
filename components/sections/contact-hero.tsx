@@ -1,6 +1,5 @@
-import Link from 'next/link'
 import Image from 'next/image'
-import { EpycMark } from '@/components/icons/epyc-mark'
+import { SiteNav } from '@/components/site-nav'
 import { ContactForm } from './contact-form'
 import { site } from '@/data/site'
 
@@ -16,8 +15,8 @@ const SOCIALS = [
   { label: '/LINKEDIN', href: site.social.linkedin },
 ]
 
-const CHECK_ICON = 'https://framerusercontent.com/images/HLCaAHqdvVRPiL21dJddT8CpdJM.svg'
-const BUTTERFLY = 'https://framerusercontent.com/images/ytaCR7YksH4wtdWD4UKUk1bf0Y.png'
+const CHECK_ICON = '/images/site/HLCaAHqdvVRPiL21dJddT8CpdJM.svg'
+const BUTTERFLY = '/images/site/ytaCR7YksH4wtdWD4UKUk1bf0Y.png'
 
 export function ContactHero() {
   return (
@@ -26,18 +25,7 @@ export function ContactHero() {
         id="form"
         className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 lg:px-6 py-10 lg:gap-24"
       >
-        <Link
-          href="/"
-          aria-label="EPYC home"
-          className="flex  items-center justify-center h-min-content"
-        >
-          <img
-            src="https://framerusercontent.com/images/2RD93rcDoffbqvpFPqBTvpXXNAk.svg?width=72&height=20"
-            alt="EPYC"
-            className=" w-[70px] h-auto text-ink"
-          />
-        </Link>
-
+        <SiteNav className="self-stretch -mx-4 -mt-10 lg:-mx-6" />
         <h1 className="tablet:hidden text-center text-display text-ink">
           Start your <br />
           EPYC Journey
@@ -46,7 +34,7 @@ export function ContactHero() {
         <div className="flex w-full  lg:w-[90%]  max-w-outer flex-col-reverse items-start justify-between lg:gap-12 tablet:flex-row">
           {/* Left column */}
 
-          <div className="flex w-full flex-col gap-12 lg:h-[649px] lg:w-[40%] justify-between">
+          <div className="hidden tablet:flex w-full  flex-col gap-12 lg:h-[649px] lg:w-[40%] justify-between">
             {/* Heading */}
             <div className="relative flex flex-col gap-[30px]">
               <h1 className="hidden tablet:block text-display text-ink">
@@ -104,7 +92,7 @@ export function ContactHero() {
           </div>
 
           {/* Right column — form + caption */}
-          <div className="flex w-full  flex-col items-center gap-15 lg:w-auto">
+          <div className="flex w-full justify-start  flex-col items-center gap-15 lg:w-auto">
             <ContactForm />
             <p className="text-body-lg text-ink text-center">
               We only work with 3 new customers at a time.

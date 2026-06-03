@@ -13,9 +13,10 @@ export function StickyImage() {
     >
       <div className="relative h-full w-full overflow-hidden">
         <Image
-          src="https://framerusercontent.com/images/nrsbyLofw3hQwQOWoECajIlhuY.webp"
+          src="/images/site/nrsbyLofw3hQwQOWoECajIlhuY.webp"
           alt=""
           fill
+          priority
           sizes="100vw"
           className="object-cover"
         />

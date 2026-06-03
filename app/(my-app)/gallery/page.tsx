@@ -1,4 +1,7 @@
 import type { Metadata } from 'next'
+import { fetchStrapi } from '@/lib/strapi/client'
+import type { StrapiList, StrapiGalleryItem } from '@/lib/strapi/types'
+import { normaliseGallery } from '@/lib/gallery/normalise'
 import { GalleryIndex } from '@/components/sections/gallery-index'
 import { FAQs } from '@/components/sections/faqs'
 import { CTAFooter } from '@/components/sections/cta-footer'
@@ -9,10 +12,19 @@ export const metadata: Metadata = {
   alternates: { canonical: '/gallery' },
 }
 
-export default function GalleryPage() {
+export const revalidate = 60
+export const dynamic = 'force-dynamic'
+
+export default async function GalleryPage() {
+  const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
+    'populate[image][fields]': 'url,width,height,alternativeText',
+    'pagination[limit]': '500',
+  })
+  const items = data.map((item) => normaliseGallery(item))
+
   return (
     <>
-      <GalleryIndex />
+      <GalleryIndex items={items} />
       <FAQs />
       <CTAFooter />
     </>

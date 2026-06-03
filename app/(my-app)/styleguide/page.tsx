@@ -337,7 +337,7 @@ export default function StyleGuide() {
                 title="Polygon"
                 tags="WEBFLOW, INTERACTIONS"
                 image={{
-                  src: "https://framerusercontent.com/images/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png",
+                  src: "/images/site/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png",
                   alt: "Polygon project preview",
                   width: 1868,
                   height: 1050,
@@ -348,7 +348,7 @@ export default function StyleGuide() {
                 title="Plum HQ"
                 tags="WEBFLOW, UI-UX, INTERACTIONS"
                 image={{
-                  src: "https://framerusercontent.com/images/lB7xt9A0ReUM3hjaHFTp8kCY9eA.webp",
+                  src: "/images/site/lB7xt9A0ReUM3hjaHFTp8kCY9eA.webp",
                   alt: "Plum HQ project preview",
                   width: 1788,
                   height: 992,
@@ -369,7 +369,7 @@ export default function StyleGuide() {
                 title="Blue Copa"
                 tags="WEBFLOW, UI-UX, INTERACTIONS"
                 image={{
-                  src: "https://framerusercontent.com/images/MspG2YIWMeAzQy6ofCM09LeltI.webp",
+                  src: "/images/site/MspG2YIWMeAzQy6ofCM09LeltI.webp",
                   alt: "Blue Copa preview",
                   width: 1794,
                   height: 1008,
@@ -381,7 +381,7 @@ export default function StyleGuide() {
                 tags="WEBFLOW, UI-UX, INTERACTIONS"
                 defaultOpen
                 image={{
-                  src: "https://framerusercontent.com/images/DYamKaYMre6AG3FW3h7l3zU0k4.png",
+                  src: "/images/site/DYamKaYMre6AG3FW3h7l3zU0k4.png",
                   alt: "Liberate Global preview",
                   width: 1914,
                   height: 1074,
@@ -394,19 +394,19 @@ export default function StyleGuide() {
           <SectionBlock id="brand-tile" title="Brand Tile">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               <BrandTile
-                src="https://framerusercontent.com/images/YU0shGm539fk6SAKf9F7GB73o0.svg"
+                src="/images/site/YU0shGm539fk6SAKf9F7GB73o0.svg"
                 alt="Brand A"
               />
               <BrandTile
-                src="https://framerusercontent.com/images/3Y807gIg19CCRqNIdIO62NOMum4.svg"
+                src="/images/site/3Y807gIg19CCRqNIdIO62NOMum4.svg"
                 alt="Brand B"
               />
               <BrandTile
-                src="https://framerusercontent.com/images/br15O4ToYXz2uL5OxIoAjysrRLg.svg"
+                src="/images/site/br15O4ToYXz2uL5OxIoAjysrRLg.svg"
                 alt="Brand C"
               />
               <BrandTile
-                src="https://framerusercontent.com/images/ZVXPIhdU3BfXeITwHjFh41RjLEc.svg"
+                src="/images/site/ZVXPIhdU3BfXeITwHjFh41RjLEc.svg"
                 alt="Brand D"
               />
             </div>
@@ -456,7 +456,7 @@ export default function StyleGuide() {
                 role="Director of Digital, Polygon"
                 quote="Honestly, I never worked with a better partner before. There is always someone available to help, you always deliver on time with great quality."
                 image={{
-                  src: "https://framerusercontent.com/images/VIky596fhtCQGcuZWqm4IOau4M.webp",
+                  src: "/images/site/VIky596fhtCQGcuZWqm4IOau4M.webp",
                   alt: "Leon Stern",
                 }}
                 tags={["Project Management", "Collaboration", "Pixel Perfect Implementation"]}

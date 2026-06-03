@@ -4,51 +4,40 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-03-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // `run_worker_first` MUST stay false: when true, every request — including
+  // static /public files (OG images, icons, fonts) — is routed through the
+  // OpenNext Worker. That gave OG images variable TTFB (0.3-1.8s) and the
+  // Worker-injected Vary/Critical-CH headers, so social scrapers (Slackbot,
+  // facebookexternalhit) intermittently timed out fetching the preview image.
+  // With false, /public assets are served directly from Cloudflare's edge;
+  // dynamic routes have no matching asset and fall through to the Worker.
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
-    "run_worker_first": true,
+    "run_worker_first": false,
   },
   "observability": {
     "enabled": true,
   },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "epyc-website-dev",
-      "database_id": "641a3a02-32e4-4775-8500-4a2ef0307e48",
-      "migrations_dir": "migrations/schema",
-    },
-  ],
+  // Producer side of the contact-form webhook job. The consumer is a separate
+  // worker — see workers/contact-webhook/. Named environments do NOT inherit
+  // `queues`, so each env repeats its own producer binding below.
+  "queues": {
+    "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
+  },
 
   "env": {
     "staging": {
       "name": "epyc-website-staging",
-      "vars": {
-        "NEXT_PUBLIC_SITE_URL": "https://staging.epyc.in",
+      "queues": {
+        "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
       },
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "epyc-website-staging",
-          "database_id": "a379666b-17b4-440f-a4a8-22b5550b1e2c",
-          "migrations_dir": "migrations/schema",
-        },
-      ],
     },
     "production": {
       "name": "epyc-website-production",
-      "vars": {
-        "NEXT_PUBLIC_SITE_URL": "https://epyc.in",
+      "queues": {
+        "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-production" }],
       },
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "epyc-website-production",
-          "database_id": "d1_database_v1_00000000000000000000000000000000",
-          "migrations_dir": "migrations/schema",
-        },
-      ],
     },
   },
 }
