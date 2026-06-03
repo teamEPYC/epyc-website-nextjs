@@ -8,18 +8,7 @@ type StrapiSlugList = { data: SlugEntry[]; meta: unknown };
 export const revalidate = 60;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
-  const make = (
-    path: string,
-    priority: number,
-    changeFrequency: "weekly" | "monthly" | "yearly" = "monthly",
-    lastModified: Date = now,
-  ) => ({
-    url: `${site.url}${path}`,
-    lastModified,
-    changeFrequency,
-    priority,
-  });
+  const url = (path: string) => ({ url: `${site.url}${path}` });
 
   const [blogs, gallery] = await Promise.all([
     fetchStrapi<StrapiSlugList>("/blogs", {
@@ -34,21 +23,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ]);
 
-  const blogEntries = blogs.data.map(({ slug, publishedAt }) =>
-    make(`/blog/${slug}`, 0.6, "monthly", new Date(publishedAt)),
-  );
+  const blogEntries = blogs.data.map(({ slug, publishedAt }) => ({
+    url: `${site.url}/blog/${slug}`,
+    lastModified: new Date(publishedAt),
+  }));
+
   const galleryEntries = gallery.data.map(({ slug }) =>
-    make(`/gallery/${slug}`, 0.5),
+    url(`/gallery/${slug}`),
   );
 
   return [
-    make("/", 1.0, "weekly"),
-    make("/projects", 0.8),
-    make("/blog", 0.7),
-    make("/gallery", 0.6),
-    make("/contact", 0.8),
-    make("/privacy-policy", 0.3, "yearly"),
-    make("/terms-and-conditions", 0.3, "yearly"),
+    url("/"),
+    url("/projects"),
+    url("/blog"),
+    url("/gallery"),
+    url("/contact"),
+    url("/privacy-policy"),
+    url("/terms-and-conditions"),
     ...blogEntries,
     ...galleryEntries,
   ];
