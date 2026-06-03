@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     make("/", 1.0, "weekly"),
+    make("/about", 0.8),
     make("/projects", 0.8),
     make("/blogs", 0.7),
     make("/gallery", 0.6),
