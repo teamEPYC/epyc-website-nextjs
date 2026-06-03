@@ -42,6 +42,7 @@ export function SiteNav({ className }: { className?: string }) {
 
   // Close the mobile panel whenever the route changes.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(false)
   }, [pathname])
 

@@ -82,10 +82,10 @@ export const testimonials: Testimonial[] = [
     },
     quote: (
       <p className="prose">
-        "EPYC is arguably one of the most professional & dedicated no-code design studios, going
+        &ldquo;EPYC is arguably one of the most professional & dedicated no-code design studios, going
         above & beyond, working with you to ensure excellent results.
         <br /> <br /> They provide the perfect combination of collaborative & professional support.
-        The team is creative, attentive to detail & very responsive to the needs of their clients."
+        The team is creative, attentive to detail & very responsive to the needs of their clients.&rdquo;
       </p>
     ),
 
