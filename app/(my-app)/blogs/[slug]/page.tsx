@@ -75,8 +75,28 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
 
   const relatedBlogs = relatedData.map((b) => normalise(b))
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: blog.title,
+    description: blog.metaDescription ?? site.description,
+    datePublished: blog.publishedDate ?? blog.publishedAt,
+    dateModified: blog.publishedAt,
+    url: `${site.url}/blogs/${slug}`,
+    image: blog.coverImage
+      ? toAbsoluteMediaUrl(blog.coverImage.url)
+      : `${site.url}/og/default.jpg`,
+    author: { '@type': 'Person', name: blog.author.name },
+    publisher: {
+      '@type': 'Organization',
+      name: site.name,
+      logo: { '@type': 'ImageObject', url: `${site.url}/icons/epyc-wordmark-large.svg` },
+    },
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogPost
         blog={normalise(blog, 'banner')}
         body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content) }} className="prose" />}
