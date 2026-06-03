@@ -10,7 +10,6 @@ import { site } from '@/data/site'
 type Params = Promise<{ slug: string }>
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 const MEDIA_BASE = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
 

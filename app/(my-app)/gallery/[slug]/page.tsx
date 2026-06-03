@@ -7,7 +7,6 @@ import { GalleryDetail } from '@/components/sections/gallery-detail'
 import { CTAFooter } from '@/components/sections/cta-footer'
 
 export const revalidate = 60
-export const dynamic = 'force-dynamic'
 
 const GALLERY_TITLE = 'Gallery'
 const GALLERY_DESCRIPTION = 'Stills, motion clips, and prototypes from the EPYC studio.'
