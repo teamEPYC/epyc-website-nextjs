@@ -9,7 +9,7 @@ import { BlogCard } from '@/components/ui/blog-card'
 import { BlogProse } from '@/components/ui/blog-prose'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { Sparkle } from '@/components/icons/sparkle'
-import type { NormalisedBlog } from '@/lib/blog/normalise'
+import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
 type BlogPostProps = {
   blog: NormalisedBlog

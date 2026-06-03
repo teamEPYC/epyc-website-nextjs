@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { BlogCard } from '@/components/ui/blog-card'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import type { NormalisedBlog } from '@/lib/blog/normalise'
+import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
 type BlogIndexProps = { blogs: NormalisedBlog[] }
 
