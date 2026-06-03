@@ -18,10 +18,20 @@ function toAbsoluteMediaUrl(url: string): string {
 }
 
 function rewriteMediaUrls(html: string): string {
-  return html.replace(
+  // Rewrite bare src="/..." paths
+  let result = html.replace(
     /(<img\b[^>]*?\bsrc\s*=\s*(["']))(\/[^"']+)\2/gi,
     (_, prefix, quote, path) => `${prefix}${MEDIA_BASE}${path}${quote}`,
   )
+  // Rewrite bare paths inside srcset="..." (each space-separated entry)
+  result = result.replace(
+    /(<img\b[^>]*?\bsrcset\s*=\s*(["']))([^"']+)\2/gi,
+    (_, prefix, quote, srcset) => {
+      const rewritten = srcset.replace(/(^|,\s*)(\/[^\s,]+)/g, (m: string, sep: string, p: string) => `${sep}${MEDIA_BASE}${p}`)
+      return `${prefix}${rewritten}${quote}`
+    },
+  )
+  return result
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
