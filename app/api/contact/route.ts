@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { neon } from '@neondatabase/serverless'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { contactSchema } from '@/lib/contact/schema'
 
@@ -19,23 +20,15 @@ export async function POST(req: Request) {
   // Honeypot tripped — pretend success, drop on the floor.
   if (website) return NextResponse.json({ ok: true })
 
-  const strapiRes = await fetch(`${process.env.STRAPI_URL}/api/submissions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-    },
-    body: JSON.stringify({ data }),
-  })
-
-  if (!strapiRes.ok) {
-    console.error('Strapi submission failed', strapiRes.status, await strapiRes.text().catch(() => ''))
-    return NextResponse.json({ ok: false }, { status: 502 })
-  }
+  const sql = neon(process.env.NEON_DATABASE_URL!)
+  await sql`
+    INSERT INTO contact_submissions (name, email, budget, details, source)
+    VALUES (${data.name}, ${data.email}, ${data.budget}, ${data.details}, ${data.source})
+  `
 
   // Hand the submission to the webhook background job (Cloudflare Queue —
   // consumed by workers/contact-webhook). A queue failure must not fail the
-  // request: the enquiry is already persisted to Strapi above.
+  // request: the enquiry is already persisted to Neon above.
   try {
     await getCloudflareContext().env.CONTACT_QUEUE.send(data)
   } catch (err) {
