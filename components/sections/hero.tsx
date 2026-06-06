@@ -82,12 +82,13 @@ export function Hero() {
             </div>
 
             <h1 className="text-h1 mt-10 lg:mt-0 text-center text-cream ">
-              Great Companies Deserve Great Websites &amp; Digital Products
+              We build websites for startups that are tired of looking like startups.
             </h1>
 
-            <p className="text-body max-w-sm text-center text-beige">
-              SaaS &amp; AI · E-Commerce &amp; Payments · Finance &amp; VC · Education · HealthTech
-              · Web3 &amp; Blockchain
+            <p className="text-body max-w-lg text-center text-beige">
+              We design and build premium websites for funded startups, VCs, and enterprises.
+              Polygon, Accel, Antler, and 75+ others trust us to build sites that match their
+              ambition — not their headcount.
             </p>
 
             <div className=" flex w-full  lg:w-auto items-center justify-center gap-3">

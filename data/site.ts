@@ -1,9 +1,9 @@
 export const site = {
   url: "https://epyc.in",
   name: "EPYC",
-  tagline: "Website Development | Design Studio",
+  tagline: "Website Design & Development for Startups & VCs",
   description:
-    "EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.",
+    "We design and build premium websites for funded startups, VCs, and ambitious companies. Trusted by Polygon, Accel, Antler, and 75+ organizations.",
   social: {
     x: "https://x.com/teamepyc",
     instagram: "https://instagram.com/teamepyc",
