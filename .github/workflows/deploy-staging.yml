@@ -44,7 +44,7 @@ jobs:
           NEXT_PUBLIC_MEDIA_BASE_URL: https://website-media.epyc.in
           STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
-          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          NEON_DATABASE_URL: ${{ secrets.STAGING_NEON_DATABASE_URL }}
 
       - name: Upload secrets to Cloudflare Workers (staging)
         env:
@@ -52,7 +52,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
-          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          NEON_DATABASE_URL: ${{ secrets.STAGING_NEON_DATABASE_URL }}
         run: |
           jq -n \
             --arg STRAPI_URL "$STRAPI_URL" \
