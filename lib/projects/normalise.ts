@@ -1,9 +1,4 @@
-/**
- * Adapter from Payload `projects` docs into the shape the UI consumes.
- * Hand-authored types — `payload generate:types` is broken in this project
- * (see lib/blogs/normalise.ts for the same workaround note).
- */
-import type { PayloadMedia, PayloadMediaSize, CoverSize } from '../blogs/normalise.ts'
+import type { StrapiProject, StrapiMedia } from '../strapi/types'
 
 export type ProjectIndustry =
   | 'vc'
@@ -18,37 +13,7 @@ export type ProjectIndustry =
   | 'ngo'
   | 'other'
 
-export type ProjectType =
-  | 'WEBFLOW'
-  | 'WORDPRESS'
-  | 'FRAMER'
-  | 'BUBBLE_IO'
-  | 'SHOPIFY'
-  | 'DEVELOPMENT'
-  | 'UI_UX'
-  | 'INTERACTIONS'
-  | 'BRANDING'
-  | '3D'
-  | 'SEO'
-  | 'AUTOMATIONS'
-  | 'VIRAL_LOOPS'
-
 export type ProjectPlatform = 'website' | 'app'
-
-export type PayloadProject = {
-  id: string | number
-  slug?: string | null
-  title: string
-  thumbnail: PayloadMedia | string | number
-  type: ProjectType[]
-  industry: ProjectIndustry
-  platform: ProjectPlatform
-  redirectLink: string
-  featured?: boolean | null
-  createdAt: string
-  updatedAt: string
-  _status?: 'draft' | 'published' | 'changed'
-}
 
 export type NormalisedProject = {
   slug: string
@@ -56,7 +21,7 @@ export type NormalisedProject = {
   redirectLink: string
   industry: ProjectIndustry
   platform: ProjectPlatform
-  types: ProjectType[]
+  types: string[]
   typesDisplay: string
   featured: boolean
   createdAt: string
@@ -65,71 +30,34 @@ export type NormalisedProject = {
     alt: string
     width: number
     height: number
-    focalX?: number
-    focalY?: number
   }
 }
 
-/** Display label for each canonical type enum, matching the CSV's source casing. */
-const TYPE_LABEL: Record<ProjectType, string> = {
-  WEBFLOW: 'WEBFLOW',
-  WORDPRESS: 'WORDPRESS',
-  FRAMER: 'FRAMER',
-  BUBBLE_IO: 'BUBBLE.IO',
-  SHOPIFY: 'SHOPIFY',
-  DEVELOPMENT: 'DEVELOPMENT',
-  UI_UX: 'UI-UX',
-  INTERACTIONS: 'INTERACTIONS',
-  BRANDING: 'BRANDING',
-  '3D': '3D',
-  SEO: 'SEO',
-  AUTOMATIONS: 'AUTOMATIONS',
-  VIRAL_LOOPS: 'VIRAL LOOPS',
+function pickImageUrl(media: StrapiMedia): { url: string; width: number; height: number } {
+  const fmt = media.formats?.large
+  if (fmt?.url) return fmt
+  return { url: media.url, width: media.width, height: media.height }
 }
 
-function pickSize(thumbnail: PayloadMedia, size: CoverSize): PayloadMediaSize {
-  const variant = thumbnail.sizes?.[size]
-  if (variant?.url) return variant
-  return {
-    url: thumbnail.url,
-    width: thumbnail.width,
-    height: thumbnail.height,
-    filename: thumbnail.filename,
-  }
-}
-
-export function normaliseProject(
-  project: PayloadProject,
-  size: CoverSize = 'card',
-): NormalisedProject {
-  const thumbnail = typeof project.thumbnail === 'object' ? project.thumbnail : null
-
-  if (!thumbnail?.url) {
-    throw new Error(
-      `Project ${project.slug ?? project.id}: thumbnail is not populated. Query with depth >= 1.`,
-    )
-  }
-
-  const picked = pickSize(thumbnail, size)
-  const types = project.type ?? []
+export function normaliseProject(project: StrapiProject): NormalisedProject {
+  const picked = pickImageUrl(project.thumbnail)
+  const types = project.type.split(',').map((s) => s.trim()).filter(Boolean)
 
   return {
-    slug: project.slug ?? String(project.id),
+    slug: project.slug,
     title: project.title,
     redirectLink: project.redirectLink,
-    industry: project.industry,
-    platform: project.platform,
+    industry: project.industry.slug as ProjectIndustry,
+    platform: project.platform.slug as ProjectPlatform,
     types,
-    typesDisplay: types.map((t) => TYPE_LABEL[t] ?? t).join(', '),
+    typesDisplay: project.type,
     featured: Boolean(project.featured),
-    createdAt: project.createdAt,
+    createdAt: project.publishedAt,
     image: {
-      src: picked.url!,
-      alt: thumbnail.alt || project.title,
+      src: picked.url,
+      alt: project.thumbnailAlt ?? project.thumbnail.alternativeText ?? project.title,
       width: picked.width ?? 1080,
       height: picked.height ?? 608,
-      focalX: thumbnail.focalX ?? undefined,
-      focalY: thumbnail.focalY ?? undefined,
     },
   }
 }

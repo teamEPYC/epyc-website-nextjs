@@ -27,6 +27,11 @@ jobs:
       - name: Typecheck
         run: pnpm exec tsc --noEmit
 
+      - name: Typecheck contact-webhook worker
+        # The consumer Worker is excluded from the root tsconfig (different
+        # libs), so it has its own project — check it explicitly.
+        run: pnpm exec tsc --noEmit -p workers/contact-webhook/tsconfig.json
+
       - name: Lint
         run: pnpm lint
 

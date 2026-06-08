@@ -11,7 +11,7 @@ export type Project = {
   };
 };
 
-const FRAMER = "https://framerusercontent.com/images";
+const FRAMER = "/images/projects";
 
 export const featuredProjects: Project[] = [
   {

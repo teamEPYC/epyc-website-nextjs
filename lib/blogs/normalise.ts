@@ -1,59 +1,6 @@
-/**
- * Local types and adapter from Payload `blogs` / `authors` / `media` docs into
- * the shape our existing UI components consume. We hand-author these types
- * because `payload generate:types` currently fails in this project due to a
- * pre-existing Payload CLI / top-level-await interaction; the Local API still
- * returns the same shapes.
- */
-
-export type PayloadMediaSize = {
-  url?: string | null
-  width?: number | null
-  height?: number | null
-  filename?: string | null
-}
-
-export type PayloadMedia = {
-  id: string | number
-  url?: string | null
-  filename?: string | null
-  alt?: string | null
-  width?: number | null
-  height?: number | null
-  mimeType?: string | null
-  sizes?: {
-    thumbnail?: PayloadMediaSize | null
-    card?: PayloadMediaSize | null
-    banner?: PayloadMediaSize | null
-  } | null
-  focalX?: number | null
-  focalY?: number | null
-}
+import type { StrapiBlog, StrapiMedia } from '../strapi/types'
 
 export type CoverSize = 'card' | 'banner'
-
-export type PayloadAuthor = {
-  id: string | number
-  name: string
-  slug?: string | null
-  bio?: string | null
-}
-
-export type PayloadBlog = {
-  id: string | number
-  slug?: string | null
-  title: string
-  publishedAt?: string | null
-  readTime?: string | null
-  excerpt?: string | null
-  author: PayloadAuthor | string | number
-  cover: PayloadMedia | string | number
-  content?: unknown // Lexical JSON
-  meta?: { title?: string | null; description?: string | null } | null
-  createdAt: string
-  updatedAt: string
-  _status?: 'draft' | 'published' | 'changed'
-}
 
 export type NormalisedBlog = {
   slug: string
@@ -63,6 +10,7 @@ export type NormalisedBlog = {
   readTime?: string
   author?: string
   excerpt?: string
+  content?: string
   image: {
     src: string
     alt: string
@@ -80,52 +28,31 @@ const DATE_FMT: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-/**
- * Pick the most appropriate Media derivative for the requested size, falling
- * back to the original file. Existing media that pre-dates the imageSizes
- * config simply falls through to the original (no broken images).
- */
-function pickSize(cover: PayloadMedia, size: CoverSize): PayloadMediaSize {
-  const variant = cover.sizes?.[size]
-  if (variant?.url) return variant
-  return {
-    url: cover.url,
-    width: cover.width,
-    height: cover.height,
-    filename: cover.filename,
-  }
+function pickImageUrl(media: StrapiMedia, size: CoverSize): { url: string; width: number; height: number } {
+  const fmt = size === 'banner' ? media.formats?.large : media.formats?.large
+  if (fmt?.url) return fmt
+  return { url: media.url, width: media.width, height: media.height }
 }
 
-export function normalise(blog: PayloadBlog, size: CoverSize = 'card'): NormalisedBlog {
-  const cover = typeof blog.cover === 'object' ? blog.cover : null
-  const author = typeof blog.author === 'object' ? blog.author : null
-
-  if (!cover?.url) {
-    throw new Error(
-      `Blog ${blog.slug ?? blog.id}: cover is not populated. Query with depth >= 1.`,
-    )
-  }
-
-  const picked = pickSize(cover, size)
+export function normalise(blog: StrapiBlog, size: CoverSize = 'card'): NormalisedBlog {
+  const picked = pickImageUrl(blog.coverImage, size)
+  const dateSource = blog.publishedDate ?? blog.publishedAt
 
   return {
-    slug: blog.slug ?? String(blog.id),
+    slug: blog.slug,
     title: blog.title,
-    date: blog.publishedAt
-      ? new Date(blog.publishedAt).toLocaleDateString('en-US', DATE_FMT)
-      : undefined,
-    publishedAt: blog.publishedAt ?? blog.createdAt,
+    date: dateSource ? new Date(dateSource).toLocaleDateString('en-US', DATE_FMT) : undefined,
+    publishedAt: dateSource,
     readTime: blog.readTime ?? undefined,
-    author: author?.name,
-    excerpt: blog.excerpt ?? blog.meta?.description ?? undefined,
+    author: blog.author?.name,
+    excerpt: blog.metaDescription ?? undefined,
+    content: blog.content,
     image: {
-      src: picked.url!,
-      alt: cover.alt || blog.title,
-      width: picked.width ?? 1333,
-      height: picked.height ?? 833,
-      focalX: cover.focalX ?? undefined,
-      focalY: cover.focalY ?? undefined,
+      src: picked.url,
+      alt: blog.coverImageAlt ?? blog.coverImage.alternativeText ?? blog.title,
+      width: picked.width,
+      height: picked.height,
     },
-    metaDescription: blog.meta?.description ?? blog.excerpt ?? undefined,
+    metaDescription: blog.metaDescription ?? undefined,
   }
 }

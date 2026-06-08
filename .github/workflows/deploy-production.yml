@@ -1,12 +1,5 @@
 name: Deploy Production
 
-# Push-on-master trigger intentionally disabled until production is
-# fully provisioned: production D1 still has a placeholder id in
-# wrangler.jsonc (`d1_database_v1_00000000...`) and the production R2
-# bucket + secrets haven't been wired up yet. Re-enable by uncommenting
-# the `push` block once `wrangler d1 create epyc-website-production`
-# is done, `PRODUCTION_R2_BUCKET` is set in GitHub secrets, and the
-# wrangler.jsonc production `database_id` is updated.
 on:
   # push:
   #   branches: [master]
@@ -19,7 +12,6 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
     permissions:
       contents: read
     steps:
@@ -45,73 +37,27 @@ jobs:
       - name: Typecheck
         run: pnpm exec tsc --noEmit
 
-      - name: Regenerate Payload importMap
-        # payload.config.ts only registers the s3Storage plugin when
-        # R2_BUCKET && R2_ENDPOINT are set, and the plugin contributes
-        # S3ClientUploadHandler to the import map. Force truthy values so
-        # the regenerated map matches the committed copy (which is
-        # produced locally with real R2 env vars). The values aren't
-        # actually used — generateImportMap walks the static config tree.
-        run: pnpm generate:importmap
-        env:
-          R2_BUCKET: importmap-stub
-          R2_ENDPOINT: https://importmap-stub.invalid
-
-      - name: Fail if importMap drifted from committed copy
-        run: |
-          git diff --exit-code app/\(payload\)/admin/importMap.js \
-            || (echo "importMap.js is stale. Run 'pnpm generate:importmap' locally and commit the result." && exit 1)
-
-      - name: Apply D1 schema migrations (production)
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: d1 migrations apply DB --remote --env production
-
       - name: OpenNext build
         run: pnpm exec opennextjs-cloudflare build
         env:
-          # Payload's init reads PAYLOAD_SECRET at module load. Build-time
-          # Next pre-rendering loads payload.config.ts, so it must be set.
-          # R2_* are stubbed for the same reason as the importMap step:
-          # forces the s3 plugin into the config consistently.
-          PAYLOAD_SECRET: ${{ secrets.PRODUCTION_PAYLOAD_SECRET }}
-          R2_BUCKET: build-stub
-          R2_ENDPOINT: https://build-stub.invalid
+          NEXT_PUBLIC_DEPLOY_ENV: production
+          NEXT_PUBLIC_MEDIA_BASE_URL: https://website-media.epyc.in
+          STRAPI_URL: ${{ secrets.PRODUCTION_STRAPI_URL }}
+          STRAPI_API_TOKEN: ${{ secrets.PRODUCTION_STRAPI_API_TOKEN }}
 
       - name: Upload secrets to Cloudflare Workers (production)
-        # wrangler-action's `secrets:` input invokes `wrangler secret bulk`
-        # without --env, so wrangler 4.x targets the top-level worker
-        # (`epyc-website`, our local-dev name) instead of the production
-        # worker and fails authentication. Upload them ourselves with
-        # --env production so the bulk call hits epyc-website-production
-        # directly. Values are passed as positional jq --arg so
-        # quoting/newlines in secret values are safe. Per-env values use
-        # STAGING_ / PRODUCTION_ prefix; values shared across envs (R2
-        # endpoint and access keys, since both envs target the same
-        # Cloudflare account) are unprefixed.
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          PAYLOAD_SECRET: ${{ secrets.PRODUCTION_PAYLOAD_SECRET }}
-          R2_BUCKET: ${{ secrets.PRODUCTION_R2_BUCKET }}
-          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          STRAPI_URL: ${{ secrets.PRODUCTION_STRAPI_URL }}
+          STRAPI_API_TOKEN: ${{ secrets.PRODUCTION_STRAPI_API_TOKEN }}
         run: |
           jq -n \
-            --arg PAYLOAD_SECRET "$PAYLOAD_SECRET" \
-            --arg R2_BUCKET "$R2_BUCKET" \
-            --arg R2_ENDPOINT "$R2_ENDPOINT" \
-            --arg R2_ACCESS_KEY_ID "$R2_ACCESS_KEY_ID" \
-            --arg R2_SECRET_ACCESS_KEY "$R2_SECRET_ACCESS_KEY" \
+            --arg STRAPI_URL "$STRAPI_URL" \
+            --arg STRAPI_API_TOKEN "$STRAPI_API_TOKEN" \
             '{
-              PAYLOAD_SECRET: $PAYLOAD_SECRET,
-              R2_BUCKET: $R2_BUCKET,
-              R2_ENDPOINT: $R2_ENDPOINT,
-              R2_ACCESS_KEY_ID: $R2_ACCESS_KEY_ID,
-              R2_SECRET_ACCESS_KEY: $R2_SECRET_ACCESS_KEY
+              STRAPI_URL: $STRAPI_URL,
+              STRAPI_API_TOKEN: $STRAPI_API_TOKEN
             }' \
           | pnpm exec wrangler secret bulk --env production
 
@@ -121,3 +67,24 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --env production
+
+      - name: Deploy contact-webhook consumer (production)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env production --config workers/contact-webhook/wrangler.jsonc
+
+      - name: Set contact-webhook secret (production)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CONTACT_WEBHOOK_URL: ${{ secrets.PRODUCTION_CONTACT_WEBHOOK_URL }}
+        run: |
+          if [ -z "$CONTACT_WEBHOOK_URL" ]; then
+            echo "::error::PRODUCTION_CONTACT_WEBHOOK_URL is unset — add it in the repo's GitHub Actions secrets."
+            exit 1
+          fi
+          printf '%s' "$CONTACT_WEBHOOK_URL" \
+            | pnpm exec wrangler secret put CONTACT_WEBHOOK_URL \
+                --env production --config workers/contact-webhook/wrangler.jsonc

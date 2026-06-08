@@ -20,8 +20,8 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 // the swap reads as intentional. Padding matches the Framer source (80×40 desktop).
 const CARD_BASE = 'rounded-[16px] border-[0.5px] border-ink bg-bone/10 px-4 py-12 lg:px-10 sm:py-20'
 
-const AVATAR_FRONT = 'https://framerusercontent.com/images/9kfynLGYhcGa9MrgHJQYqrLd4Ww.webp'
-const AVATAR_BACK = 'https://framerusercontent.com/images/pJhRncaatIpf1PdD5SxKHlhOcQ.png'
+const AVATAR_FRONT = '/images/site/9kfynLGYhcGa9MrgHJQYqrLd4Ww.webp'
+const AVATAR_BACK = '/images/site/pJhRncaatIpf1PdD5SxKHlhOcQ.png'
 
 export function ContactForm() {
   const reduceMotion = useReducedMotion()
@@ -202,7 +202,7 @@ export function ContactForm() {
               size="lg"
               // icon="arrow-right"
               disabled={state === 'submitting'}
-              className="absolute -bottom-10  left-1/2 h-[80px] text-cream text-base tablet:text-[20px] tracking-[-0.02em] w-[280px] max-w-[80%] -translate-x-1/2 sm:w-[338px] sm:max-w-none"
+              className="absolute -bottom-10 disabled:opacity-100  cursor-pointer left-1/2 h-[80px] text-cream text-base tablet:text-[20px] tracking-[-0.02em] w-[280px] max-w-[80%] -translate-x-1/2 sm:w-[338px] sm:max-w-none"
             >
               {state === 'submitting' ? 'SENDING…' : 'SUBMIT ENQUIRY'}
             </Button>
@@ -231,8 +231,7 @@ export function ContactForm() {
           <div className="flex flex-col gap-3">
             <h3 className="text-h3 text-ink">Thanks — we&apos;ll be in touch.</h3>
             <p className="text-body text-ink/70">
-              We&apos;ve logged your enquiry. Mayank &amp; Keshav will reply within one business
-              day.
+              We&apos;ve logged your enquiry. Our team will reply within one business day.
             </p>
           </div>
         </div>

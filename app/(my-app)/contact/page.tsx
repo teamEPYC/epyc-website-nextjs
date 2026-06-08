@@ -5,9 +5,15 @@ import { ExclusivityCTA } from '@/components/sections/exclusivity-cta'
 import { CTAFooter } from '@/components/sections/cta-footer'
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  // `absolute` so the `%s | EPYC` template doesn't apply — production uses
+  // 'EPYC | Contact Us'.
+  title: { absolute: 'EPYC | Contact Us' },
   description: "Tell us about your project — we'll get back within a business day.",
   alternates: { canonical: '/contact' },
+  openGraph: {
+    siteName: 'EPYC',
+    images: [{ url: '/og/contact.jpg', width: 2400, height: 1260, alt: 'EPYC — Contact' }],
+  },
 }
 
 export default function ContactPage() {

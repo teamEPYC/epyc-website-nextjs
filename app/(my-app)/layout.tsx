@@ -61,10 +61,8 @@ const normsSerif = localFont({
   display: 'swap',
 })
 
-const siteUrl = 'https://epyc.in'
-
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(site.url),
   title: {
     default: 'EPYC | Website Development | Design Studio',
     template: '%s | EPYC',
@@ -80,17 +78,19 @@ export const metadata: Metadata = {
 >>>>>>> Stashed changes
   openGraph: {
     type: 'website',
-    url: siteUrl,
+    url: site.url,
     siteName: 'EPYC',
-    title: 'EPYC | Website Development | Design Studio',
-    description:
-      'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
+    images: [
+      {
+        url: '/og/default.jpg',
+        width: 2400,
+        height: 1260,
+        alt: 'EPYC — Website Development & Design Studio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EPYC | Website Development | Design Studio',
-    description:
-      'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
   },
   robots: { index: true, follow: true, 'max-image-preview': 'large' },
 }

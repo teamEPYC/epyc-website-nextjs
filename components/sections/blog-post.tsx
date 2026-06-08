@@ -1,14 +1,13 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Section } from '@/components/ui/section'
+import { SiteNav } from '@/components/site-nav'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Reveal } from '@/components/ui/reveal'
 import { BlogCard } from '@/components/ui/blog-card'
 import { BlogProse } from '@/components/ui/blog-prose'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import { Sparkle } from '@/components/icons/sparkle'
 import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
@@ -22,15 +21,12 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
   return (
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4">
       <div className="relative mx-auto w-full overflow-hidden border-l border-r border-t border-ink px-0 py-11">
+        <SiteNav className="-mt-11 mb-12" />
         <Container
           width="outer"
           className="flex w-[90%] flex-col items-center gap-0 px-0 sm:px-0 lg:gap-10 lg:px-0"
         >
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
-            <Link href="/" aria-label="EPYC home" className="inline-block">
-              <EpycMark className="h-auto w-[72px] text-ink" />
-            </Link>
-
             {/* Hero */}
             <header className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
               <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal">
@@ -89,7 +85,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
                   {relatedBlogs.map((b) => (
                     <BlogCard
                       key={b.slug}
-                      href={`/blogs/${b.slug}`}
+                      href={`/blog/${b.slug}`}
                       title={b.title}
                       image={b.image}
                       date={b.date}

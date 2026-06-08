@@ -65,7 +65,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         {/* Photo with ornamental SVG frame. */}
         <div className="relative h-[470px] w-[360px]">
           <img
-            src="https://framerusercontent.com/images/UDA17654NsGwNB4PAZVy4qrxgmc.svg"
+            src="/images/site/UDA17654NsGwNB4PAZVy4qrxgmc.svg"
             alt=""
             aria-hidden
             className="pointer-events-none absolute inset-0 h-full w-full select-none"
@@ -100,7 +100,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
               type="button"
               onClick={() => go(-1)}
               aria-label="Previous testimonial"
-              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition-colors hover:bg-cream/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
+              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition duration-200 ease-out motion-reduce:transition-none hover:bg-cream/10 active:scale-[0.94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
             >
               <ThinArrow direction="left" />
             </button>
@@ -108,7 +108,7 @@ export function TestimonialSlider({ testimonials, className }: Props) {
               type="button"
               onClick={() => go(1)}
               aria-label="Next testimonial"
-              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition-colors hover:bg-cream/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
+              className="flex items-center justify-center rounded-[28px] border border-sand px-6 py-5 text-cream transition duration-200 ease-out motion-reduce:transition-none hover:bg-cream/10 active:scale-[0.94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/40"
             >
               <ThinArrow direction="right" />
             </button>
@@ -131,8 +131,8 @@ export function TestimonialSlider({ testimonials, className }: Props) {
           <OrnamentDivider className="text-sand/50" />
         </motion.div>
 
-        <p className="text-body max-w-[600px] mx-auto lg:max-w-none text-center lg:text-left text-cream">
-          {current.quote.join(' ')}
+        <p className="text-body max-w-[600px] mx-auto  text-center lg:text-left text-cream">
+          {current.quote}
         </p>
 
         {/* Bottom ornament */}

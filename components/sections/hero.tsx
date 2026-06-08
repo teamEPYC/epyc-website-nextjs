@@ -1,10 +1,9 @@
 import { PaperBackground } from '@/components/ui/paper-background'
+import { SiteNav } from '@/components/site-nav'
 import { Container } from '@/components/ui/container'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Star } from '@/components/icons/star'
-import { EpycMark } from '@/components/icons/epyc-mark'
-import { EpycWordmark } from '@/components/icons/epyc-wordmark'
 import { ClutchWordmark } from '@/components/icons/clutch-wordmark'
 import { BubbleGlyph } from '@/components/icons/bubble-glyph'
 import { WebflowGlyph } from '@/components/icons/webflow-glyph'
@@ -17,26 +16,11 @@ export function Hero() {
       {/* Inner frame with the 1px beige border on top + left + right (no bottom),
           matching the Framer source's `framer-15o8czf` element. */}
       <div className="min-h-[calc(67vh-2rem)] border-l border-r border-t border-beige lg:min-h-[calc(90vh-2rem)]">
+        <SiteNav />
         <Container
           width="content"
           className="relative flex min-h-[calc(67vh-2rem)] flex-col items-center justify-start gap-15 py-12 lg:min-h-[calc(90vh-2rem)] lg:gap-24 lg:py-12"
         >
-          {/* Logo — wings emblem stacked above EPYC wordmark */}
-          <div className="flex flex-col items-center gap-3 md:gap-2">
-            <img
-              src="https://framerusercontent.com/images/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg?width=86&height=20"
-              alt="EPYC"
-              loading="lazy"
-              className="h-auto w-[70px] text-cream lg:w-[87px]"
-            />
-            <img
-              src="https://framerusercontent.com/images/hgI5DqS5OhR7orP2x05J8rY5Lg.svg?width=187&height=45"
-              alt="EPYC"
-              loading="lazy"
-              className="h-auto w-[70px] text-cream lg:w-[87px]"
-            />
-          </div>
-
           {/* Center content */}
           <div className="flex w-full max-w-[780px] flex-col items-center gap-5 lg:gap-6">
             {/* Clutch badge — its own row */}

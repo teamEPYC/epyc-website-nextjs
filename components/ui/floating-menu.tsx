@@ -14,7 +14,7 @@ type FloatingMenuButtonProps = {
 
 const defaultLinks: MenuLink[] = [
   { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blogs" },
+  { label: "Blog", href: "/blog" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
   { label: "Studio", href: "/studio" },

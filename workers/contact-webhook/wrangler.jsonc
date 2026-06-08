@@ -1,0 +1,56 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  // Consumer worker for the contact-form webhook job. The Next.js app
+  // (../../wrangler.jsonc) is the producer; this worker drains the queue and
+  // POSTs each submission to CONTACT_WEBHOOK_URL.
+  //
+  // CONTACT_WEBHOOK_URL is a secret — set per environment with:
+  //   wrangler secret put CONTACT_WEBHOOK_URL \
+  //     --config workers/contact-webhook/wrangler.jsonc --env <env>
+  // For local `wrangler dev`, put it in workers/contact-webhook/.dev.vars.
+  //
+  // Named environments do NOT inherit `queues`, so each env repeats it below.
+  "name": "epyc-contact-webhook-dev",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-03-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+  },
+  "queues": {
+    "consumers": [
+      {
+        "queue": "epyc-contact-webhook-dev",
+        "max_retries": 5,
+        "dead_letter_queue": "epyc-contact-webhook-dev-dlq",
+      },
+    ],
+  },
+
+  "env": {
+    "staging": {
+      "name": "epyc-contact-webhook-staging",
+      "queues": {
+        "consumers": [
+          {
+            "queue": "epyc-contact-webhook-staging",
+            "max_retries": 5,
+            "dead_letter_queue": "epyc-contact-webhook-staging-dlq",
+          },
+        ],
+      },
+    },
+    "production": {
+      "name": "epyc-contact-webhook-production",
+      "queues": {
+        "consumers": [
+          {
+            "queue": "epyc-contact-webhook-production",
+            "max_retries": 5,
+            "dead_letter_queue": "epyc-contact-webhook-production-dlq",
+          },
+        ],
+      },
+    },
+  },
+}

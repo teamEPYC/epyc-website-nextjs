@@ -1,11 +1,9 @@
-import Link from 'next/link'
 import { Section } from '@/components/ui/section'
+import { SiteNav } from '@/components/site-nav'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { Reveal } from '@/components/ui/reveal'
 import { BlogCard } from '@/components/ui/blog-card'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
-import { EpycMark } from '@/components/icons/epyc-mark'
 import type { NormalisedBlog } from '@/lib/blogs/normalise'
 
 type BlogIndexProps = { blogs: NormalisedBlog[] }
@@ -15,15 +13,12 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
   return (
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4 ">
       <div className="relative mx-auto w-full px-6 py-11  overflow-hidden border-l border-r border-t border-ink ">
+        <SiteNav className="-mx-6 -mt-11 mb-12" />
         <Container
           width="outer"
           className="flex flex-col px-0 sm:px-0 lg:px-0 items-center gap-12 lg:gap-10 max-w-outter w-[90%]"
         >
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
-            <Link href="/" aria-label="EPYC home" className="inline-block">
-              <EpycMark className="h-auto w-[72px] text-ink" />
-            </Link>
-
             <div className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
               <SectionHeading
                 as="h1"
@@ -41,11 +36,15 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
 
           <DotLineDivider />
 
-          <Reveal as="div" className="grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
+          {/* Simple on-load entrance (`.load-fade-up` in globals.css) — runs
+              once when the page renders, not on scroll. A scroll-reveal here
+              broke on tall monitors: the grid is one large element that never
+              crossed the IntersectionObserver threshold until you scrolled. */}
+          <div className="load-fade-up grid w-full grid-cols-1 gap-10 sm:grid-cols-2">
             {blogs.map((b) => (
               <BlogCard
                 key={b.slug}
-                href={`/blogs/${b.slug}`}
+                href={`/blog/${b.slug}`}
                 title={b.title}
                 image={b.image}
                 date={b.date}
@@ -53,7 +52,7 @@ export function BlogIndex({ blogs }: BlogIndexProps) {
                 publishedAt={b.publishedAt}
               />
             ))}
-          </Reveal>
+          </div>
         </Container>
       </div>
     </Section>

@@ -3,10 +3,9 @@ import Link from 'next/link'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Button } from '@/components/ui/button'
-import { IconButton } from '@/components/ui/icon-button'
 import { DashedDivider } from '@/components/ui/dashed-divider'
 import { Reveal } from '@/components/ui/reveal'
-import { Play } from '@/components/icons/play'
+import { PronounceButton } from '@/components/ui/pronounce-button'
 import { footerColumns, pronunciationLines } from '@/data/nav'
 import { site } from '@/data/site'
 
@@ -33,15 +32,26 @@ function FooterLink({ href, label }: { href: string; label: string }) {
 export function CTAFooter() {
   return (
     <section className="relative w-full overflow-hidden bg-grey-primary px-6 py-12">
-      <Container width="outer" className="relative">
+      {/* Full-bleed background texture. `z-0` keeps it above the section's
+          `bg-grey-primary` fill but below the content. */}
+      <Image
+        src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
+        alt=""
+        fill
+        loading="eager"
+        sizes="100vw"
+        className="z-0 object-cover"
+      />
+      <Container width="outer" className="relative z-10">
         <Reveal className="flex  w-full flex-col  gap-12">
           {/* Top CTA strip */}
           <div className="flex flex-row flex-none content-center justify-center items-center gap-[50px] w-[1150px] mx-auto w-full h-min p-0 relative overflow-hidden">
             <div className="relative hidden h-[306px] w-[216px] overflow-hidden border-r border-cream/40 lg:block">
               <Image
-                src="https://framerusercontent.com/images/rV5jBk0jBJfsfnlEdgFHud9abY.webp"
+                src="/images/site/rV5jBk0jBJfsfnlEdgFHud9abY.webp"
                 alt=""
                 fill
+                loading="eager"
                 sizes="216px"
                 className="object-cover"
               />
@@ -59,9 +69,10 @@ export function CTAFooter() {
 
             <div className="relative hidden h-[306px] w-[216px] overflow-hidden border-l border-cream/40 lg:block">
               <Image
-                src="https://framerusercontent.com/images/c7C4RZlnVXgsMtYKORFY3DNffs.webp"
+                src="/images/site/c7C4RZlnVXgsMtYKORFY3DNffs.webp"
                 alt=""
                 fill
+                loading="eager"
                 sizes="216px"
                 className="object-cover"
               />
@@ -87,13 +98,7 @@ export function CTAFooter() {
             {/* Pronounce row */}
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-4">
-                <IconButton
-                  tone="ink"
-                  aria-label="How to pronounce EPYC"
-                  className="bg-ink/80 ring-1 ring-cream/30"
-                >
-                  <Play size={18} />
-                </IconButton>
+                <PronounceButton />
                 <p className="text-body text-cream">How to pronounce EPYC?</p>
               </div>
               <ul className="flex flex-col gap-2 font-plex-serif text-body italic text-cream/70 underline underline-offset-4">
