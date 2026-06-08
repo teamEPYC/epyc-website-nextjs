@@ -29,7 +29,7 @@ const faqJsonLd = {
 export default function Home() {
   return (
     <>
-      {/* Section order is the same as DOM order at lg+ (Tailwind's `lg:order-none`
+      {/* Setion order is the same as DOM order at lg+ (Tailwind's `lg:order-none`
           collapses to 0 on every wrapper, falling back to DOM order). On mobile
           the explicit `order-N` classes shift Services down by two slots so the
           visual flow is: ... More Projects -> Voices -> Brands -> Services -> ... */}
