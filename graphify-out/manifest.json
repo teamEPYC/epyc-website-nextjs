@@ -1,0 +1,1207 @@
+{
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.claude/settings.local.json": {
+    "mtime": 1780825141.6740057,
+    "ast_hash": "45e2710cd36f73960e9e8f5d46ddb0ba",
+    "semantic_hash": "45e2710cd36f73960e9e8f5d46ddb0ba"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.vscode/settings.json": {
+    "mtime": 1780477325.5111022,
+    "ast_hash": "3c811434e2b1b288da22a9190b9389a4",
+    "semantic_hash": "3c811434e2b1b288da22a9190b9389a4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/blog/[slug]/page.tsx": {
+    "mtime": 1780900668.47399,
+    "ast_hash": "5fe207b9d75245ba28af3eda6075c716",
+    "semantic_hash": "5fe207b9d75245ba28af3eda6075c716"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/blog/page.tsx": {
+    "mtime": 1780900668.4741862,
+    "ast_hash": "bcd3a4f6e8d46e5c2243487193bbd0f2",
+    "semantic_hash": "bcd3a4f6e8d46e5c2243487193bbd0f2"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/contact/page.tsx": {
+    "mtime": 1780900668.4743905,
+    "ast_hash": "f4ddbd05498166a2f11287c7cc89c4ee",
+    "semantic_hash": "f4ddbd05498166a2f11287c7cc89c4ee"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/gallery/[slug]/page.tsx": {
+    "mtime": 1780900668.4745882,
+    "ast_hash": "948ec9752ff2b3bd02277c14545e7125",
+    "semantic_hash": "948ec9752ff2b3bd02277c14545e7125"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/gallery/page.tsx": {
+    "mtime": 1780900668.4747353,
+    "ast_hash": "959e2a008d4193c8340f563d53c03a70",
+    "semantic_hash": "959e2a008d4193c8340f563d53c03a70"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/layout.tsx": {
+    "mtime": 1780900668.4757872,
+    "ast_hash": "603402ff7aad881e8853f522cf92d080",
+    "semantic_hash": "603402ff7aad881e8853f522cf92d080"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/page.tsx": {
+    "mtime": 1780993059.54733,
+    "ast_hash": "2c3753fd6b775d78469dcaaa8cc8211f",
+    "semantic_hash": "2c3753fd6b775d78469dcaaa8cc8211f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/privacy-policy/page.tsx": {
+    "mtime": 1780477325.5133543,
+    "ast_hash": "bee63252fc1d76b6fc583dbda953d3c4",
+    "semantic_hash": "bee63252fc1d76b6fc583dbda953d3c4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/projects/page.tsx": {
+    "mtime": 1780900668.4763596,
+    "ast_hash": "0b7c490b2306bf8afad5344752b714dd",
+    "semantic_hash": "0b7c490b2306bf8afad5344752b714dd"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/robots.ts": {
+    "mtime": 1780477325.5136158,
+    "ast_hash": "d3371d066bd27dc37930156ffd276fc7",
+    "semantic_hash": "d3371d066bd27dc37930156ffd276fc7"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/sitemap.ts": {
+    "mtime": 1780900668.4765506,
+    "ast_hash": "58bc9c6df430147e47d10c2a76889269",
+    "semantic_hash": "58bc9c6df430147e47d10c2a76889269"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/styleguide/_demos/button-demo.tsx": {
+    "mtime": 1780477325.5139997,
+    "ast_hash": "131919c2b713fb851082e322e8422d98",
+    "semantic_hash": "131919c2b713fb851082e322e8422d98"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/styleguide/page.tsx": {
+    "mtime": 1780993059.5478373,
+    "ast_hash": "3a404765f0b590571d6afd8ccec5c81c",
+    "semantic_hash": "3a404765f0b590571d6afd8ccec5c81c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/terms-and-conditions/page.tsx": {
+    "mtime": 1780477325.5145485,
+    "ast_hash": "095f8dea22cda1623cf6df0b06f274b1",
+    "semantic_hash": "095f8dea22cda1623cf6df0b06f274b1"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/api/contact/route.ts": {
+    "mtime": 1780900668.4772637,
+    "ast_hash": "f9e0985f501171ccd2d2d0dcadb711cf",
+    "semantic_hash": "f9e0985f501171ccd2d2d0dcadb711cf"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/cloudflare-env.d.ts": {
+    "mtime": 1780900668.4793403,
+    "ast_hash": "7fcc911e72278721a180f3f4f4dd2a8b",
+    "semantic_hash": "7fcc911e72278721a180f3f4f4dd2a8b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/arrow-down.tsx": {
+    "mtime": 1780477325.5151331,
+    "ast_hash": "9f94d78e5a39dfef6c5fb6cf590d91a9",
+    "semantic_hash": "9f94d78e5a39dfef6c5fb6cf590d91a9"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/arrow-right.tsx": {
+    "mtime": 1780477325.51522,
+    "ast_hash": "33b4089f8fcf0c075c61ee1d3ce35842",
+    "semantic_hash": "33b4089f8fcf0c075c61ee1d3ce35842"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/bubble-glyph.tsx": {
+    "mtime": 1780477325.515308,
+    "ast_hash": "3e53ee11b6c6cabe1946ab8da28c8534",
+    "semantic_hash": "3e53ee11b6c6cabe1946ab8da28c8534"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/chevron-right.tsx": {
+    "mtime": 1780477325.515396,
+    "ast_hash": "e8e9079e88297ceddb36c933f869458d",
+    "semantic_hash": "e8e9079e88297ceddb36c933f869458d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/clutch-wordmark.tsx": {
+    "mtime": 1780477325.515491,
+    "ast_hash": "147db2a2e321ecce5bb07903eb637743",
+    "semantic_hash": "147db2a2e321ecce5bb07903eb637743"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/epyc-mark.tsx": {
+    "mtime": 1780477325.5155754,
+    "ast_hash": "6428756dba69bfa26ce605e94eeb30ee",
+    "semantic_hash": "6428756dba69bfa26ce605e94eeb30ee"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/epyc-wordmark.tsx": {
+    "mtime": 1780477325.5158057,
+    "ast_hash": "ecfe5a9e977556ca51b1b8b5f70767bc",
+    "semantic_hash": "ecfe5a9e977556ca51b1b8b5f70767bc"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/framer-glyph.tsx": {
+    "mtime": 1780477325.5159054,
+    "ast_hash": "a7beeccae912096005b901a355b1ea5f",
+    "semantic_hash": "a7beeccae912096005b901a355b1ea5f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/index.ts": {
+    "mtime": 1780477325.516004,
+    "ast_hash": "531aa183333652b1c06ca28fd5159d19",
+    "semantic_hash": "531aa183333652b1c06ca28fd5159d19"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/menu-lines.tsx": {
+    "mtime": 1780477325.516121,
+    "ast_hash": "60851b0ef26a4bce53ea6f0c660e9f60",
+    "semantic_hash": "60851b0ef26a4bce53ea6f0c660e9f60"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/minus.tsx": {
+    "mtime": 1780477325.5161986,
+    "ast_hash": "e3f9a01e625d6b8de7833e4842e0ff44",
+    "semantic_hash": "e3f9a01e625d6b8de7833e4842e0ff44"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/play.tsx": {
+    "mtime": 1780477325.516284,
+    "ast_hash": "8ae5232156a3398194665af797f9a6d4",
+    "semantic_hash": "8ae5232156a3398194665af797f9a6d4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/plus-minus.tsx": {
+    "mtime": 1780477325.5163808,
+    "ast_hash": "468fae717d1772f9c5d132486baa721e",
+    "semantic_hash": "468fae717d1772f9c5d132486baa721e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/plus.tsx": {
+    "mtime": 1780477325.5164745,
+    "ast_hash": "36405a58b49ca1317343181ce8b59059",
+    "semantic_hash": "36405a58b49ca1317343181ce8b59059"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/quote.tsx": {
+    "mtime": 1780477325.5165586,
+    "ast_hash": "997272528e837feb7bc946a30b6809d3",
+    "semantic_hash": "997272528e837feb7bc946a30b6809d3"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/sparkle.tsx": {
+    "mtime": 1780477325.5166373,
+    "ast_hash": "c0775954824d4a591fadeb6f07a7b5e2",
+    "semantic_hash": "c0775954824d4a591fadeb6f07a7b5e2"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/star.tsx": {
+    "mtime": 1780477325.5167446,
+    "ast_hash": "bf67be2cd5394921a622eb58fbda301a",
+    "semantic_hash": "bf67be2cd5394921a622eb58fbda301a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/icons/webflow-glyph.tsx": {
+    "mtime": 1780477325.5168343,
+    "ast_hash": "fe27eb7678f3822be23811733adc527f",
+    "semantic_hash": "fe27eb7678f3822be23811733adc527f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/blog-index.tsx": {
+    "mtime": 1780900668.4797084,
+    "ast_hash": "3151d41a7ac10ee70e20227d5713ebfe",
+    "semantic_hash": "3151d41a7ac10ee70e20227d5713ebfe"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/blog-post.tsx": {
+    "mtime": 1780900668.479958,
+    "ast_hash": "a9f9bb789737aa41b7f966d5b7d5e718",
+    "semantic_hash": "a9f9bb789737aa41b7f966d5b7d5e718"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/brands.tsx": {
+    "mtime": 1780477325.5172865,
+    "ast_hash": "aeff661e55e3f94f15520fab42774d02",
+    "semantic_hash": "aeff661e55e3f94f15520fab42774d02"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/coming-soon.tsx": {
+    "mtime": 1780477325.517373,
+    "ast_hash": "1268245a3958756d58f25b13a7a0642f",
+    "semantic_hash": "1268245a3958756d58f25b13a7a0642f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/contact-form.tsx": {
+    "mtime": 1780900668.4802518,
+    "ast_hash": "e8ce2e1ed83694da0e16176fdd85cbf4",
+    "semantic_hash": "e8ce2e1ed83694da0e16176fdd85cbf4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/contact-hero.tsx": {
+    "mtime": 1780900668.4805048,
+    "ast_hash": "906588d8ecef1b30561144a767d088d4",
+    "semantic_hash": "906588d8ecef1b30561144a767d088d4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/cta-footer.tsx": {
+    "mtime": 1780900668.4809496,
+    "ast_hash": "da1a4dacb2febeb4c8d304ed42c0612a",
+    "semantic_hash": "da1a4dacb2febeb4c8d304ed42c0612a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/exclusivity-cta.tsx": {
+    "mtime": 1780477325.5179515,
+    "ast_hash": "d12a89d31cb3d291f5c829e3d33569ca",
+    "semantic_hash": "d12a89d31cb3d291f5c829e3d33569ca"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/faqs.tsx": {
+    "mtime": 1780900668.481149,
+    "ast_hash": "e787de60b2777dd226ed45c02828ca18",
+    "semantic_hash": "e787de60b2777dd226ed45c02828ca18"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/featured-projects.tsx": {
+    "mtime": 1780900668.4814415,
+    "ast_hash": "65dcee7aeb5f8fe923cc41ac0d0e086a",
+    "semantic_hash": "65dcee7aeb5f8fe923cc41ac0d0e086a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/gallery-detail.tsx": {
+    "mtime": 1780900668.481654,
+    "ast_hash": "36e093f6d77442c9621469c01789ebb5",
+    "semantic_hash": "36e093f6d77442c9621469c01789ebb5"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/gallery-index.tsx": {
+    "mtime": 1780900668.4818404,
+    "ast_hash": "20c5578b48960d0ed1234b1952053441",
+    "semantic_hash": "20c5578b48960d0ed1234b1952053441"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/hero.tsx": {
+    "mtime": 1780993059.5483284,
+    "ast_hash": "083df238c859e29a4a927770a001f7d8",
+    "semantic_hash": "083df238c859e29a4a927770a001f7d8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/legal-page.tsx": {
+    "mtime": 1780900668.4821606,
+    "ast_hash": "81161d91ef48d238136d56093d3c40ed",
+    "semantic_hash": "81161d91ef48d238136d56093d3c40ed"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/more-projects.tsx": {
+    "mtime": 1780477325.5187223,
+    "ast_hash": "d6151524b91f1c0fe612f31fa80c2fee",
+    "semantic_hash": "d6151524b91f1c0fe612f31fa80c2fee"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/projects-index.tsx": {
+    "mtime": 1780900668.4825244,
+    "ast_hash": "4fa5be119e47cc021e07a68f5c311ae8",
+    "semantic_hash": "4fa5be119e47cc021e07a68f5c311ae8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/services.tsx": {
+    "mtime": 1780477325.5192015,
+    "ast_hash": "47a10f864b4975a8bb636d1d20a944e6",
+    "semantic_hash": "47a10f864b4975a8bb636d1d20a944e6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/sticky-image.tsx": {
+    "mtime": 1780900668.4826777,
+    "ast_hash": "7f608affeb00f88f095b333953bbc609",
+    "semantic_hash": "7f608affeb00f88f095b333953bbc609"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/testimonial-slider.tsx": {
+    "mtime": 1780900668.4830692,
+    "ast_hash": "663757c80dbfcdda394ad954ef26529b",
+    "semantic_hash": "663757c80dbfcdda394ad954ef26529b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/sections/voices.tsx": {
+    "mtime": 1780900668.4834552,
+    "ast_hash": "34338d518cc4e0bacf45eb76da1b565a",
+    "semantic_hash": "34338d518cc4e0bacf45eb76da1b565a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/site-nav.tsx": {
+    "mtime": 1780900668.4837,
+    "ast_hash": "ac927c48a5b6bf0f2e4c7c357082a62a",
+    "semantic_hash": "ac927c48a5b6bf0f2e4c7c357082a62a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/badge.tsx": {
+    "mtime": 1780477325.5200772,
+    "ast_hash": "e155731390130789329eaf71f6b0e2bf",
+    "semantic_hash": "e155731390130789329eaf71f6b0e2bf"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/blog-card.tsx": {
+    "mtime": 1780477325.5201693,
+    "ast_hash": "c4fefaf9ca1bcab4d259338b2c34d2b0",
+    "semantic_hash": "c4fefaf9ca1bcab4d259338b2c34d2b0"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/blog-prose.tsx": {
+    "mtime": 1780477325.5202653,
+    "ast_hash": "d871b35ce18a3925cde6c102aafdf4fb",
+    "semantic_hash": "d871b35ce18a3925cde6c102aafdf4fb"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/brand-tile.tsx": {
+    "mtime": 1780900668.4839075,
+    "ast_hash": "9445bae3bf8654578de83765bc3c21ae",
+    "semantic_hash": "9445bae3bf8654578de83765bc3c21ae"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/button.tsx": {
+    "mtime": 1780900668.4841719,
+    "ast_hash": "36b6589f578f3170de57603d7b42499c",
+    "semantic_hash": "36b6589f578f3170de57603d7b42499c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/container.tsx": {
+    "mtime": 1780477325.5206962,
+    "ast_hash": "ca50cffb804238ae938a7ad1958cc768",
+    "semantic_hash": "ca50cffb804238ae938a7ad1958cc768"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/dashed-divider.tsx": {
+    "mtime": 1780477325.520785,
+    "ast_hash": "fbbdcf4aef2884746cf436647bc023da",
+    "semantic_hash": "fbbdcf4aef2884746cf436647bc023da"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/dot-line-divider.tsx": {
+    "mtime": 1780477325.520865,
+    "ast_hash": "23b296a1755334d1c1d295c1c52aec7a",
+    "semantic_hash": "23b296a1755334d1c1d295c1c52aec7a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/faq-item.tsx": {
+    "mtime": 1780477325.5209668,
+    "ast_hash": "ca2d1dd4293f1de4aafda21a0151f4de",
+    "semantic_hash": "ca2d1dd4293f1de4aafda21a0151f4de"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/floating-menu.tsx": {
+    "mtime": 1780900668.4843254,
+    "ast_hash": "a3361a4eb7089198fc5b36e75e795f47",
+    "semantic_hash": "a3361a4eb7089198fc5b36e75e795f47"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/form.tsx": {
+    "mtime": 1780477325.521134,
+    "ast_hash": "b8677e66c060bb95693a7b35c7e9828a",
+    "semantic_hash": "b8677e66c060bb95693a7b35c7e9828a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/gallery-card.tsx": {
+    "mtime": 1780477325.5212126,
+    "ast_hash": "29b309599e4a8d1d4f0eda6b5c6ada98",
+    "semantic_hash": "29b309599e4a8d1d4f0eda6b5c6ada98"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/gallery-related-card.tsx": {
+    "mtime": 1780477325.5213075,
+    "ast_hash": "d25a9f1dd642ee3ba9215061baba5295",
+    "semantic_hash": "d25a9f1dd642ee3ba9215061baba5295"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/icon-button.tsx": {
+    "mtime": 1780900668.4846988,
+    "ast_hash": "97ab27ea21d73a700b09dc46cc55661a",
+    "semantic_hash": "97ab27ea21d73a700b09dc46cc55661a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/ornament-divider.tsx": {
+    "mtime": 1780477325.52148,
+    "ast_hash": "0d45244e15900a8513a12b52046b70fe",
+    "semantic_hash": "0d45244e15900a8513a12b52046b70fe"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/paper-background.tsx": {
+    "mtime": 1780900668.484859,
+    "ast_hash": "5fa7f85abb3e63e7aab13ab7c27b27c8",
+    "semantic_hash": "5fa7f85abb3e63e7aab13ab7c27b27c8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/pill.tsx": {
+    "mtime": 1780477325.5216496,
+    "ast_hash": "8156634f8c30e7676e19f71860d61e2b",
+    "semantic_hash": "8156634f8c30e7676e19f71860d61e2b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/project-card.tsx": {
+    "mtime": 1780900668.485033,
+    "ast_hash": "e2118b9677f4b937a9e2deb2528797ae",
+    "semantic_hash": "e2118b9677f4b937a9e2deb2528797ae"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/project-row.tsx": {
+    "mtime": 1780900668.4852078,
+    "ast_hash": "a0052b712a1686aaca305f5f9f663442",
+    "semantic_hash": "a0052b712a1686aaca305f5f9f663442"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/pronounce-button.tsx": {
+    "mtime": 1780900668.4853063,
+    "ast_hash": "04f9b88d790d0bb362a51d77d8d1a43b",
+    "semantic_hash": "04f9b88d790d0bb362a51d77d8d1a43b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/quote-link.tsx": {
+    "mtime": 1780900668.4853973,
+    "ast_hash": "91711082c4e84838d557339178e8075f",
+    "semantic_hash": "91711082c4e84838d557339178e8075f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/reveal.tsx": {
+    "mtime": 1780477325.5220733,
+    "ast_hash": "d2d8039747ebe3664d522f88544ea3fc",
+    "semantic_hash": "d2d8039747ebe3664d522f88544ea3fc"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/section-heading.tsx": {
+    "mtime": 1780477325.5221636,
+    "ast_hash": "c1e7848a7f2feef55320be9055c97a08",
+    "semantic_hash": "c1e7848a7f2feef55320be9055c97a08"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/section.tsx": {
+    "mtime": 1780477325.5222554,
+    "ast_hash": "bfc34cde088ed2a8fd78c026bf56db26",
+    "semantic_hash": "bfc34cde088ed2a8fd78c026bf56db26"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/service-card.tsx": {
+    "mtime": 1780477325.5223489,
+    "ast_hash": "e6eb3c9894ea2d7f96427c64eb1c5a85",
+    "semantic_hash": "e6eb3c9894ea2d7f96427c64eb1c5a85"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/services-stamp.tsx": {
+    "mtime": 1780477325.5224688,
+    "ast_hash": "92aa708d4cfe0cd2ba421642efefad57",
+    "semantic_hash": "92aa708d4cfe0cd2ba421642efefad57"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/star-rating.tsx": {
+    "mtime": 1780900668.4855542,
+    "ast_hash": "10b0e06f8c9d0c076a29a1b93096f56c",
+    "semantic_hash": "10b0e06f8c9d0c076a29a1b93096f56c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/components/ui/testimonial.tsx": {
+    "mtime": 1780477325.5226512,
+    "ast_hash": "b0c4c718b7ca0dbce3fa086e3c790828",
+    "semantic_hash": "b0c4c718b7ca0dbce3fa086e3c790828"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/brands.ts": {
+    "mtime": 1780900668.4857311,
+    "ast_hash": "8cccc070774cbb351f01341161f1879d",
+    "semantic_hash": "8cccc070774cbb351f01341161f1879d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/faqs.ts": {
+    "mtime": 1780477325.5228813,
+    "ast_hash": "f6dd2361bc601c106d3cf3287dd17b59",
+    "semantic_hash": "f6dd2361bc601c106d3cf3287dd17b59"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/gallery.ts": {
+    "mtime": 1780900668.4859033,
+    "ast_hash": "e3a2c7d5cab3417ec9dd9d6eebc30973",
+    "semantic_hash": "e3a2c7d5cab3417ec9dd9d6eebc30973"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/nav.ts": {
+    "mtime": 1780900668.4860783,
+    "ast_hash": "b964660aea9e8ee9c96c7a44f3f822f8",
+    "semantic_hash": "b964660aea9e8ee9c96c7a44f3f822f8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/projects.ts": {
+    "mtime": 1780900668.4863274,
+    "ast_hash": "484e603ea1cf274d1660f68d07017abc",
+    "semantic_hash": "484e603ea1cf274d1660f68d07017abc"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/services.ts": {
+    "mtime": 1780477325.5233421,
+    "ast_hash": "76028cf59e784769ca05b0aa052355eb",
+    "semantic_hash": "76028cf59e784769ca05b0aa052355eb"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/site.ts": {
+    "mtime": 1780993059.5486844,
+    "ast_hash": "3f73e3ef25486d90db3a8007dc73f064",
+    "semantic_hash": "3f73e3ef25486d90db3a8007dc73f064"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/data/testimonials.tsx": {
+    "mtime": 1780900668.486587,
+    "ast_hash": "d432efa653c3dd74b1dce7e7794667c7",
+    "semantic_hash": "d432efa653c3dd74b1dce7e7794667c7"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/eslint.config.mjs": {
+    "mtime": 1780900668.4869502,
+    "ast_hash": "79e0ab5d07be0c78371a14ba97bde120",
+    "semantic_hash": "79e0ab5d07be0c78371a14ba97bde120"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/blogs/normalise.ts": {
+    "mtime": 1780900668.487138,
+    "ast_hash": "4f2eed94c8c5ad3d94456f9e9c3a11a6",
+    "semantic_hash": "4f2eed94c8c5ad3d94456f9e9c3a11a6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/cn.ts": {
+    "mtime": 1780477325.5244367,
+    "ast_hash": "07fe7772595d57f7f8d74ab81e87074a",
+    "semantic_hash": "07fe7772595d57f7f8d74ab81e87074a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/contact/schema.ts": {
+    "mtime": 1780477325.5245776,
+    "ast_hash": "319cd2b6764f71fd75f311ec6357c4a6",
+    "semantic_hash": "319cd2b6764f71fd75f311ec6357c4a6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/gallery/normalise.ts": {
+    "mtime": 1780900668.4874134,
+    "ast_hash": "7cbd37628a0ee0a5443e8d113c254923",
+    "semantic_hash": "7cbd37628a0ee0a5443e8d113c254923"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/image-loader.ts": {
+    "mtime": 1780900668.487522,
+    "ast_hash": "c30952ff2521d74b73878f231a643a0b",
+    "semantic_hash": "c30952ff2521d74b73878f231a643a0b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/projects/normalise.ts": {
+    "mtime": 1780900668.4877026,
+    "ast_hash": "2289f41dc7daf2d0c4dcdb96fd4aa9f8",
+    "semantic_hash": "2289f41dc7daf2d0c4dcdb96fd4aa9f8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/strapi/client.ts": {
+    "mtime": 1780900668.4878705,
+    "ast_hash": "9596c4656c6182fec26b6d6d23a6c962",
+    "semantic_hash": "9596c4656c6182fec26b6d6d23a6c962"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/lib/strapi/types.ts": {
+    "mtime": 1780900668.4879746,
+    "ast_hash": "b617d28c7e24a16a540bf1f9eab1973a",
+    "semantic_hash": "b617d28c7e24a16a540bf1f9eab1973a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/next.config.ts": {
+    "mtime": 1780900668.488123,
+    "ast_hash": "b84d41186db5e6099d8037f48f53b881",
+    "semantic_hash": "b84d41186db5e6099d8037f48f53b881"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/open-next.config.ts": {
+    "mtime": 1780477325.5253851,
+    "ast_hash": "0fd5bc8e326cb58bae58a288a0312b17",
+    "semantic_hash": "0fd5bc8e326cb58bae58a288a0312b17"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/package.json": {
+    "mtime": 1780900668.4882967,
+    "ast_hash": "d484e367c62ac88bce9397c4f787ec8f",
+    "semantic_hash": "d484e367c62ac88bce9397c4f787ec8f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/postcss.config.mjs": {
+    "mtime": 1780477325.526944,
+    "ast_hash": "239f3ebf717465dc636818a1a619398d",
+    "semantic_hash": "239f3ebf717465dc636818a1a619398d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/scripts/migrate-framer-assets.ts": {
+    "mtime": 1780900668.5974557,
+    "ast_hash": "668141f970c9abf05e53de2e997d5165",
+    "semantic_hash": "668141f970c9abf05e53de2e997d5165"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/tsconfig.json": {
+    "mtime": 1780900668.5978665,
+    "ast_hash": "1378dc20016f3561cfe2add13bf0f2c6",
+    "semantic_hash": "1378dc20016f3561cfe2add13bf0f2c6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/workers/contact-webhook/src/index.ts": {
+    "mtime": 1780900668.5981476,
+    "ast_hash": "ef71ceaf1e5711f2d6f61f3f80fdad5b",
+    "semantic_hash": "ef71ceaf1e5711f2d6f61f3f80fdad5b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/workers/contact-webhook/tsconfig.json": {
+    "mtime": 1780900668.5982273,
+    "ast_hash": "750e03a01a25455d5f551dc9bfd46f2a",
+    "semantic_hash": "750e03a01a25455d5f551dc9bfd46f2a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.claude/strapi/SKILL.md": {
+    "mtime": 1780900668.4705222,
+    "ast_hash": "fa28bce3deac9ee9db276b3a5a75d59a",
+    "semantic_hash": "fa28bce3deac9ee9db276b3a5a75d59a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.claude/strapi/reference/content-types.md": {
+    "mtime": 1780900668.4707682,
+    "ast_hash": "9df12f93d2f10ca7aeef14f67fd04e0a",
+    "semantic_hash": "9df12f93d2f10ca7aeef14f67fd04e0a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.claude/strapi/reference/rest-api.md": {
+    "mtime": 1780900668.4711409,
+    "ast_hash": "d272424051e12f83c41a004155e0e732",
+    "semantic_hash": "d272424051e12f83c41a004155e0e732"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.claude/strapi/reference/webhooks.md": {
+    "mtime": 1780900668.4712918,
+    "ast_hash": "7a8e10fb1996c071d7168a1e3243b50a",
+    "semantic_hash": "7a8e10fb1996c071d7168a1e3243b50a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.github/workflows/ci.yml": {
+    "mtime": 1780900668.4718223,
+    "ast_hash": "7695526729395fc84bc7fecb19ed0d84",
+    "semantic_hash": "7695526729395fc84bc7fecb19ed0d84"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.github/workflows/deploy-production.yml": {
+    "mtime": 1780900668.472013,
+    "ast_hash": "e38d1a14b566d830531c23a98930a7ee",
+    "semantic_hash": "e38d1a14b566d830531c23a98930a7ee"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/.github/workflows/deploy-staging.yml": {
+    "mtime": 1780900668.4723222,
+    "ast_hash": "cb1b8973dba4ba0f2742f42098372e37",
+    "semantic_hash": "cb1b8973dba4ba0f2742f42098372e37"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/AGENTS.md": {
+    "mtime": 1780477325.5111907,
+    "ast_hash": "9e09241799026ac05be315a2f0b50055",
+    "semantic_hash": "9e09241799026ac05be315a2f0b50055"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/CLAUDE.md": {
+    "mtime": 1780477325.5112774,
+    "ast_hash": "5c27369b226fcf2be8a6cfe52224e767",
+    "semantic_hash": "5c27369b226fcf2be8a6cfe52224e767"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/DESIGN.md": {
+    "mtime": 1780477325.5114527,
+    "ast_hash": "4cf339e21331da588b370eb07ab2bc0f",
+    "semantic_hash": "4cf339e21331da588b370eb07ab2bc0f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/README.md": {
+    "mtime": 1780477325.511576,
+    "ast_hash": "3fffe791268d2507cff0979a9d2b141e",
+    "semantic_hash": "3fffe791268d2507cff0979a9d2b141e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/docs/strapi-migration-plan.md": {
+    "mtime": 1780900668.4868162,
+    "ast_hash": "71147c51da5586e915881a4d1a8fe1df",
+    "semantic_hash": "71147c51da5586e915881a4d1a8fe1df"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/docs/superpowers/specs/2026-05-18-d1-migration-design.md": {
+    "mtime": 1780477325.5240571,
+    "ast_hash": "4e2ab4bd5ea705d61cce63429db4fcad",
+    "semantic_hash": "4e2ab4bd5ea705d61cce63429db4fcad"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/pnpm-workspace.yaml": {
+    "mtime": 1780477325.5268617,
+    "ast_hash": "bb50e932d44a2dde6b7fe1bbea2c98c5",
+    "semantic_hash": "bb50e932d44a2dde6b7fe1bbea2c98c5"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/apple-icon.png": {
+    "mtime": 1780477325.5117617,
+    "ast_hash": "23c29089cafb6248118051bd02acd317",
+    "semantic_hash": "23c29089cafb6248118051bd02acd317"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/app/(my-app)/icon.png": {
+    "mtime": 1780900668.4755092,
+    "ast_hash": "095a85b4f88ed0e8ac3c02f9949c560d",
+    "semantic_hash": "095a85b4f88ed0e8ac3c02f9949c560d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/file.svg": {
+    "mtime": 1780477325.5273929,
+    "ast_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71",
+    "semantic_hash": "d09f95206c3fa0bb9bd9fefabfd0ea71"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/globe.svg": {
+    "mtime": 1780477325.5286689,
+    "ast_hash": "2aaafa6a49b6563925fe440891e32717",
+    "semantic_hash": "2aaafa6a49b6563925fe440891e32717"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/bubble-glyph.svg": {
+    "mtime": 1780477325.5288062,
+    "ast_hash": "8b85b42c8383b344bfbe081e18e5fc1e",
+    "semantic_hash": "8b85b42c8383b344bfbe081e18e5fc1e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/dashed-divider.svg": {
+    "mtime": 1780477325.5288904,
+    "ast_hash": "480117725502c9ac74938be57602ea49",
+    "semantic_hash": "480117725502c9ac74938be57602ea49"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/epyc-wordmark-large.svg": {
+    "mtime": 1780477325.5289786,
+    "ast_hash": "4a743ced5b641175b8c8afc7634639a2",
+    "semantic_hash": "4a743ced5b641175b8c8afc7634639a2"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/epyc-wordmark-small.svg": {
+    "mtime": 1780477325.5290682,
+    "ast_hash": "3c0805c6cfd6ab4c7af6bacd4daaacbf",
+    "semantic_hash": "3c0805c6cfd6ab4c7af6bacd4daaacbf"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/ornament-divider.svg": {
+    "mtime": 1780477325.5291443,
+    "ast_hash": "f45e05771214672a5bc4e394a0678ffe",
+    "semantic_hash": "f45e05771214672a5bc4e394a0678ffe"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/play.svg": {
+    "mtime": 1780477325.5292332,
+    "ast_hash": "25d62cd9858e937d2f43dfa5873f069f",
+    "semantic_hash": "25d62cd9858e937d2f43dfa5873f069f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/sparkle-small.svg": {
+    "mtime": 1780477325.5293148,
+    "ast_hash": "8471d7a8fab7aef92765f7b0ba21006a",
+    "semantic_hash": "8471d7a8fab7aef92765f7b0ba21006a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/icons/webflow-glyph.svg": {
+    "mtime": 1780477325.5297024,
+    "ast_hash": "e6e71022c10e48cdd724b8e4065f3b1c",
+    "semantic_hash": "e6e71022c10e48cdd724b8e4065f3b1c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/0AqpBMqtZ9vaBufal9pWoWLHJfI.svg": {
+    "mtime": 1780900668.4929848,
+    "ast_hash": "df10557484e05fd585c878aafa421f63",
+    "semantic_hash": "df10557484e05fd585c878aafa421f63"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/1FxbbJKxDFJA3rDQbyONjkNDw.svg": {
+    "mtime": 1780900668.4933958,
+    "ast_hash": "2534a4993290a30a725a748845d465f7",
+    "semantic_hash": "2534a4993290a30a725a748845d465f7"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/3Y807gIg19CCRqNIdIO62NOMum4.svg": {
+    "mtime": 1780900668.4936237,
+    "ast_hash": "baeb5220d95de13d7afb7c8044fdc812",
+    "semantic_hash": "baeb5220d95de13d7afb7c8044fdc812"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/3p8fmKUsfOjTWEZ2AbvI5XtRcuM.svg": {
+    "mtime": 1780900668.4939039,
+    "ast_hash": "0bc18b5d78a19e7b311d49f80d827015",
+    "semantic_hash": "0bc18b5d78a19e7b311d49f80d827015"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/4gzGjGbXBl35slqKRwWCvkLF0.svg": {
+    "mtime": 1780900668.4941583,
+    "ast_hash": "d48cf06a9145d18bbc8654988b391d50",
+    "semantic_hash": "d48cf06a9145d18bbc8654988b391d50"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/53k80Ut7BG5zhF0xLznGdMGy0dk.svg": {
+    "mtime": 1780900668.4942753,
+    "ast_hash": "8637c4822342a141f0c2b78eebc63d42",
+    "semantic_hash": "8637c4822342a141f0c2b78eebc63d42"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/8bxLk37MO3lp4dJbClTpiZ4N8QI.svg": {
+    "mtime": 1780900668.4945242,
+    "ast_hash": "497c6312e3b5fc604e9ce2f01b5c017f",
+    "semantic_hash": "497c6312e3b5fc604e9ce2f01b5c017f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/9H17qvsAoXkLGxi5BRFKgJUbWmw.svg": {
+    "mtime": 1780900668.4947295,
+    "ast_hash": "cdf764d7d4109f544c1dbed3463d5d2e",
+    "semantic_hash": "cdf764d7d4109f544c1dbed3463d5d2e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/A8kEZnFmwVus4E6OyeBV1L6iM.svg": {
+    "mtime": 1780900668.4950366,
+    "ast_hash": "a97fa7b496e47b59a52dabda8731aee1",
+    "semantic_hash": "a97fa7b496e47b59a52dabda8731aee1"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/BoyfHrEpy9QnN305MLN0MTIAgOY.svg": {
+    "mtime": 1780900668.4952404,
+    "ast_hash": "bf5edc269af7f2c31e9b1b389733102c",
+    "semantic_hash": "bf5edc269af7f2c31e9b1b389733102c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/CoAUayxV0LEZdyFKkS2s0J2kKZ0.svg": {
+    "mtime": 1780900668.4954796,
+    "ast_hash": "2bec9dca8be3c2311095219fe09c79bb",
+    "semantic_hash": "2bec9dca8be3c2311095219fe09c79bb"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/F0kQWwHESxpo3A1bYmOj2CWp0hA.svg": {
+    "mtime": 1780900668.4956796,
+    "ast_hash": "dac29840edecd7a7447dda88270f183c",
+    "semantic_hash": "dac29840edecd7a7447dda88270f183c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/F84ZfqSSRZ1w4GDWntpeLNBe8CQ.svg": {
+    "mtime": 1780900668.4958808,
+    "ast_hash": "06b6dd7a3bc0f392cd5110a94cc6084c",
+    "semantic_hash": "06b6dd7a3bc0f392cd5110a94cc6084c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/Fe56ebpFfoNJolKTPgY9cxgqwwE.svg": {
+    "mtime": 1780900668.4962213,
+    "ast_hash": "137963f37909d67a5e675bf3315e1492",
+    "semantic_hash": "137963f37909d67a5e675bf3315e1492"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/GzQRi6lCxP6G1tanbc1skdG5EA.svg": {
+    "mtime": 1780900668.496465,
+    "ast_hash": "8f4fb2ebc32dc31af893cdd28b9845f5",
+    "semantic_hash": "8f4fb2ebc32dc31af893cdd28b9845f5"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/HRvLD02AdJyEkVACNJ5hj7ATqrY.svg": {
+    "mtime": 1780900668.4966075,
+    "ast_hash": "8ee7c4137123268f36e3b481dd45b35f",
+    "semantic_hash": "8ee7c4137123268f36e3b481dd45b35f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/JDf6556fJw3ZIXR2l15aqhvpho.svg": {
+    "mtime": 1780900668.496837,
+    "ast_hash": "fb4c52e6df83694346dfeb0b6d844217",
+    "semantic_hash": "fb4c52e6df83694346dfeb0b6d844217"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/RazYsVOuFA3AXphR4uyMwwdgbY.svg": {
+    "mtime": 1780900668.4971666,
+    "ast_hash": "98a051732d9b85ea6219aa335566685c",
+    "semantic_hash": "98a051732d9b85ea6219aa335566685c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/RgRhTEJ1YzYkh09IZiupMAIBsLM.svg": {
+    "mtime": 1780900668.4973254,
+    "ast_hash": "1d5de2a2781b5738002c23af25772d73",
+    "semantic_hash": "1d5de2a2781b5738002c23af25772d73"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/Ri8uHoLFKV1w5HuSWpoz48izDIg.svg": {
+    "mtime": 1780900668.4975436,
+    "ast_hash": "74df928c6ec3b328413721419687060c",
+    "semantic_hash": "74df928c6ec3b328413721419687060c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/UC8ns8IPxqDapIsyiCCBwaBHDGg.svg": {
+    "mtime": 1780900668.4977937,
+    "ast_hash": "0c401a75d7bc1526358d9d779628b152",
+    "semantic_hash": "0c401a75d7bc1526358d9d779628b152"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/USto1uY0brnTnT5zdJ6b3JhPrZs.svg": {
+    "mtime": 1780900668.4979115,
+    "ast_hash": "784f0e5d4514e2a277d35de9d427734a",
+    "semantic_hash": "784f0e5d4514e2a277d35de9d427734a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/UlNirexsfCh9sxS9AZGaS6F3H0.svg": {
+    "mtime": 1780900668.4981062,
+    "ast_hash": "26df18163467de2f2273d36052983134",
+    "semantic_hash": "26df18163467de2f2273d36052983134"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/X4LiRbqR2guMtRZ595UENb99Ceo.svg": {
+    "mtime": 1780900668.4984136,
+    "ast_hash": "f8e984944b3f31a95fc155ee18db1a4a",
+    "semantic_hash": "f8e984944b3f31a95fc155ee18db1a4a"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/YU0shGm539fk6SAKf9F7GB73o0.svg": {
+    "mtime": 1780900668.4985356,
+    "ast_hash": "b6aa22911a45c5be05dab8e3c1fd112b",
+    "semantic_hash": "b6aa22911a45c5be05dab8e3c1fd112b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/ZVXPIhdU3BfXeITwHjFh41RjLEc.svg": {
+    "mtime": 1780900668.4986274,
+    "ast_hash": "60eb00106278081f2426d3c045d4c6e4",
+    "semantic_hash": "60eb00106278081f2426d3c045d4c6e4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/br15O4ToYXz2uL5OxIoAjysrRLg.svg": {
+    "mtime": 1780900668.498985,
+    "ast_hash": "f5c783f0d77a5c9f514397eb2150aa4d",
+    "semantic_hash": "f5c783f0d77a5c9f514397eb2150aa4d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/jB2kEa6z2jO5LAPGJ5tQwQlL8.svg": {
+    "mtime": 1780900668.4992285,
+    "ast_hash": "5747a8d583da4e5b9686081d0bae375c",
+    "semantic_hash": "5747a8d583da4e5b9686081d0bae375c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/lmPZLd9WrEU1PKVS6necxyguiFo.svg": {
+    "mtime": 1780900668.4993289,
+    "ast_hash": "bcd103ee763eff188c827aa85302daff",
+    "semantic_hash": "bcd103ee763eff188c827aa85302daff"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/nAZ8ExCxXd0LE2RiRVwWdTp9s.svg": {
+    "mtime": 1780900668.4994318,
+    "ast_hash": "426ee00ec11190efd71bd571561510b3",
+    "semantic_hash": "426ee00ec11190efd71bd571561510b3"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/nL7BdoPEpQWmIhGQLQ9z5bbLZA4.svg": {
+    "mtime": 1780900668.4995327,
+    "ast_hash": "61d6708dfd45e0a83f6902c093b002e6",
+    "semantic_hash": "61d6708dfd45e0a83f6902c093b002e6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/brands/rJlODFOpKoiaP0tbUococUH8JBA.svg": {
+    "mtime": 1780900668.4996316,
+    "ast_hash": "11edce278fa9f7fec55caaa5b4673a84",
+    "semantic_hash": "11edce278fa9f7fec55caaa5b4673a84"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/6a9JIcCxX3Lk3vkbRSA7TJoEg.png": {
+    "mtime": 1780900668.5003867,
+    "ast_hash": "6ed4882c46bf72cbfd0311195ad8edf3",
+    "semantic_hash": "6ed4882c46bf72cbfd0311195ad8edf3"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/9mDlYLtKG9g9WfLMRG3QGw8cdc.png": {
+    "mtime": 1780900668.5009713,
+    "ast_hash": "f8200e31b4a3c23bb47c8a4a6fc6965f",
+    "semantic_hash": "f8200e31b4a3c23bb47c8a4a6fc6965f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/A1NXr72iFrIWntUGsx8HF6a0yQ.png": {
+    "mtime": 1780900668.5019507,
+    "ast_hash": "9f0562bfb64e29dacbbaca740544d4d5",
+    "semantic_hash": "9f0562bfb64e29dacbbaca740544d4d5"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/J8ufrwqz8ce3ubGA56jIRbYCmsc.png": {
+    "mtime": 1780900668.5030003,
+    "ast_hash": "7f610e2305dd5aae293080ad0deacc05",
+    "semantic_hash": "7f610e2305dd5aae293080ad0deacc05"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/JoyvtkTOnXDKM415MBg9yGzfbA.png": {
+    "mtime": 1780900668.506198,
+    "ast_hash": "90f072b66b7b9b4263172df0ed1b3b0c",
+    "semantic_hash": "90f072b66b7b9b4263172df0ed1b3b0c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/JzQLWPwtcLJjewAWTYPt13ayrT0.png": {
+    "mtime": 1780900668.5067303,
+    "ast_hash": "f4499a2ccd8339a569287ed42863f191",
+    "semantic_hash": "f4499a2ccd8339a569287ed42863f191"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/LBzBqCCwobgvWph20I118gQMus4.png": {
+    "mtime": 1780900668.5070715,
+    "ast_hash": "be0e339d7f71fd7301a31b257f6b7846",
+    "semantic_hash": "be0e339d7f71fd7301a31b257f6b7846"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/LyVYCrnbWNVwwzKe3FjUyvbBLOg.png": {
+    "mtime": 1780900668.507396,
+    "ast_hash": "a2d71047ba8d8d6c7afe8c65b63f9d27",
+    "semantic_hash": "a2d71047ba8d8d6c7afe8c65b63f9d27"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/OMyjT3SXVAVwLKBojgUECF2Ng.png": {
+    "mtime": 1780900668.5227325,
+    "ast_hash": "55bb71a05a30a656abc67b3097e8bb7d",
+    "semantic_hash": "55bb71a05a30a656abc67b3097e8bb7d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/PRjDB8UsXlSFQJuH9pMtRAzLhhA.png": {
+    "mtime": 1780900668.5269344,
+    "ast_hash": "cb08542b0390788ee781772d8ec431ca",
+    "semantic_hash": "cb08542b0390788ee781772d8ec431ca"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/SNfmJjdl6hccJyBIZlPlM3QcGP8.png": {
+    "mtime": 1780900668.527948,
+    "ast_hash": "8920aea284bf81b9cdbb90b72f37ca53",
+    "semantic_hash": "8920aea284bf81b9cdbb90b72f37ca53"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/bKpwOHYbcnLHaOefoTRvF9Ng6o4.png": {
+    "mtime": 1780900668.529246,
+    "ast_hash": "4b6da2abf6c1690438876f1759934360",
+    "semantic_hash": "4b6da2abf6c1690438876f1759934360"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/c5w76I0WJ70qGOtT7UkFsFMLpc.png": {
+    "mtime": 1780900668.5344827,
+    "ast_hash": "ab18d7111aea64e39d4dbea75d952255",
+    "semantic_hash": "ab18d7111aea64e39d4dbea75d952255"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/ec9TdJQhERvMsamL3kuvmDWx3Tw.png": {
+    "mtime": 1780900668.5374398,
+    "ast_hash": "53c89675c3c38264701ecdd75c74dc20",
+    "semantic_hash": "53c89675c3c38264701ecdd75c74dc20"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/emK8bIl43jtIkb6hcViP52VX6y4.png": {
+    "mtime": 1780900668.5379293,
+    "ast_hash": "64a549839b4cb3757553f754e9ab5cb1",
+    "semantic_hash": "64a549839b4cb3757553f754e9ab5cb1"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/j9bW5yoSJkzSqx9fJ2CcIHwhEk.png": {
+    "mtime": 1780900668.5397902,
+    "ast_hash": "3aa3c98de898f179d0aee165bd93ecfb",
+    "semantic_hash": "3aa3c98de898f179d0aee165bd93ecfb"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/nBNVO0nfb38xD4BcFB01KFztjEc.png": {
+    "mtime": 1780900668.540689,
+    "ast_hash": "c05ec3507a776d641c3206ca815224ee",
+    "semantic_hash": "c05ec3507a776d641c3206ca815224ee"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/pgBLD8rSKjUj7DdnaaOUdYEwn1w.png": {
+    "mtime": 1780900668.5409598,
+    "ast_hash": "8c97c242c6ee5195910b3c809d96e24b",
+    "semantic_hash": "8c97c242c6ee5195910b3c809d96e24b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/gallery/xyuuUDJliPs9ngpNukigqnTSgt8.jpg": {
+    "mtime": 1780900668.541996,
+    "ast_hash": "d4b3ebfa2dbca41dda1bfeb876f3a1d2",
+    "semantic_hash": "d4b3ebfa2dbca41dda1bfeb876f3a1d2"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png": {
+    "mtime": 1780900668.544919,
+    "ast_hash": "aeceb2719224326abfccc4007d5f1089",
+    "semantic_hash": "aeceb2719224326abfccc4007d5f1089"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/AF17GtwWswCOeFPE1RtSIb0ZVVA.png": {
+    "mtime": 1780900668.548145,
+    "ast_hash": "3ff27ff68836c1abc5336c583bea43ca",
+    "semantic_hash": "3ff27ff68836c1abc5336c583bea43ca"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/DYamKaYMre6AG3FW3h7l3zU0k4.png": {
+    "mtime": 1780900668.5503104,
+    "ast_hash": "5e3a646da5587bf7b2a493efabe3525e",
+    "semantic_hash": "5e3a646da5587bf7b2a493efabe3525e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/DrholzUbCeKzcDVtSwEFLN1HxE.png": {
+    "mtime": 1780900668.5546613,
+    "ast_hash": "ce640cda97f655af22d9dc6c04f460f5",
+    "semantic_hash": "ce640cda97f655af22d9dc6c04f460f5"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/KyeKdd4Pw9aeisVPB7EKpsKRNfA.png": {
+    "mtime": 1780900668.5617838,
+    "ast_hash": "f64fe689479ddc20705533d61647319f",
+    "semantic_hash": "f64fe689479ddc20705533d61647319f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/LLDM6mptdFWDDjvOXzMhXSYwfE.webp": {
+    "mtime": 1780900668.5632284,
+    "ast_hash": "97f1d1b4a3f40210746399f3ea53b572",
+    "semantic_hash": "97f1d1b4a3f40210746399f3ea53b572"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/Lnce8dRFGCJbRIUka44Js4THZA4.png": {
+    "mtime": 1780900668.5646589,
+    "ast_hash": "df7d83ef0a149da3cd22fe0d9420dec4",
+    "semantic_hash": "df7d83ef0a149da3cd22fe0d9420dec4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/MspG2YIWMeAzQy6ofCM09LeltI.webp": {
+    "mtime": 1780900668.5653384,
+    "ast_hash": "ad8f8e26d1b849c159eed5ff4c93201c",
+    "semantic_hash": "ad8f8e26d1b849c159eed5ff4c93201c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/N09IzQy1QLUzyPitkLxKA7kl2Ng.webp": {
+    "mtime": 1780900668.565697,
+    "ast_hash": "228ec620b9e629907553cc765ff587d7",
+    "semantic_hash": "228ec620b9e629907553cc765ff587d7"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/NMWFWEYsktnLjSgRrWYGxQTPjA.jpg": {
+    "mtime": 1780900668.566694,
+    "ast_hash": "87b28582d7fa25fa9981bb340ed210aa",
+    "semantic_hash": "87b28582d7fa25fa9981bb340ed210aa"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/WSPZhnVqH1vfozTi19TffL1lMU.webp": {
+    "mtime": 1780900668.5670872,
+    "ast_hash": "91ab401200e10960342f3321acb1bb64",
+    "semantic_hash": "91ab401200e10960342f3321acb1bb64"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/YWsOCrE2zQ26hEqXM3mlxNoU.png": {
+    "mtime": 1780900668.56848,
+    "ast_hash": "4beffe429810aa5f4d553595502da119",
+    "semantic_hash": "4beffe429810aa5f4d553595502da119"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/h6pkJDNiTDQbGQMGhMzeFlPFrDg.webp": {
+    "mtime": 1780900668.5692518,
+    "ast_hash": "97a81126407681f68c93d1612ac063fe",
+    "semantic_hash": "97a81126407681f68c93d1612ac063fe"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/kC4LOoSu2KXiAfUzsphec6gq1Ng.webp": {
+    "mtime": 1780900668.5698428,
+    "ast_hash": "26962c94d47fea4d6ecec65eb0cac2b1",
+    "semantic_hash": "26962c94d47fea4d6ecec65eb0cac2b1"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/lB7xt9A0ReUM3hjaHFTp8kCY9eA.webp": {
+    "mtime": 1780900668.5703073,
+    "ast_hash": "70dc7619488ebe1973211e68643168a6",
+    "semantic_hash": "70dc7619488ebe1973211e68643168a6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/nQIwtdyTO0ImUbZNhFwIvZ37M.png": {
+    "mtime": 1780900668.5741506,
+    "ast_hash": "67940fb962c76573b2c849c15324cd5f",
+    "semantic_hash": "67940fb962c76573b2c849c15324cd5f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/vGpo90ka2h6cKMdKF4OMwjSVM.png": {
+    "mtime": 1780900668.5767195,
+    "ast_hash": "5a5de00f87b980f347237c50d069f5b0",
+    "semantic_hash": "5a5de00f87b980f347237c50d069f5b0"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/projects/zqfmjPJUvD24NruhrWaIDYPBf1k.webp": {
+    "mtime": 1780900668.5772173,
+    "ast_hash": "989cde09642978b0e5e9c93ab756b284",
+    "semantic_hash": "989cde09642978b0e5e9c93ab756b284"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/2RD93rcDoffbqvpFPqBTvpXXNAk.svg": {
+    "mtime": 1780900668.5776608,
+    "ast_hash": "4930b8259ec3f9e4a9af543f2fa5630e",
+    "semantic_hash": "4930b8259ec3f9e4a9af543f2fa5630e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/3Y807gIg19CCRqNIdIO62NOMum4.svg": {
+    "mtime": 1780900668.5777895,
+    "ast_hash": "baeb5220d95de13d7afb7c8044fdc812",
+    "semantic_hash": "baeb5220d95de13d7afb7c8044fdc812"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/4svPWouJqvqnznpkeku35FoPOY.webp": {
+    "mtime": 1780900668.579667,
+    "ast_hash": "d8aa45133a8faf05016a134b6a6e3891",
+    "semantic_hash": "d8aa45133a8faf05016a134b6a6e3891"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png": {
+    "mtime": 1780900668.581475,
+    "ast_hash": "aeceb2719224326abfccc4007d5f1089",
+    "semantic_hash": "aeceb2719224326abfccc4007d5f1089"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/7Y2SFGh3s2rVmyLLheBByPDN0Zs.svg": {
+    "mtime": 1780900668.5818636,
+    "ast_hash": "3c0805c6cfd6ab4c7af6bacd4daaacbf",
+    "semantic_hash": "3c0805c6cfd6ab4c7af6bacd4daaacbf"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/9kfynLGYhcGa9MrgHJQYqrLd4Ww.webp": {
+    "mtime": 1780900668.582579,
+    "ast_hash": "3f93189ba02fbc4e8ab60fe282b9342f",
+    "semantic_hash": "3f93189ba02fbc4e8ab60fe282b9342f"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/DIRfZkT5kVvbN5KyZ9HJu326aI.svg": {
+    "mtime": 1780900668.5828276,
+    "ast_hash": "20d8771bbb77cf7a311f8a730cf87ccd",
+    "semantic_hash": "20d8771bbb77cf7a311f8a730cf87ccd"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/DYamKaYMre6AG3FW3h7l3zU0k4.png": {
+    "mtime": 1780900668.5857143,
+    "ast_hash": "5e3a646da5587bf7b2a493efabe3525e",
+    "semantic_hash": "5e3a646da5587bf7b2a493efabe3525e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/HLCaAHqdvVRPiL21dJddT8CpdJM.svg": {
+    "mtime": 1780900668.5858557,
+    "ast_hash": "cb4fafc790f7d1bb14c22e656ff84bdd",
+    "semantic_hash": "cb4fafc790f7d1bb14c22e656ff84bdd"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/MspG2YIWMeAzQy6ofCM09LeltI.webp": {
+    "mtime": 1780900668.5860908,
+    "ast_hash": "ad8f8e26d1b849c159eed5ff4c93201c",
+    "semantic_hash": "ad8f8e26d1b849c159eed5ff4c93201c"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/UDA17654NsGwNB4PAZVy4qrxgmc.svg": {
+    "mtime": 1780900668.5862281,
+    "ast_hash": "6ae27753df59f10dbc7f0109dfcd6ded",
+    "semantic_hash": "6ae27753df59f10dbc7f0109dfcd6ded"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/VIky596fhtCQGcuZWqm4IOau4M.webp": {
+    "mtime": 1780900668.586517,
+    "ast_hash": "cf04c1f98284329755b15be5b2c335aa",
+    "semantic_hash": "cf04c1f98284329755b15be5b2c335aa"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/YU0shGm539fk6SAKf9F7GB73o0.svg": {
+    "mtime": 1780900668.5866652,
+    "ast_hash": "b6aa22911a45c5be05dab8e3c1fd112b",
+    "semantic_hash": "b6aa22911a45c5be05dab8e3c1fd112b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/ZVXPIhdU3BfXeITwHjFh41RjLEc.svg": {
+    "mtime": 1780900668.5867603,
+    "ast_hash": "60eb00106278081f2426d3c045d4c6e4",
+    "semantic_hash": "60eb00106278081f2426d3c045d4c6e4"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/br15O4ToYXz2uL5OxIoAjysrRLg.svg": {
+    "mtime": 1780900668.5870419,
+    "ast_hash": "f5c783f0d77a5c9f514397eb2150aa4d",
+    "semantic_hash": "f5c783f0d77a5c9f514397eb2150aa4d"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/c7C4RZlnVXgsMtYKORFY3DNffs.webp": {
+    "mtime": 1780900668.5878222,
+    "ast_hash": "224f43962206ed150df8f50fb1308b79",
+    "semantic_hash": "224f43962206ed150df8f50fb1308b79"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/hgI5DqS5OhR7orP2x05J8rY5Lg.svg": {
+    "mtime": 1780900668.5879672,
+    "ast_hash": "4a743ced5b641175b8c8afc7634639a2",
+    "semantic_hash": "4a743ced5b641175b8c8afc7634639a2"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg": {
+    "mtime": 1780900668.5896852,
+    "ast_hash": "48087e18a7b7b53f6e7a635007acfedd",
+    "semantic_hash": "48087e18a7b7b53f6e7a635007acfedd"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/lB7xt9A0ReUM3hjaHFTp8kCY9eA.webp": {
+    "mtime": 1780900668.5898929,
+    "ast_hash": "70dc7619488ebe1973211e68643168a6",
+    "semantic_hash": "70dc7619488ebe1973211e68643168a6"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/nrsbyLofw3hQwQOWoECajIlhuY.webp": {
+    "mtime": 1780900668.590471,
+    "ast_hash": "a8d4e0ae11746b030139e91546f51d93",
+    "semantic_hash": "a8d4e0ae11746b030139e91546f51d93"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/pJhRncaatIpf1PdD5SxKHlhOcQ.png": {
+    "mtime": 1780900668.5906305,
+    "ast_hash": "88003066fa954a852aa82a841162bf9b",
+    "semantic_hash": "88003066fa954a852aa82a841162bf9b"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/rV5jBk0jBJfsfnlEdgFHud9abY.webp": {
+    "mtime": 1780900668.5908773,
+    "ast_hash": "7055a2d255e74a99ddc936a40e7470e9",
+    "semantic_hash": "7055a2d255e74a99ddc936a40e7470e9"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/site/ytaCR7YksH4wtdWD4UKUk1bf0Y.png": {
+    "mtime": 1780900668.5912924,
+    "ast_hash": "e3bd954e74fc571001643d0977190735",
+    "semantic_hash": "e3bd954e74fc571001643d0977190735"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/testimonials/GUU13cCRrkO0NQP2y27yxU4cDA.webp": {
+    "mtime": 1780900668.5916824,
+    "ast_hash": "8f75401374e17d5f5fee65c469c7c48e",
+    "semantic_hash": "8f75401374e17d5f5fee65c469c7c48e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/testimonials/T36IIPfRnEKdocci3MgjjfYu0.webp": {
+    "mtime": 1780900668.5919127,
+    "ast_hash": "6108a2d2432a8512236539535299bec2",
+    "semantic_hash": "6108a2d2432a8512236539535299bec2"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/testimonials/VIky596fhtCQGcuZWqm4IOau4M.webp": {
+    "mtime": 1780900668.5920134,
+    "ast_hash": "cf04c1f98284329755b15be5b2c335aa",
+    "semantic_hash": "cf04c1f98284329755b15be5b2c335aa"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/images/testimonials/xziMdc8W7hAvTPRS4XfK04o9E.webp": {
+    "mtime": 1780900668.5922108,
+    "ast_hash": "a4442d192e1f1a59f19ec8a58aab2af8",
+    "semantic_hash": "a4442d192e1f1a59f19ec8a58aab2af8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/next.svg": {
+    "mtime": 1780477325.588375,
+    "ast_hash": "8e061864f388b47f33a1c3780831193e",
+    "semantic_hash": "8e061864f388b47f33a1c3780831193e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/og/blogs.jpg": {
+    "mtime": 1780900668.5932245,
+    "ast_hash": "0c151a93c096463d2b2f237e513623cd",
+    "semantic_hash": "0c151a93c096463d2b2f237e513623cd"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/og/contact.jpg": {
+    "mtime": 1780900668.5941753,
+    "ast_hash": "cd92d1d29d6eaf1725baf320e1e1b5c8",
+    "semantic_hash": "cd92d1d29d6eaf1725baf320e1e1b5c8"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/og/default.jpg": {
+    "mtime": 1780900668.5951385,
+    "ast_hash": "815400ee2bbd8bcd10bab43f13897a47",
+    "semantic_hash": "815400ee2bbd8bcd10bab43f13897a47"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/og/gallery.webp": {
+    "mtime": 1780900668.5956945,
+    "ast_hash": "0f0a7d68a94e0d3b2b7f1a1b2f7c3e64",
+    "semantic_hash": "0f0a7d68a94e0d3b2b7f1a1b2f7c3e64"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/og/projects.jpg": {
+    "mtime": 1780900668.5971615,
+    "ast_hash": "5bfde043b6f8a0dcaa6cf99c6d6db289",
+    "semantic_hash": "5bfde043b6f8a0dcaa6cf99c6d6db289"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/vercel.svg": {
+    "mtime": 1780477325.5918157,
+    "ast_hash": "c0af2f507b369b085b35ef4bbe3bcf1e",
+    "semantic_hash": "c0af2f507b369b085b35ef4bbe3bcf1e"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/window.svg": {
+    "mtime": 1780477325.5920408,
+    "ast_hash": "a2760511c65806022ad20adf74370ff3",
+    "semantic_hash": "a2760511c65806022ad20adf74370ff3"
+  },
+  "/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/audio/epyc-pronunciation.mp3": {
+    "mtime": 1780900668.4903007,
+    "ast_hash": "257096f18f87d55e8127cc772e64ec33",
+    "semantic_hash": "257096f18f87d55e8127cc772e64ec33"
+  }
+}
