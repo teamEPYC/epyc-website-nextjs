@@ -12,6 +12,9 @@ export async function fetchStrapi<T>(path: string, params?: Record<string, strin
     headers: TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {},
     next: { revalidate: 60 },
   })
-  if (!res.ok) throw new Error(`Strapi ${res.status}: ${path}`)
+  if (!res.ok) {
+    console.error(`Strapi ${res.status}: ${path}`)
+    return { data: [], meta: { pagination: { start: 0, limit: 0, total: 0 } } } as T
+  }
   return res.json()
 }

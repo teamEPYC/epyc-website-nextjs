@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   title: "Style Guide",
   description:
     "EPYC design system — tokens, components, icons. Live preview of everything in components/ui and components/icons.",
+  alternates: { canonical: '/styleguide' },
+  robots: { index: false, follow: false },
 };
 
 const colorTokens = [
