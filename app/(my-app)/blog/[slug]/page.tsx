@@ -11,7 +11,7 @@ type Params = Promise<{ slug: string }>
 
 export const revalidate = 60
 
-const MEDIA_BASE = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
+const MEDIA_BASE = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://media.epyc.in'
 
 function toAbsoluteMediaUrl(url: string): string {
   return url.startsWith('http') ? url : `${MEDIA_BASE}${url}`

@@ -25,7 +25,7 @@ type LoaderArgs = {
 export default function imageLoader({ src, width, quality }: LoaderArgs): string {
   if (/\.svg($|\?)/i.test(src)) return src
 
-  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
+  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://media.epyc.in'
   const options = `width=${width},quality=${quality ?? 75},format=auto`
 
   // `next dev` isn't behind a Cloudflare zone — cdn-cgi doesn't work.
@@ -41,7 +41,7 @@ export default function imageLoader({ src, width, quality }: LoaderArgs): string
   // Absolute URL fallback — shouldn't happen with Strapi bare paths but handle gracefully.
   if (src.startsWith('http')) return `/cdn-cgi/image/${options}/${src}`
 
-  // Strapi bare path (/hash.webp) — route through website-media.epyc.in cdn-cgi.
+  // Strapi bare path (/hash.webp) — route through media.epyc.in cdn-cgi.
   // Source and cdn-cgi are on the same Cloudflare zone so "this zone only" is satisfied.
   return `${mediaBase}/cdn-cgi/image/${options}${src}`
 }
