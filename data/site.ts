@@ -6,7 +6,10 @@
 
 
 const ORIGINS = {
-  production: "https://epyc.in",
+  // epyc.in still serves the old Framer site; the Next.js app lives on the
+  // Worker's workers.dev host until the apex domain is cut over. Keep the
+  // origin pointed at the live host so canonical/OG URLs actually resolve.
+  production: "https://epyc-website-production.epyc.workers.dev",
   staging: "https://website-staging.epyc.in",
   development: "http://localhost:3000",
 } as const;
