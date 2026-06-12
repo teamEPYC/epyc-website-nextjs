@@ -48,3 +48,6 @@ next-env.d.ts
 .dev.vars.*
 !.dev.vars.example
 # cloudflare-env.d.ts is committed — CI needs it for typechecking without wrangler credentials
+
+# Graphify analysis output (generated)
+graphify-out/
