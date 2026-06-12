@@ -69,6 +69,19 @@ jobs:
             }' \
           | pnpm exec wrangler secret bulk --env production
 
+      - name: Ensure production contact-webhook queue exists
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # The Worker binds this queue as a producer; deploy fails if it is
+          # absent. Create it once, idempotently — skip if it already exists.
+          if pnpm exec wrangler queues list | grep -q 'epyc-contact-webhook-production'; then
+            echo "Queue epyc-contact-webhook-production already exists — skipping."
+          else
+            pnpm exec wrangler queues create epyc-contact-webhook-production
+          fi
+
       - name: Deploy to Cloudflare Workers (production)
         uses: cloudflare/wrangler-action@v3
         with:
