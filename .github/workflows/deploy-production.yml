@@ -1,8 +1,8 @@
 name: Deploy Production
 
 on:
-  # push:
-  #   branches: [master]
+  push:
+    branches: [production]
   workflow_dispatch:
 
 concurrency:
