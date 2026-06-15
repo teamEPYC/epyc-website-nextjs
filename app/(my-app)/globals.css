@@ -579,3 +579,28 @@ body {
     animation: none;
   }
 }
+
+/* Always-visible scrollbar for scrollable preview containers (e.g. case study before/after) */
+.scrollable-preview {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 240 208 / 0.4) rgb(255 240 208 / 0.1);
+}
+
+.scrollable-preview::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-preview::-webkit-scrollbar-track {
+  background: rgb(255 240 208 / 0.1);
+  border-radius: 9999px;
+}
+
+.scrollable-preview::-webkit-scrollbar-thumb {
+  background: rgb(255 240 208 / 0.4);
+  border-radius: 9999px;
+}
+
+.scrollable-preview::-webkit-scrollbar-thumb:hover {
+  background: rgb(255 240 208 / 0.65);
+}
