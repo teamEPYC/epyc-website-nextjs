@@ -51,3 +51,6 @@ next-env.d.ts
 
 # Graphify analysis output (generated)
 graphify-out/
+
+# ShipStudio metadata
+.shipstudio/
