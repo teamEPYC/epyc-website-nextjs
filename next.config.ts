@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'website-media.epyc.in',
+        hostname: 'media.epyc.in',
       },
     ],
   },

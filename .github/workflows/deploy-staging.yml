@@ -2,7 +2,7 @@ name: Deploy Staging
 
 on:
   push:
-    branches: [develop]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -41,10 +41,11 @@ jobs:
         run: pnpm exec opennextjs-cloudflare build
         env:
           NEXT_PUBLIC_DEPLOY_ENV: staging
-          NEXT_PUBLIC_MEDIA_BASE_URL: https://website-media.epyc.in
+          NEXT_PUBLIC_MEDIA_BASE_URL: ${{ secrets.STAGING_NEXT_PUBLIC_MEDIA_BASE_URL }}
           STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
-          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          STRAPI_PREVIEW: ${{ secrets.STAGING_STRAPI_PREVIEW }}
+          NEON_DATABASE_URL: ${{ secrets.STAGING_NEON_DATABASE_URL }}
 
       - name: Upload secrets to Cloudflare Workers (staging)
         env:
@@ -52,15 +53,18 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
-          NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          STRAPI_PREVIEW: ${{ secrets.STAGING_STRAPI_PREVIEW }}
+          NEON_DATABASE_URL: ${{ secrets.STAGING_NEON_DATABASE_URL }}
         run: |
           jq -n \
             --arg STRAPI_URL "$STRAPI_URL" \
             --arg STRAPI_API_TOKEN "$STRAPI_API_TOKEN" \
+            --arg STRAPI_PREVIEW "$STRAPI_PREVIEW" \
             --arg NEON_DATABASE_URL "$NEON_DATABASE_URL" \
             '{
               STRAPI_URL: $STRAPI_URL,
               STRAPI_API_TOKEN: $STRAPI_API_TOKEN,
+              STRAPI_PREVIEW: $STRAPI_PREVIEW,
               NEON_DATABASE_URL: $NEON_DATABASE_URL
             }' \
           | pnpm exec wrangler secret bulk --env staging

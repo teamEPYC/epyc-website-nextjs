@@ -33,7 +33,7 @@ export async function generateMetadata({
   const title = item.title ?? GALLERY_TITLE
   const description = item.description ?? GALLERY_DESCRIPTION
 
-  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://website-media.epyc.in'
+  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://media.epyc.in'
   const ogImage =
     item.kind === 'image'
       ? {
