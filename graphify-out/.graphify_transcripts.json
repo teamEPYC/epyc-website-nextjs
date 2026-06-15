@@ -1,3 +1,0 @@
-Audio files to transcribe: ['/Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/audio/epyc-pronunciation.mp3']
-  warning: could not transcribe /Users/keshavsharma/Documents/Cloned Repos/epyc-website-nextjs/public/audio/epyc-pronunciation.mp3: Video transcription requires faster-whisper. Run: pip install 'graphifyy[video]'
-[]
