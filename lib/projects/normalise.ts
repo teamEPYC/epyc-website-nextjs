@@ -19,6 +19,7 @@ export type NormalisedProject = {
   slug: string
   title: string
   redirectLink: string
+  caseStudyPath?: string | null
   industry: ProjectIndustry
   platform: ProjectPlatform
   types: string[]
@@ -47,6 +48,7 @@ export function normaliseProject(project: StrapiProject): NormalisedProject {
     slug: project.slug,
     title: project.title,
     redirectLink: /^https?:\/\//i.test(project.redirectLink) ? project.redirectLink : `https://${project.redirectLink}`,
+    caseStudyPath: project.caseStudyPath ?? null,
     industry: project.industry.slug as ProjectIndustry,
     platform: project.platform.slug as ProjectPlatform,
     types,

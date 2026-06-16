@@ -47,6 +47,7 @@ export type StrapiProject = {
   industry: StrapiIndustry
   platform: StrapiPlatform
   redirectLink: string
+  caseStudyPath?: string | null
   featured: boolean
 }
 
