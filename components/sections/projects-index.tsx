@@ -132,7 +132,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
               {filtered.map((p, i) => (
                 <ProjectCard
                   key={p.slug}
-                  href={p.redirectLink}
+                  href={p.caseStudyPath ?? p.redirectLink}
                   title={p.title}
                   tags={p.typesDisplay}
                   image={p.image}
