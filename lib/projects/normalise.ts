@@ -46,7 +46,7 @@ export function normaliseProject(project: StrapiProject): NormalisedProject {
   return {
     slug: project.slug,
     title: project.title,
-    redirectLink: project.redirectLink,
+    redirectLink: /^https?:\/\//i.test(project.redirectLink) ? project.redirectLink : `https://${project.redirectLink}`,
     industry: project.industry.slug as ProjectIndustry,
     platform: project.platform.slug as ProjectPlatform,
     types,
