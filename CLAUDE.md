@@ -62,6 +62,7 @@ Key conventions:
 Dynamic content (projects, blog posts, gallery) is fetched from Strapi via `lib/strapi/client.ts`.
 
 - `STRAPI_URL` and `STRAPI_API_TOKEN` must be set in the environment. In dev, 401s from Strapi are expected and non-fatal — pages gracefully return empty lists and re-hydrate on first real request via ISR (`revalidate: 60`).
+- **Preview / Draft Mode**: two layers. (1) `STRAPI_PREVIEW=true` makes an *entire deployment* serve drafts — set it on the **staging** Vercel environment so editors can browse unpublished blogs there. (2) Per-entry preview: Strapi's Preview button opens `/api/preview?secret=$PREVIEW_SECRET&url=<path>`, which enables Next.js Draft Mode (a `__prerender_bypass` cookie) so a single editor sees that draft on production. `/api/preview/disable` exits. `fetchStrapi(path, params, { draft })` is how pages opt in; `sitemap.ts` deliberately never does.
 - Types are in `lib/strapi/types.ts`.
 - Static case study pages (e.g. `app/(my-app)/projects/gokwik/`) do **not** use Strapi — they are fully static, hand-authored pages.
 
