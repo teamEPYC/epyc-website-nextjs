@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { fetchStrapi } from '@/lib/strapi/client'
 import { draftMode } from 'next/headers'
+import { fetchStrapi } from '@/lib/strapi/client'
 import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
 import { BlogIndex } from '@/components/sections/blog-index'
 import { CTAFooter } from '@/components/sections/cta-footer'

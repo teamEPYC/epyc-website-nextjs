@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { fetchStrapi } from '@/lib/strapi/client'
 import { draftMode } from 'next/headers'
+import { fetchStrapi } from '@/lib/strapi/client'
 import type { StrapiList, StrapiGalleryItem } from '@/lib/strapi/types'
 import { normaliseGallery } from '@/lib/gallery/normalise'
 import { GalleryIndex } from '@/components/sections/gallery-index'
