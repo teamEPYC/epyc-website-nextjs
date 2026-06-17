@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { draftMode } from 'next/headers'
 import { fetchStrapi } from '@/lib/strapi/client'
 import type { StrapiList, StrapiGalleryItem } from '@/lib/strapi/types'
 import { normaliseGallery } from '@/lib/gallery/normalise'
@@ -22,11 +23,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
+  const { isEnabled } = await draftMode()
   const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
     'filters[slug][$eq]': slug,
     ...POPULATE_PARAMS,
     'pagination[limit]': '1',
-  })
+  }, { draft: isEnabled })
   const raw = data[0]
   if (!raw) return { title: GALLERY_TITLE }
 
@@ -58,18 +60,19 @@ export default async function GalleryItemPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
+  const { isEnabled } = await draftMode()
 
   const [{ data }, { data: allData }] = await Promise.all([
     fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
       'filters[slug][$eq]': slug,
       ...POPULATE_PARAMS,
       'pagination[limit]': '1',
-    }),
+    }, { draft: isEnabled }),
     fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
       'filters[slug][$ne]': slug,
       ...POPULATE_PARAMS,
       'pagination[limit]': '3',
-    }),
+    }, { draft: isEnabled }),
   ])
 
   const raw = data[0]

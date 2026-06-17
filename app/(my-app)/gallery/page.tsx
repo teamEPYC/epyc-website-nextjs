@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { fetchStrapi } from '@/lib/strapi/client'
 import type { StrapiList, StrapiGalleryItem } from '@/lib/strapi/types'
 import { normaliseGallery } from '@/lib/gallery/normalise'
@@ -19,10 +20,11 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function GalleryPage() {
+  const { isEnabled } = await draftMode()
   const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
     'populate[image][fields]': 'url,width,height,alternativeText',
     'pagination[limit]': '500',
-  })
+  }, { draft: isEnabled })
   const items = data.map((item) => normaliseGallery(item))
 
   return (
