@@ -19,7 +19,10 @@ export async function fetchStrapi<T>(
 ): Promise<T> {
   // STRAPI_URL is not available at CI build time — return an empty list so
   // static pre-rendering succeeds. ISR revalidates on the first real request.
-  if (!BASE) return { data: [], meta: { pagination: { start: 0, limit: 0, total: 0 } } } as T
+  if (!BASE) {
+    console.warn(`Strapi: STRAPI_URL unset — returning empty for ${path}`)
+    return { data: [], meta: { pagination: { start: 0, limit: 0, total: 0 } } } as T
+  }
 
   // Drafts when the whole deployment is in preview mode (STRAPI_PREVIEW, e.g.
   // staging) OR this individual request enabled Next.js Draft Mode.
@@ -35,7 +38,10 @@ export async function fetchStrapi<T>(
     ...(useDrafts ? { cache: 'no-store' as const } : { next: { revalidate: 60 } }),
   })
   if (!res.ok) {
-    console.error(`Strapi ${res.status}: ${path}`)
+    // Diagnostic context (never logs the token value, only its length).
+    console.error(
+      `Strapi ${res.status}: ${path} [urlSet=${Boolean(BASE)} tokenLen=${TOKEN?.length ?? 0} preview=${PREVIEW} draft=${useDrafts}]`,
+    )
     return { data: [], meta: { pagination: { start: 0, limit: 0, total: 0 } } } as T
   }
   return res.json()
