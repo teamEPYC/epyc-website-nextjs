@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { draftMode } from 'next/headers'
 import { fetchStrapi } from '@/lib/strapi/client'
 import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
 import { BlogPost } from '@/components/sections/blog-post'
@@ -31,11 +32,12 @@ function rewriteMediaUrls(html: string): string {
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
+  const { isEnabled } = await draftMode()
   const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
     'filters[slug][$eq]': slug,
     'populate[coverImage][fields]': 'url,width,height,alternativeText',
     'pagination[limit]': '1',
-  })
+  }, { draft: isEnabled })
   const blog = data[0]
   if (!blog) return {}
 
@@ -58,6 +60,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function BlogDetailPage({ params }: { params: Params }) {
   const { slug } = await params
+  const { isEnabled } = await draftMode()
 
   const [{ data }, { data: relatedData }] = await Promise.all([
     fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
@@ -65,14 +68,14 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
       'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
       'populate[author][fields]': 'name,slug',
       'pagination[limit]': '1',
-    }),
+    }, { draft: isEnabled }),
     fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
       'filters[slug][$ne]': slug,
       'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
       'populate[author][fields]': 'name,slug',
       'sort': 'publishedDate:desc',
       'pagination[limit]': '3',
-    }),
+    }, { draft: isEnabled }),
   ])
 
   const blog = data[0]

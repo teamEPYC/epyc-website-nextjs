@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { fetchStrapi } from '@/lib/strapi/client'
+import { draftMode } from 'next/headers'
 import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
 import { BlogIndex } from '@/components/sections/blog-index'
 import { CTAFooter } from '@/components/sections/cta-footer'
@@ -18,12 +19,13 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function BlogsPage() {
+  const { isEnabled } = await draftMode()
   const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
     'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
     'populate[author][fields]': 'name,slug',
     'sort': 'publishedDate:desc',
     'pagination[limit]': '100',
-  })
+  }, { draft: isEnabled })
   const blogs = data.map((b) => normalise(b))
 
   return (
