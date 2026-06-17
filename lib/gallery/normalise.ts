@@ -1,5 +1,6 @@
 import type { StrapiGalleryItem } from '../strapi/types'
 import type { GalleryItem } from '../../data/gallery'
+import { toMediaUrl } from '../media'
 
 function splitDesigners(raw: string | null | undefined): string[] | undefined {
   if (!raw) return undefined
@@ -36,7 +37,7 @@ export function normaliseGallery(item: StrapiGalleryItem): GalleryItem {
   return {
     slug,
     kind: 'image',
-    src: image.url,
+    src: toMediaUrl(image.url),
     alt: item.imageAlt ?? image.alternativeText ?? item.title,
     width: image.width ?? 1080,
     height: image.height ?? 1080,

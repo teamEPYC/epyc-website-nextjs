@@ -1,4 +1,5 @@
 import type { StrapiBlog, StrapiMedia } from '../strapi/types'
+import { toMediaUrl } from '../media'
 
 export type CoverSize = 'card' | 'banner'
 
@@ -48,7 +49,7 @@ export function normalise(blog: StrapiBlog, size: CoverSize = 'card'): Normalise
     excerpt: blog.metaDescription ?? undefined,
     content: blog.content,
     image: {
-      src: picked.url,
+      src: toMediaUrl(picked.url),
       alt: blog.coverImageAlt ?? blog.coverImage.alternativeText ?? blog.title,
       width: picked.width,
       height: picked.height,

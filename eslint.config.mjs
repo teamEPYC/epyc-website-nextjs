@@ -12,8 +12,6 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Generated file — no need to lint
-    "cloudflare-env.d.ts",
   ]),
 ]);
 

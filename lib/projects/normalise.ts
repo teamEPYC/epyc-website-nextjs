@@ -1,4 +1,5 @@
 import type { StrapiProject, StrapiMedia } from '../strapi/types'
+import { toMediaUrl } from '../media'
 
 export type ProjectIndustry =
   | 'vc'
@@ -56,7 +57,7 @@ export function normaliseProject(project: StrapiProject): NormalisedProject {
     featured: Boolean(project.featured),
     createdAt: project.publishedAt,
     image: {
-      src: picked.url,
+      src: toMediaUrl(picked.url),
       alt: project.thumbnailAlt ?? project.thumbnail.alternativeText ?? project.title,
       width: picked.width ?? 1080,
       height: picked.height ?? 608,

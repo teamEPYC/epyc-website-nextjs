@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { fetchStrapi } from '@/lib/strapi/client'
 import type { StrapiList, StrapiGalleryItem } from '@/lib/strapi/types'
 import { normaliseGallery } from '@/lib/gallery/normalise'
+import { toMediaUrl } from '@/lib/media'
 import { GalleryDetail } from '@/components/sections/gallery-detail'
 import { CTAFooter } from '@/components/sections/cta-footer'
 
@@ -33,11 +34,10 @@ export async function generateMetadata({
   const title = item.title ?? GALLERY_TITLE
   const description = item.description ?? GALLERY_DESCRIPTION
 
-  const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://media.epyc.in'
   const ogImage =
     item.kind === 'image'
       ? {
-          url: item.src.startsWith('http') ? item.src : `${mediaBase}${item.src}`,
+          url: toMediaUrl(item.src),
           width: item.width,
           height: item.height,
           alt: item.alt ?? title,

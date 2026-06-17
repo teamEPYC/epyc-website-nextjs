@@ -5,17 +5,12 @@ import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
 import { BlogPost } from '@/components/sections/blog-post'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { normalise } from '@/lib/blogs/normalise'
+import { MEDIA_BASE, toMediaUrl } from '@/lib/media'
 import { site } from '@/data/site'
 
 type Params = Promise<{ slug: string }>
 
 export const revalidate = 60
-
-const MEDIA_BASE = process.env.NEXT_PUBLIC_MEDIA_BASE_URL ?? 'https://media.epyc.in'
-
-function toAbsoluteMediaUrl(url: string): string {
-  return url.startsWith('http') ? url : `${MEDIA_BASE}${url}`
-}
 
 function rewriteMediaUrls(html: string): string {
   // Rewrite bare src="/..." paths
@@ -46,7 +41,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const ogImage = blog.coverImage
     ? {
-        url: toAbsoluteMediaUrl(blog.coverImage.url),
+        url: toMediaUrl(blog.coverImage.url),
         width: blog.coverImage.width,
         height: blog.coverImage.height,
         alt: blog.coverImageAlt ?? blog.coverImage.alternativeText ?? blog.title,
@@ -94,7 +89,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
     dateModified: blog.publishedAt,
     url: `${site.url}/blog/${slug}`,
     image: blog.coverImage
-      ? toAbsoluteMediaUrl(blog.coverImage.url)
+      ? toMediaUrl(blog.coverImage.url)
       : `${site.url}/og/default.jpg`,
     author: { '@type': 'Person', name: blog.author.name },
     publisher: {

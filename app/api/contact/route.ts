@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
-import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { contactSchema } from '@/lib/contact/schema'
 
-// Replicates @neondatabase/serverless HTTP transport without the package,
-// avoiding esbuild/OpenNext bundling incompatibilities in Cloudflare Workers.
+// Replicates @neondatabase/serverless HTTP transport without the package —
+// a single fetch, no driver dependency to bundle.
 async function neonSql(connectionString: string, query: string, params: unknown[] = []) {
   const { hostname } = new URL(connectionString)
   const domain = hostname.slice(hostname.indexOf('.') + 1)
@@ -42,13 +41,20 @@ export async function POST(req: Request) {
     [data.name, data.email, data.budget, data.details, data.source],
   )
 
-  // Hand the submission to the webhook background job (Cloudflare Queue —
-  // consumed by workers/contact-webhook). A queue failure must not fail the
-  // request: the enquiry is already persisted to Neon above.
-  try {
-    await getCloudflareContext().env.CONTACT_QUEUE.send(data)
-  } catch (err) {
-    console.error('contact webhook enqueue failed', err)
+  // Forward the submission to the external webhook. A webhook failure must not
+  // fail the request: the enquiry is already persisted to Neon above.
+  const webhookUrl = process.env.CONTACT_WEBHOOK_URL
+  if (webhookUrl) {
+    try {
+      const res = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) throw new Error(`webhook responded ${res.status}`)
+    } catch (err) {
+      console.error('contact webhook delivery failed', err)
+    }
   }
 
   return NextResponse.json({ ok: true })
