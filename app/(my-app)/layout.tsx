@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, IBM_Plex_Serif, Fragment_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
-import Script from 'next/script'
 import './globals.css'
 import { FloatingMenuButton } from '@/components/ui/floating-menu'
 import { site } from '@/data/site'
@@ -137,78 +136,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-
-        {/* Google tag (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-9YP95GH3E0"
-          strategy="afterInteractive"
-        />
-        <Script id="gtag-init" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-9YP95GH3E0');
-          `}
-        </Script>
-
-        {/* Microsoft Clarity */}
-        <Script id="ms-clarity" strategy="afterInteractive">
-          {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "i0rd9jx09z");
-          `}
-        </Script>
-
-        {/* factors.ai */}
-        <Script
-          src="https://tag.clearbitscripts.com/v1/pk_0d660609b8ad02fad0229b6128d90366/tags.js"
-          referrerPolicy="strict-origin-when-cross-origin"
-          strategy="afterInteractive"
-        />
-        <Script id="faitracker-init" strategy="afterInteractive">
-          {`
-            ((window.faitracker = window.faitracker || (function(){
-              this.q = [];
-              var t = new CustomEvent("FAITRACKER_QUEUED_EVENT");
-              return (
-                (this.init = function(t,e,a){
-                  ((this.TOKEN = t),(this.INIT_PARAMS = e),(this.INIT_CALLBACK = a),
-                    window.dispatchEvent(new CustomEvent("FAITRACKER_INIT_EVENT")));
-                }),
-                (this.call = function(){
-                  var e = { k: "", a: [] };
-                  if (arguments && arguments.length >= 1) {
-                    for (var a = 1; a < arguments.length; a++) e.a.push(arguments[a]);
-                    e.k = arguments[0];
-                  }
-                  (this.q.push(e), window.dispatchEvent(t));
-                }),
-                (this.message = function(){
-                  window.addEventListener("message", function(t){
-                    "faitracker" === t.data.origin &&
-                      this.call("message", t.data.type, t.data.message);
-                  });
-                }),
-                this.message(),
-                this.init("s1tpikwuqzyaue7gh10h97i1vz3zu1qo", {
-                  host: "https://api.dyh8ken8pc.com",
-                }),
-                this
-              );
-            })()),
-            (function(){
-              var t = document.createElement("script");
-              ((t.type = "text/javascript"),
-                (t.src = "https://asset.dyh8ken8pc.com/dyh8ken8pc.js"),
-                (t.async = !0),
-                (d = document.getElementsByTagName("script")[0]).parentNode.insertBefore(t, d));
-            })());
-          `}
-        </Script>
       </body>
     </html>
   )
