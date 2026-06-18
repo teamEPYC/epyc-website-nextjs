@@ -298,70 +298,32 @@ export default function GoKwikCaseStudy() {
         </Container>
       </Section>
 
-      {/* ── THE WORK — SECTION SHOTS ────────────────────────────────────────── */}
+      {/* ── THE WORK — SECTION VIDEOS ───────────────────────────────────────── */}
       <Section tone="ink" className="border-t border-cream/10">
         <Container>
           <div className="flex flex-col gap-10">
-            <Reveal>
-              <figure>
-                <Image
-                  src="/images/case-studies/gokwik/crop-home-platform.png"
-                  alt="GoKwik homepage hero"
-                  width={1440}
-                  height={545}
-                  sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                  className="w-full"
-                />
-              </figure>
-            </Reveal>
-            <Reveal>
-              <figure>
-                <Image
-                  src="/images/case-studies/gokwik/crop-home-products.png"
-                  alt="GoKwik platform product tabs"
-                  width={1440}
-                  height={890}
-                  sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                  className="w-full"
-                />
-              </figure>
-            </Reveal>
-            <Reveal>
-              <figure>
-                <Image
-                  src="/images/case-studies/gokwik/crop-checkout-stats.png"
-                  alt="KwikCheckout conversion stats"
-                  width={1440}
-                  height={305}
-                  sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                  className="w-full"
-                />
-              </figure>
-            </Reveal>
-            <Reveal>
-              <figure>
-                <Image
-                  src="/images/case-studies/gokwik/crop-home-trusted.png"
-                  alt="Trusted by 15,000+ merchants"
-                  width={1440}
-                  height={917}
-                  sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                  className="w-full"
-                />
-              </figure>
-            </Reveal>
-            <Reveal>
-              <figure>
-                <Image
-                  src="/images/case-studies/gokwik/crop-home-integrations.png"
-                  alt="50+ integrations across the e-commerce stack"
-                  width={1440}
-                  height={474}
-                  sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                  className="w-full"
-                />
-              </figure>
-            </Reveal>
+            {[
+              { src: 'homepage-scroll_loop.mp4', caption: 'Homepage — full scroll, end to end.' },
+              { src: 'homepage-tabs-1-Edited.mp4', caption: 'Product tab interactions on the homepage.' },
+              { src: 'features.mp4', caption: 'Features section — progressive reveal.' },
+              { src: 'pricing.mp4', caption: 'Pricing page layout and hierarchy.' },
+              { src: 'testimonial-blue-section.mp4', caption: 'Testimonial section — social proof at scale.' },
+              { src: 'Kwik-ads-bouqet_loop.mp4', caption: 'KwikAds — looping brand visual.' },
+            ].map(({ src, caption }) => (
+              <Reveal key={src}>
+                <figure>
+                  <video
+                    src={`/images/case-studies/gokwik/${src}`}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full"
+                  />
+                  <figcaption className="mt-3 text-body text-cream/50">{caption}</figcaption>
+                </figure>
+              </Reveal>
+            ))}
           </div>
         </Container>
       </Section>
