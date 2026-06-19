@@ -65,11 +65,11 @@ const normsSerif = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'EPYC | Website Development | Design Studio',
+    default: 'EPYC | Design & Development Studio for Ambitious Companies',
     template: '%s | EPYC',
   },
   description:
-    'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
+    'EPYC is a premium design & development studio. We build websites, apps, and digital products for ambitious companies. Polygon, Accel, Antler, and 75+ others trust us.',
   alternates: { canonical: '/' },
   // openGraph / twitter intentionally omit `title` & `description`: Next replaces
   // these nested objects wholesale per route (they are not deep-merged), so each
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
         url: '/og/default.jpg',
         width: 2400,
         height: 1260,
-        alt: 'EPYC — Website Development & Design Studio',
+        alt: 'EPYC — Design & Development Studio',
       },
     ],
   },
