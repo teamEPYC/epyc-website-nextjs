@@ -9,6 +9,7 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
 import { Button } from '@/components/ui/button'
 import { Reveal } from '@/components/ui/reveal'
+import { CaseStudyShell, CaseStudyViewToggle, HideInTldr, ShowInTldr } from '@/components/ui/case-study-shell'
 
 export const metadata: Metadata = {
   title: 'GoKwik — Case Study',
@@ -92,6 +93,7 @@ const interactions: InteractionItem[] = [
 export default function GoKwikCaseStudy() {
   return (
     // The entire case study lives on an ink surface — warm dark green, not black.
+    <CaseStudyShell>
     <div className="min-h-screen bg-ink text-cream">
       {/* Nav: force cream text since SiteNav defaults to ink on non-home routes */}
       <div className="border-b border-cream/10">
@@ -102,13 +104,16 @@ export default function GoKwikCaseStudy() {
       <Section tone="ink">
         <Container>
           <Reveal>
-            {/* Back link */}
-            <Link
-              href="/projects"
-              className="mb-10 inline-block text-h5 uppercase tracking-wider text-cream/40 underline-offset-4 transition-colors hover:text-cream/70"
-            >
-              ← Projects
-            </Link>
+            {/* Back link + view toggle */}
+            <div className="mb-10 flex items-center justify-between">
+              <Link
+                href="/projects"
+                className="inline-block text-h5 uppercase tracking-wider text-cream/40 underline-offset-4 transition-colors hover:text-cream/70"
+              >
+                ← Projects
+              </Link>
+              <CaseStudyViewToggle />
+            </div>
 
             {/* Service + industry tags */}
             <div className="mb-8 flex flex-wrap gap-2">
@@ -146,25 +151,37 @@ export default function GoKwikCaseStudy() {
       <Section tone="ink" className="border-t border-cream/10">
         <Container>
           <Reveal>
-            {/* 4-column stat grid — gaps rendered as bg-ink/cream border lines */}
-            <div className="grid grid-cols-2 gap-px bg-cream/10 lg:grid-cols-3">
-              {stats.map((s) => (
-                <div key={s.number} className="bg-ink p-6 sm:p-8">
-                  <p className="text-h2 text-cream">{s.number}</p>
-                  <p className="mt-2 text-body-lg uppercase text-cream/60">{s.label}</p>
-                </div>
-              ))}
-            </div>
+            {/* Full story: original large stats + quote */}
+            <HideInTldr>
+              <div className="grid grid-cols-2 gap-px bg-cream/10 lg:grid-cols-3">
+                {stats.map((s) => (
+                  <div key={s.number} className="bg-ink p-6 sm:p-8">
+                    <p className="text-h2 text-cream">{s.number}</p>
+                    <p className="mt-2 text-body-lg uppercase text-cream/60">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+              <blockquote className="mt-12 border-l-2 border-cream/20 bg-cream/5 px-8 py-8 sm:px-12 sm:py-10">
+                <p className="text-h3 font-normal italic text-cream/75">
+                  &ldquo;Good stuff, guys. We trust you completely.&rdquo;
+                </p>
+                <cite className="mt-4 block text-h5 not-italic uppercase tracking-wider text-cream/50">
+                  — GoKwik team, during project
+                </cite>
+              </blockquote>
+            </HideInTldr>
 
-            {/* Quote block */}
-            <blockquote className="mt-12 border-l-2 border-cream/20 bg-cream/5 px-8 py-8 sm:px-12 sm:py-10">
-              <p className="text-h3 font-normal italic text-cream/75">
-                &ldquo;Good stuff, guys. We trust you completely.&rdquo;
-              </p>
-              <cite className="mt-4 block text-h5 not-italic uppercase tracking-wider text-cream/50">
-                — GoKwik team, during project
-              </cite>
-            </blockquote>
+            {/* TL;DR: compact single-row stats, no quote */}
+            <ShowInTldr>
+              <div className="grid grid-cols-3 gap-px bg-cream/10">
+                {stats.map((s) => (
+                  <div key={s.number} className="bg-ink p-4 sm:p-6">
+                    <p className="text-h3 text-cream">{s.number}</p>
+                    <p className="mt-1 text-body uppercase text-cream/60">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </ShowInTldr>
           </Reveal>
         </Container>
       </Section>
@@ -193,78 +210,84 @@ export default function GoKwikCaseStudy() {
               The old site, Aug 2025 — last archived version before the redesign.
             </p>
 
-            <div className="mt-8 space-y-4">
-              <p className="text-body-lg text-cream/60">
-                The hero was promoting &ldquo;GoKwik Hall Of Glory&rdquo; — an award programme.
-                Below it: &ldquo;We&apos;ve Got Your Business Covered,&rdquo; a tab of client
-                logos, and a YouTube embed. Then &ldquo;The GoKwik Advantage&rdquo; — four generic
-                bullets. Dark navy, orange accents, a 3D globe.
-              </p>
-              <p className="text-body-lg text-cream/60">
-                The products weren&apos;t on the homepage at all. Nine solutions, none of them
-                findable.
-              </p>
-            </div>
+            <HideInTldr>
+              <div className="mt-8 space-y-4">
+                <p className="text-body-lg text-cream/60">
+                  The hero was promoting &ldquo;GoKwik Hall Of Glory&rdquo; — an award programme.
+                  Below it: &ldquo;We&apos;ve Got Your Business Covered,&rdquo; a tab of client
+                  logos, and a YouTube embed. Then &ldquo;The GoKwik Advantage&rdquo; — four generic
+                  bullets. Dark navy, orange accents, a 3D globe.
+                </p>
+                <p className="text-body-lg text-cream/60">
+                  The products weren&apos;t on the homepage at all. Nine solutions, none of them
+                  findable.
+                </p>
+              </div>
+            </HideInTldr>
           </Reveal>
         </Container>
       </Section>
 
       {/* ── CHALLENGE ───────────────────────────────────────────────────────── */}
-      <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <Reveal>
-            <SectionHeading tone="cream" size="h3" as="h2" className="mb-8">
-              Challenge
-            </SectionHeading>
+      <HideInTldr>
+        <Section tone="ink" className="border-t border-cream/10">
+          <Container>
+            <Reveal>
+              <SectionHeading tone="cream" size="h3" as="h2" className="mb-8">
+                Challenge
+              </SectionHeading>
 
-            <div className="space-y-6">
-              <p className="text-h3 font-normal leading-relaxed text-cream/80">
-                GoKwik had scaled far beyond their original website. Nine products — KwikCheckout,
-                KwikPass, KwikAds, KwikEngage, GoKwik Cart, KwikShip, Return Prime, Kwik AI
-                Popups, KwikGEO — but the site presented them as disconnected pages with no clear
-                narrative.
-              </p>
-              <p className="text-body-lg text-cream/55">
-                Merchants couldn&apos;t find what was relevant to them. No demo flow, no PLG
-                motion, no sense of the platform&apos;s depth. Visually, it didn&apos;t reflect the
-                credibility of a company with 50M+ completed checkouts, 15,000+ brands, and 9x the
-                GMV of its nearest competitor.
-              </p>
-              <p className="text-body-lg text-cream/55">
-                The homepage gave prime real estate to an award programme. The product suite — nine
-                solutions across the full D2C journey — was nowhere to be seen.
-              </p>
-              <p className="text-body-lg italic text-cream/50">
-                The site wasn&apos;t just outdated. It was actively working against them.
-              </p>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
+              <div className="space-y-6">
+                <p className="text-h3 font-normal leading-relaxed text-cream/80">
+                  GoKwik had scaled far beyond their original website. Nine products — KwikCheckout,
+                  KwikPass, KwikAds, KwikEngage, GoKwik Cart, KwikShip, Return Prime, Kwik AI
+                  Popups, KwikGEO — but the site presented them as disconnected pages with no clear
+                  narrative.
+                </p>
+                <p className="text-body-lg text-cream/55">
+                  Merchants couldn&apos;t find what was relevant to them. No demo flow, no PLG
+                  motion, no sense of the platform&apos;s depth. Visually, it didn&apos;t reflect the
+                  credibility of a company with 50M+ completed checkouts, 15,000+ brands, and 9x the
+                  GMV of its nearest competitor.
+                </p>
+                <p className="text-body-lg text-cream/55">
+                  The homepage gave prime real estate to an award programme. The product suite — nine
+                  solutions across the full D2C journey — was nowhere to be seen.
+                </p>
+                <p className="text-body-lg italic text-cream/50">
+                  The site wasn&apos;t just outdated. It was actively working against them.
+                </p>
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+      </HideInTldr>
 
       {/* ── OUR APPROACH ────────────────────────────────────────────────────── */}
-      <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <Reveal>
-            <SectionHeading tone="cream" size="h3" as="h2" className="mb-10">
-              Our Approach
-            </SectionHeading>
-          </Reveal>
+      <HideInTldr>
+        <Section tone="ink" className="border-t border-cream/10">
+          <Container>
+            <Reveal>
+              <SectionHeading tone="cream" size="h3" as="h2" className="mb-10">
+                Our Approach
+              </SectionHeading>
+            </Reveal>
 
-          {/* Phase grid — gap rendered as hairline via bg-cream/10 */}
-          <div className="grid gap-px bg-cream/10 sm:grid-cols-3">
-            {phases.map((phase, i) => (
-              <Reveal key={phase.num} delay={i * 0.08}>
-                <div className="flex h-full flex-col gap-3 bg-ink p-7 sm:p-8">
-                  <p className="text-h5 uppercase tracking-wider text-cream/50">{phase.num}</p>
-                  <h3 className="text-h4-alt text-cream">{phase.title}</h3>
-                  <p className="text-body-lg text-cream/50">{phase.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </Section>
+            {/* Phase grid — gap rendered as hairline via bg-cream/10 */}
+            <div className="grid gap-px bg-cream/10 sm:grid-cols-3">
+              {phases.map((phase, i) => (
+                <Reveal key={phase.num} delay={i * 0.08}>
+                  <div className="flex h-full flex-col gap-3 bg-ink p-7 sm:p-8">
+                    <p className="text-h5 uppercase tracking-wider text-cream/50">{phase.num}</p>
+                    <h3 className="text-h4-alt text-cream">{phase.title}</h3>
+                    <p className="text-body-lg text-cream/50">{phase.body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      </HideInTldr>
 
       {/* ── THE WORK — HOMEPAGE ─────────────────────────────────────────────── */}
       <Section tone="ink" className="border-t border-cream/10">
@@ -288,12 +311,14 @@ export default function GoKwikCaseStudy() {
               The new homepage — merchant-first, Lottie-driven, outcome-led.
             </p>
 
-            <p className="mt-8 text-body-lg text-cream/60">
-              A ground-up redesign of gokwik.co. The homepage leads with &ldquo;Built for D2C.
-              Powered by AI.&rdquo; — the full product suite surfaced, each product given a Lottie
-              animation and a dedicated page. Custom photography creates a consistent human feel
-              across the brand.
-            </p>
+            <HideInTldr>
+              <p className="mt-8 text-body-lg text-cream/60">
+                A ground-up redesign of gokwik.co. The homepage leads with &ldquo;Built for D2C.
+                Powered by AI.&rdquo; — the full product suite surfaced, each product given a Lottie
+                animation and a dedicated page. Custom photography creates a consistent human feel
+                across the brand.
+              </p>
+            </HideInTldr>
           </Reveal>
         </Container>
       </Section>
@@ -364,5 +389,6 @@ export default function GoKwikCaseStudy() {
       {/* ── FOOTER CTA ──────────────────────────────────────────────────────── */}
       <CTAFooter />
     </div>
+    </CaseStudyShell>
   )
 }
