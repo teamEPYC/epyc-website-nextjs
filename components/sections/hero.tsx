@@ -24,22 +24,26 @@ export function Hero() {
             <Badge
               tone="cream-on-dark"
               href={site.social.clutchProfile}
-              className="gap-2 py-4 px-4 text-body-sm"
-              icon={<ClutchWordmark className="h-4 w-auto text-cream" />}
+              className="gap-1.5 py-2 px-3 lg:py-4 lg:px-4 text-body-sm"
+              icon={<ClutchWordmark className="h-3 lg:h-4 w-auto text-cream" />}
             >
-              <span className="flex items-center gap-2">
-                <span className="text-body-sm font-semibold" style={{ lineHeight: 1, fontSize: 16, marginBottom: -2 }}>4.9/5.0</span>
+              <span className="flex items-center gap-1.5 lg:gap-2">
+                <span className="text-body-sm font-semibold lg:hidden" style={{ lineHeight: 1, fontSize: 12, marginBottom: -2 }}>4.9/5.0</span>
+                <span className="text-body-sm font-semibold hidden lg:inline" style={{ lineHeight: 1, fontSize: 16, marginBottom: -2 }}>4.9/5.0</span>
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={13} className="text-cream" />
+                    <Star key={i} size={11} className="text-cream lg:hidden" />
+                  ))}
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={`lg-${i}`} size={13} className="text-cream hidden lg:inline-block" />
                   ))}
                 </span>
               </span>
             </Badge>
 
 
-            <h1 className="text-display mt-10 lg:mt-0 text-center text-cream">
-              Great companies deserve<br />great digital products.
+            <h1 className="text-display mt-4 lg:mt-0 text-center text-cream">
+              Great companies deserve<br className="hidden sm:block" />{' '}great digital products.
             </h1>
 
             <p className="text-body max-w-lg text-center text-beige" style={{ fontSize: 20 }}>
