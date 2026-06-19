@@ -31,6 +31,7 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 | `app/(my-app)/blog/` | Blog index + post pages (Strapi-driven) |
 | `app/(my-app)/gallery/` | Gallery index + detail pages (Strapi-driven) |
 | `components/ui/` | Primitive components — `Section`, `Container`, `Button`, `Pill`, `Badge`, `SectionHeading`, `ProjectCard`, `Reveal`, etc. |
+| `components/ui/case-study-shell.tsx` | Shell + TL;DR toggle for case study pages — read this before building a new case study. Reference impl: `app/(my-app)/projects/gokwik/page.tsx` |
 | `components/sections/` | Full page sections — `Hero`, `FeaturedProjects`, `CTAFooter`, `Voices`, `FAQs`, etc. |
 | `components/site-nav.tsx` | Global nav — adapts colour by pathname |
 | `data/` | Typed const arrays for static content (projects, brands, testimonials, FAQs, nav) |
@@ -67,6 +68,12 @@ Dynamic content (projects, blog posts, gallery) is fetched from Strapi via `lib/
 - `STRAPI_URL` and `STRAPI_API_TOKEN` must be set in the environment. In dev, 401s from Strapi are expected and non-fatal — pages gracefully return empty lists and re-hydrate on first real request via ISR (`revalidate: 60`).
 - Types are in `lib/strapi/types.ts`.
 - Static case study pages (e.g. `app/(my-app)/projects/gokwik/`) do **not** use Strapi — they are fully static, hand-authored pages.
+
+---
+
+## Agents
+
+- **`epyc-builder`** (`.claude/agents/epyc-builder.md`) — use for all GitHub issue and PR management on this repo. Invoke it via the Agent tool whenever creating, updating, or closing issues, or managing labels/milestones. Do not create GitHub issues directly from the main context.
 
 ---
 
