@@ -24,11 +24,11 @@ export function Hero() {
             <Badge
               tone="cream-on-dark"
               href={site.social.clutchProfile}
-              className="gap-2 py-2 px-3 lg:px-4 text-body-sm"
+              className="gap-2 py-4 px-4 text-body-sm"
               icon={<ClutchWordmark className="h-4 w-auto text-cream" />}
             >
               <span className="flex items-center gap-2">
-                <span className="text-body-sm font-semibold">4.9/5.0</span>
+                <span className="text-body-sm font-semibold" style={{ lineHeight: 1, fontSize: 16, marginBottom: -2 }}>4.9/5.0</span>
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} size={13} className="text-cream" />
@@ -38,24 +38,28 @@ export function Hero() {
             </Badge>
 
 
-            <h1 className="text-h1 mt-10 lg:mt-0 text-center text-cream ">
-              Great companies deserve great digital products.
+            <h1 className="text-display mt-10 lg:mt-0 text-center text-cream">
+              Great companies deserve<br />great digital products.
             </h1>
 
-            <p className="text-body max-w-lg text-center text-beige">
+            <p className="text-body max-w-lg text-center text-beige" style={{ fontSize: 20 }}>
               We&apos;re a premium design &amp; development studio. Polygon, Accel, Antler, and
               75+ others trust us to build products that match their ambition — not their
               headcount.
             </p>
 
             <div className=" flex w-full  lg:w-auto items-center justify-center gap-3">
-              <Button variant="filled" className="w-full" icon="arrow-down" href="/projects">
+              <Button variant="outline" data-on-dark="true" className="w-full" icon="arrow-right" href="/projects">
                 See Our Work
               </Button>
               <Button variant="filled" className="w-full" icon="arrow-right" href="/contact">
                 Talk to Us
               </Button>
             </div>
+
+            <p className="text-beige" style={{ fontSize: 18, marginTop: 12 }}>
+              Websites&nbsp;&nbsp;|&nbsp;&nbsp;AI Applications&nbsp;&nbsp;|&nbsp;&nbsp;MVPs
+            </p>
           </div>
 
           <div aria-hidden="true" className="hidden lg:block" />
