@@ -42,14 +42,14 @@ export function Hero() {
             </Badge>
 
 
-            <h1 className="text-display mt-4 lg:mt-0 text-center text-cream">
-              Great companies deserve<br className="hidden sm:block" />{' '}great digital products.
+            <h1 className="text-display mt-4 lg:mt-0 text-center text-cream text-balance">
+              Premium design &amp; development for companies that want to be taken seriously.
             </h1>
 
-            <p className="text-body max-w-lg text-center text-beige" style={{ fontSize: 20 }}>
+            <p className="text-body max-w-2xl text-center text-beige" style={{ fontSize: 20 }}>
               We&apos;re a premium design &amp; development studio. Polygon, Accel, Antler, and
-              75+ others trust us to build products that match their ambition — not their
-              headcount.
+              75+ others trust us to build products that match their ambition — without the
+              overhead of an in-house team.
             </p>
 
             <div className=" flex w-full  lg:w-auto items-center justify-center gap-3">
@@ -57,7 +57,7 @@ export function Hero() {
                 See Our Work
               </Button>
               <Button variant="filled" className="w-full" icon="arrow-right" href="/contact">
-                Talk to Us
+                Start Your Project
               </Button>
             </div>
 
