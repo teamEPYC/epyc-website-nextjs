@@ -63,7 +63,7 @@ export function CTAFooter() {
                 It&apos;s Time, We Create
               </SectionHeading>
               <Button variant="filled" icon="arrow-right" href="/contact">
-                Let&apos;s Talk
+                Tell Us What You&apos;re Building
               </Button>
             </div>
 

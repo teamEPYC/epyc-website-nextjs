@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Container } from '@/components/ui/container'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { StarRating } from '@/components/ui/star-rating'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { ClutchWordmark } from '@/components/icons/clutch-wordmark'
@@ -49,6 +50,10 @@ export function Voices() {
             </div>
           </div>
         </Reveal>
+
+        <Button variant="filled" icon="arrow-right" href="/contact">
+          Start Your Project
+        </Button>
 
         {/* Clutch read-more CTA — fixed 505x84 row, label on left + Clutch badge on right */}
       </Container>

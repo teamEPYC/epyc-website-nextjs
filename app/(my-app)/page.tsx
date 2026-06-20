@@ -29,40 +29,15 @@ const faqJsonLd = {
 export default function Home() {
   return (
     <>
-      {/* Setion order is the same as DOM order at lg+ (Tailwind's `lg:order-none`
-          collapses to 0 on every wrapper, falling back to DOM order). On mobile
-          the explicit `order-N` classes shift Services down by two slots so the
-          visual flow is: ... More Projects -> Voices -> Brands -> Services -> ... */}
-      <div className="order-1 lg:order-none">
-        <Hero />
-      </div>
-      <div className="order-2 lg:order-none">
-        <StickyImage />
-      </div>
-      <div className="order-3 lg:order-none">
-        <FeaturedProjects />
-      </div>
-      <div className="order-4 lg:order-none">
-        <MoreProjects />
-      </div>
-      {/* DOM position 5, mobile slot 7 (after Brands) */}
-      <div className="order-7 lg:order-none">
-        <Services />
-      </div>
-      {/* DOM position 6, mobile slot 5 */}
-      <div className="order-5 lg:order-none">
-        <Voices />
-      </div>
-      {/* DOM position 7, mobile slot 6 */}
-      <div className="order-6 lg:order-none">
-        <Brands />
-      </div>
-      <div className="order-8 lg:order-none">
-        <FAQs />
-      </div>
-      <div className="order-9 lg:order-none">
-        <CTAFooter />
-      </div>
+      <Hero />
+      <StickyImage />
+      <FeaturedProjects />
+      <MoreProjects />
+      <Services />
+      <Voices />
+      <Brands />
+      <FAQs />
+      <CTAFooter />
 
       <script
         type="application/ld+json"
