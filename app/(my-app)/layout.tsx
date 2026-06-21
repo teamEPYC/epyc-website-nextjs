@@ -68,8 +68,7 @@ export const metadata: Metadata = {
     default: 'EPYC | Design & Development Studio for Ambitious Companies',
     template: '%s | EPYC',
   },
-  description:
-    'EPYC is a premium design & development studio. We build websites, apps, and digital products for ambitious companies. Polygon, Accel, Antler, and 75+ others trust us.',
+  description: site.description,
   alternates: { canonical: '/' },
   // openGraph / twitter intentionally omit `title` & `description`: Next replaces
   // these nested objects wholesale per route (they are not deep-merged), so each

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { site } from '@/data/site'
 import { SiteNav } from '@/components/site-nav'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { Section } from '@/components/ui/section'
@@ -90,10 +91,49 @@ const interactions: InteractionItem[] = [
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      headline: 'GoKwik — Case Study',
+      description:
+        "How EPYC redesigned gokwik.co for India's leading D2C growth platform — 50+ pages, Lottie-first motion, a scalable design system. Traffic and conversions up 50-60% post-launch.",
+      url: `${site.url}/projects/gokwik`,
+      datePublished: '2026-06-15',
+      author: { '@type': 'Organization', name: site.name, url: site.url },
+      publisher: {
+        '@type': 'Organization',
+        name: site.name,
+        url: site.url,
+        logo: { '@type': 'ImageObject', url: `${site.url}/icons/epyc-wordmark-large.svg` },
+      },
+      image: {
+        '@type': 'ImageObject',
+        url: `${site.url}/images/case-studies/gokwik/new-homepage.webp`,
+        width: 1440,
+        height: 900,
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+        { '@type': 'ListItem', position: 2, name: 'Projects', item: `${site.url}/projects` },
+        { '@type': 'ListItem', position: 3, name: 'GoKwik', item: `${site.url}/projects/gokwik` },
+      ],
+    },
+  ],
+}
+
 export default function GoKwikCaseStudy() {
   return (
     // The entire case study lives on an ink surface — warm dark green, not black.
     <CaseStudyShell>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
     <div className="min-h-screen bg-ink text-cream">
       {/* Nav: force cream text since SiteNav defaults to ink on non-home routes */}
       <div className="border-b border-cream/10">
