@@ -35,6 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     url("/"),
     url("/projects"),
+    url("/projects/gokwik"),
     url("/blog"),
     url("/gallery"),
     url("/contact"),
