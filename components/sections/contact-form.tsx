@@ -64,6 +64,8 @@ export function ContactForm() {
         return
       }
       setState('success')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(window as any).gtag?.('event', 'contact_form_submit')
     } catch {
       setState('error')
       setServerError('Network error. Check your connection and try again.')
