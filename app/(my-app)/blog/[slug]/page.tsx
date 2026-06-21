@@ -17,6 +17,10 @@ function toAbsoluteMediaUrl(url: string): string {
   return url.startsWith('http') ? url : `${MEDIA_BASE}${url}`
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160)
+}
+
 function rewriteMediaUrls(html: string): string {
   // Rewrite bare src="/..." paths
   let result = html.replace(
@@ -38,6 +42,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params
   const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
     'filters[slug][$eq]': slug,
+    'fields[0]': 'title',
+    'fields[1]': 'metaTitle',
+    'fields[2]': 'metaDescription',
+    'fields[3]': 'content',
+    'fields[4]': 'coverImageAlt',
     'populate[coverImage][fields]': 'url,width,height,alternativeText',
     'pagination[limit]': '1',
   })
@@ -55,7 +64,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   return {
     title: blog.metaTitle ?? blog.title,
-    description: blog.metaDescription ?? site.description,
+    description: blog.metaDescription ?? (blog.content ? stripHtml(blog.content) : undefined),
     alternates: { canonical: `/blog/${slug}` },
     openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
@@ -89,7 +98,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: blog.title,
-    description: blog.metaDescription ?? site.description,
+    description: blog.metaDescription ?? (blog.content ? stripHtml(blog.content) : site.description),
     datePublished: blog.publishedDate ?? blog.publishedAt,
     dateModified: blog.publishedAt,
     url: `${site.url}/blog/${slug}`,
