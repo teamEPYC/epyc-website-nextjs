@@ -4,6 +4,15 @@ import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare'
 initOpenNextCloudflareForDev()
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/blogs',
+        destination: '/blog',
+        statusCode: 301,
+      },
+    ]
+  },
   images: {
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
