@@ -125,6 +125,15 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${fontVariables} h-full antialiased`}>
+      <head>
+        {/* Preload hero paper texture — it's the LCP element (CSS background-image) */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/site/4svPWouJqvqnznpkeku35FoPOY.webp"
+          fetchPriority="high"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
         {/* <FloatingMenuButton /> */}
@@ -140,9 +149,9 @@ export default function RootLayout({
         {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-9YP95GH3E0"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
+        <Script id="gtag-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -152,7 +161,7 @@ export default function RootLayout({
         </Script>
 
         {/* Microsoft Clarity */}
-        <Script id="ms-clarity" strategy="afterInteractive">
+        <Script id="ms-clarity" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -166,9 +175,9 @@ export default function RootLayout({
         <Script
           src="https://tag.clearbitscripts.com/v1/pk_0d660609b8ad02fad0229b6128d90366/tags.js"
           referrerPolicy="strict-origin-when-cross-origin"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="faitracker-init" strategy="afterInteractive">
+        <Script id="faitracker-init" strategy="lazyOnload">
           {`
             ((window.faitracker = window.faitracker || (function(){
               this.q = [];
