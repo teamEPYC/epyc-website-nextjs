@@ -4,7 +4,7 @@
 
 EPYC designs and builds websites and digital products that help great companies look like great companies. The studio works across platforms (Webflow, Framer, WordPress, Bubble.io, FlutterFlow, and custom code), choosing the right tool per project rather than being defined by any single one. The platform is an implementation detail; the outcome is a website or app that converts, impresses, and launches fast.
 
-EPYC is a design and development studio, not a "no-code agency" or "Webflow agency." Projects typically run $10K to $25K. The studio takes only 3 new clients per month to protect quality. Rated 4.9 out of 5.0, with official partner status: Bubble Bronze Agency, Webflow Professional Partner, and Framer Enterprise Partner. Operated by EPYC THOUGHTWORKS PRIVATE LIMITED (India).
+EPYC is a design and development studio, not a "no-code agency" or "Webflow agency." Projects typically run $10K to $25K. The studio takes only 3 new clients per month to protect quality. Rated 4.9 out of 5.0, with official partner status: Bubble Bronze Agency, Webflow Professional Partner, and Framer Enterprise Partner.
 
 ## Services
 
