@@ -1,0 +1,34 @@
+# EPYC
+
+> EPYC is a premium design and development studio that builds high-performance websites and apps for ambitious companies, from startups to enterprise. 75+ organizations including Polygon, Accel, Antler, and upGrad have trusted EPYC to deliver pixel-perfect, fast, conversion-focused work.
+
+EPYC designs and builds websites and digital products that help great companies look like great companies. The studio works across platforms (Webflow, Framer, WordPress, Bubble.io, FlutterFlow, and custom code), choosing the right tool per project rather than being defined by any single one. The platform is an implementation detail; the outcome is a website or app that converts, impresses, and launches fast.
+
+EPYC is a design and development studio, not a "no-code agency" or "Webflow agency." Projects typically run $10K to $25K. The studio takes only 3 new clients per month to protect quality. Rated 4.9 out of 5.0, with official partner status: Bubble Bronze Agency, Webflow Professional Partner, and Framer Enterprise Partner. Operated by EPYC THOUGHTWORKS PRIVATE LIMITED (India).
+
+## Services
+
+- [Website Design & Development](https://epyc.in/): Full-service builds from strategy to launch, on Webflow, Framer, WordPress, or custom code.
+- [Brand & Creative Direction](https://epyc.in/): Visual identity, brand systems, and creative strategy for companies launching or rebranding.
+- [UI/UX Design](https://epyc.in/): Pixel-perfect interfaces, user research, wireframes, interactive prototypes, and design systems.
+- [Web Apps & Internal Tools](https://epyc.in/): Custom web applications, dashboards, and portals built on Bubble.io, FlutterFlow, or custom code.
+
+## Main pages
+
+- [Home](https://epyc.in/): Overview of the studio, services, and featured work.
+- [Projects](https://epyc.in/projects): Portfolio of client work including Polygon, Accel, Antler, upGrad, GoKwik, and more.
+- [Contact](https://epyc.in/contact): Start a project or schedule a consultation call.
+
+## Work and proof
+
+- [Featured clients](https://epyc.in/projects): Polygon (Web3), Accel and Antler and 3One4 Capital (VCs), upGrad and Tetr (EdTech), GoKwik and Blue Copa and Factors Design (SaaS).
+- [Partner badges](https://epyc.in/): Bubble Bronze Agency, Webflow Professional Partner, Framer Enterprise Partner.
+
+## Resources
+
+- [Blog](https://epyc.in/blogs): Articles on website design, no-code platforms, platform comparisons, and build best practices.
+- [Gallery](https://epyc.in/gallery): UI/UX and web design project visuals.
+
+## Optional
+
+- [Who EPYC is for](https://epyc.in/): VC-backed startups and scale-ups, venture capital firms and their portfolio companies, enterprise innovation teams, and brands across SaaS, fintech, Web3, HealthTech, EdTech, and D2C/e-commerce.
