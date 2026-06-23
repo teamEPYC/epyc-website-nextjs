@@ -9,7 +9,7 @@ import { site } from '@/data/site'
 
 export function Hero() {
   return (
-    <PaperBackground gradient="bottom" className="min-h-[67vh] p-4 lg:min-h-[90vh]">
+    <PaperBackground gradient="bottom" className="min-h-[67vh] p-4 lg:min-h-[90vh] text-cream">
       {/* Inner frame with the 1px beige border on top + left + right (no bottom),
           matching the Framer source's `framer-15o8czf` element. */}
       <div className="min-h-[calc(67vh-2rem)] border-l border-r border-t border-beige lg:min-h-[calc(90vh-2rem)]">

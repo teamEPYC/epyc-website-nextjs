@@ -47,7 +47,7 @@ export function SiteNav({ className }: { className?: string }) {
   }, [pathname])
 
   return (
-    <header className={cn(isHome ? 'text-cream' : 'text-ink', className)}>
+    <header className={cn(className)}>
       <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15">
         {/* Logo — mark always; the wordmark joins it on the homepage. */}
         <Link
