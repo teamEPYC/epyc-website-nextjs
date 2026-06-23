@@ -7,7 +7,7 @@ type ProjectCardProps = {
   href: string
   title: ReactNode
   tags: string
-  image: { src: string; alt: string; width: number; height: number }
+  image: { src: string; alt: string; width: number; height: number } | null
   className?: string
   aspect?: 'wide' | 'tall'
   /** Preload this card's image (use for the first card in a list). */
@@ -50,19 +50,22 @@ export function ProjectCard({
     >
       <div
         className={cn(
-          'relative w-full overflow-hidden bg-cream',
+          'relative w-full overflow-hidden',
+          image ? 'bg-cream' : 'bg-bone',
           aspect === 'wide' ? 'aspect-[16/9]' : 'aspect-[4/5]',
         )}
       >
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          priority={priority}
-          loading={eager ? 'eager' : undefined}
-          sizes="(min-width: 1200px) 780px, (min-width: 810px) 681px, 100vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-        />
+        {image && (
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            priority={priority}
+            loading={eager ? 'eager' : undefined}
+            sizes="(min-width: 1200px) 780px, (min-width: 810px) 681px, 100vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+          />
+        )}
       </div>
       <div className="flex min-h-[2.5rem] items-center justify-between px-4">
         <h4 className="text-h4-alt text-ink">{title}</h4>

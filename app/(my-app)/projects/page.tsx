@@ -25,7 +25,7 @@ export default async function ProjectsPage() {
     'sort': 'featured:desc,publishedAt:desc',
     'pagination[limit]': '200',
   })
-  const projects = data.map((p) => normaliseProject(p))
+  const projects = data.filter((p) => p.slug).map((p) => normaliseProject(p))
 
   return (
     <>

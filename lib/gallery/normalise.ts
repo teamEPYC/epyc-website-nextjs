@@ -27,19 +27,16 @@ export function normaliseGallery(item: StrapiGalleryItem): GalleryItem {
     }
   }
 
-  if (!image?.url) {
-    throw new Error(
-      `Gallery item ${slug}: has no videoUrl and image is not populated.`,
-    )
-  }
-
+  // No video and no image — e.g. an incomplete draft. Return an empty-src
+  // image item so consumers render a neutral `bone` placeholder box in the
+  // same shape instead of crashing the page.
   return {
     slug,
     kind: 'image',
-    src: image.url,
-    alt: item.imageAlt ?? image.alternativeText ?? item.title,
-    width: image.width ?? 1080,
-    height: image.height ?? 1080,
+    src: image?.url ?? '',
+    alt: item.imageAlt ?? image?.alternativeText ?? item.title,
+    width: image?.width ?? 1080,
+    height: image?.height ?? 1350,
     title: item.title,
     description: item.content ?? undefined,
     designers: splitDesigners(item.designer),

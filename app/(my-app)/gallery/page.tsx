@@ -23,7 +23,7 @@ export default async function GalleryPage() {
     'populate[image][fields]': 'url,width,height,alternativeText',
     'pagination[limit]': '500',
   })
-  const items = data.map((item) => normaliseGallery(item))
+  const items = data.filter((item) => item.slug).map((item) => normaliseGallery(item))
 
   return (
     <>
