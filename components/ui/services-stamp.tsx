@@ -1,17 +1,12 @@
 import { cn } from '@/lib/cn'
 import { Sparkle } from '@/components/icons/sparkle'
 
-type ServicesStampProps = {
+type StampProps = {
   className?: string
   children?: React.ReactNode
 }
 
-/**
- * The centred crimson "OUR SERVICES" stamp from the Framer source —
- * 32px×42px padding, 43px radius, 16px ink border, with flanking sparkles.
- * Designed to be absolute-positioned over the centre of the 2×2 services grid.
- */
-export function ServicesStamp({ className, children = 'OUR SERVICES' }: ServicesStampProps) {
+export function Stamp({ className, children = 'OUR SERVICES' }: StampProps) {
   return (
     <div
       className={cn(
