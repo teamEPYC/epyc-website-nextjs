@@ -466,7 +466,7 @@ import { CaseStudyShell, CaseStudyFull, CaseStudyTldr } from '@/components/ui/ca
 </CaseStudyShell>
 ```
 
-Reference implementation: `app/(my-app)/projects/gokwik/page.tsx`.
+Reference implementation: `app/(my-app)/case-study/gokwik/page.tsx`.
 
 ### `<BlogCard />` · `components/ui/blog-card.tsx`
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: 'GoKwik — Case Study',
   description:
     "How EPYC redesigned gokwik.co for India's leading D2C growth platform — 50+ pages, Lottie-first motion, a scalable design system. Traffic and conversions up 50-60% post-launch.",
-  alternates: { canonical: '/projects/gokwik' },
+  alternates: { canonical: '/case-study/gokwik' },
   openGraph: {
     siteName: 'EPYC',
     images: [
@@ -99,7 +99,7 @@ const jsonLd = {
       headline: 'GoKwik — Case Study',
       description:
         "How EPYC redesigned gokwik.co for India's leading D2C growth platform — 50+ pages, Lottie-first motion, a scalable design system. Traffic and conversions up 50-60% post-launch.",
-      url: `${site.url}/projects/gokwik`,
+      url: `${site.url}/case-study/gokwik`,
       datePublished: '2026-06-15',
       author: { '@type': 'Organization', name: site.name, url: site.url },
       publisher: {
@@ -120,7 +120,7 @@ const jsonLd = {
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
         { '@type': 'ListItem', position: 2, name: 'Projects', item: `${site.url}/projects` },
-        { '@type': 'ListItem', position: 3, name: 'GoKwik', item: `${site.url}/projects/gokwik` },
+        { '@type': 'ListItem', position: 3, name: 'GoKwik', item: `${site.url}/case-study/gokwik` },
       ],
     },
   ],
