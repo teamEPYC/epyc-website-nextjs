@@ -11,7 +11,7 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 ## Working Rules
 
 - **Before writing any UI** → read `DESIGN.md` first. It is the canonical reference for every color token, typography utility, spacing rhythm, and component API. Do not invent classes or hardcode hex values — use the tokens.
-- **Before adding a new page or component** → check `components/ui/` and `components/sections/` for existing primitives. Use `<Section>`, `<Container>`, `<SectionHeading>`, `<Button>`, `<Pill>` before writing bespoke markup.
+- **Before writing any JSX** → you MUST run `find components/ui components/sections -name "*.tsx" | sort` and scan `DESIGN.md` §10 and §12 for relevant primitives. Creating a duplicate of an existing component is a blocking error. Permitted only if no existing component is close — in which case state that explicitly before writing.
 - **Visual changes must use the closest design system value** — when asked to adjust size, colour, spacing, or typography, always map the request to the nearest token in `DESIGN.md` (e.g. a request for "~36px" → `text-h2` at 31/38/48px, not an arbitrary `text-[36px]`). If satisfying the request requires going outside the design system (no close token exists, or it would break visual consistency), **stop and ask for explicit sign-off before writing any code**.
 - **Images** → all production images are served from `https://website-media.epyc.in` (Cloudflare R2). Self-hosted case study screenshots go in `public/images/`. The custom image loader is at `lib/image-loader.ts` — do not bypass it.
 - **Dev server** → `pnpm dev` (runs `next dev --webpack` — Turbopack is disabled due to recurring panics on this Next.js version).

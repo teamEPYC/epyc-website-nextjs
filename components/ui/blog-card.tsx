@@ -48,7 +48,7 @@ export function BlogCard({
         className,
       )}
     >
-      <div className="relative h-[154px] w-full overflow-hidden rounded-[4px] bg-cream sm:h-[210px] lg:h-[316px]">
+      <div className="relative aspect-video w-full overflow-hidden rounded-[4px] bg-cream">
         <Image
           src={image.src}
           alt={image.alt}
