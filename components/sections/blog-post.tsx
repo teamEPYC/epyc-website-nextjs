@@ -29,7 +29,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
             {/* Hero */}
             <header className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
-              <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal">
+              <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal text-balance">
                 {blog.title}
               </h1>
               {(blog.date || blog.readTime) && (
