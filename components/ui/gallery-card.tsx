@@ -24,7 +24,7 @@ export function GalleryCard({ item }: GalleryCardProps) {
             playsInline
             className="h-full w-full object-cover"
           />
-        ) : (
+        ) : item.src ? (
           <Image
             src={item.src}
             alt={item.alt ?? ''}
@@ -32,7 +32,7 @@ export function GalleryCard({ item }: GalleryCardProps) {
             sizes="(min-width: 1200px) 33vw, (min-width: 810px) 50vw, 100vw"
             className="object-cover"
           />
-        )}
+        ) : null}
       </figure>
     </Link>
   )

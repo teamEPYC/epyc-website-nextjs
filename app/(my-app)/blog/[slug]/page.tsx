@@ -92,7 +92,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
   const blog = data[0]
   if (!blog) notFound()
 
-  const relatedBlogs = relatedData.map((b) => normalise(b))
+  const relatedBlogs = relatedData.filter((b) => b.slug).map((b) => normalise(b))
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -105,7 +105,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
     image: blog.coverImage
       ? toAbsoluteMediaUrl(blog.coverImage.url)
       : `${site.url}/og/default.jpg`,
-    author: { '@type': 'Person', name: blog.author.name },
+    author: { '@type': 'Person', name: blog.author?.name ?? 'Team EPYC' },
     publisher: {
       '@type': 'Organization',
       name: site.name,
@@ -118,7 +118,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogPost
         blog={normalise(blog, 'banner')}
-        body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content) }} className="prose" />}
+        body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content ?? '') }} className="prose" />}
         relatedBlogs={relatedBlogs}
       />
       <CTAFooter />

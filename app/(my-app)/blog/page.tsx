@@ -24,7 +24,7 @@ export default async function BlogsPage() {
     'sort': 'publishedDate:desc',
     'pagination[limit]': '100',
   })
-  const blogs = data.map((b) => normalise(b))
+  const blogs = data.filter((b) => b.slug).map((b) => normalise(b))
 
   return (
     <>

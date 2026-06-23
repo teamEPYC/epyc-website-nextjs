@@ -41,7 +41,7 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
                 playsInline
                 className="aspect-square w-full object-cover"
               />
-            ) : (
+            ) : item.src ? (
               <Image
                 src={item.src}
                 alt={item.alt ?? title}
@@ -50,7 +50,7 @@ export function GalleryDetail({ item, related }: GalleryDetailProps) {
                 className="object-cover"
                 priority
               />
-            )}
+            ) : null}
           </figure>
 
           <div className="flex flex-col gap-8">
