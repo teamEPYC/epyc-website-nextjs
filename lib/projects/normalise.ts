@@ -26,12 +26,14 @@ export type NormalisedProject = {
   typesDisplay: string
   featured: boolean
   createdAt: string
+  // `null` when the project has no thumbnail (e.g. an incomplete draft) —
+  // consumers render a neutral `bone` placeholder box in the same shape.
   image: {
     src: string
     alt: string
     width: number
     height: number
-  }
+  } | null
 }
 
 function pickImageUrl(media: StrapiMedia): { url: string; width: number; height: number } {
@@ -41,25 +43,31 @@ function pickImageUrl(media: StrapiMedia): { url: string; width: number; height:
 }
 
 export function normaliseProject(project: StrapiProject): NormalisedProject {
-  const picked = pickImageUrl(project.thumbnail)
-  const types = project.type.split(',').map((s) => s.trim()).filter(Boolean)
+  // Strapi returns null for unset media/relations in draft mode even though
+  // the types say required — guard every dereference so an incomplete draft
+  // renders with placeholders/fallbacks instead of crashing the page.
+  const picked = project.thumbnail ? pickImageUrl(project.thumbnail) : null
+  const types = (project.type ?? '').split(',').map((s) => s.trim()).filter(Boolean)
+  const link = project.redirectLink ?? ''
 
   return {
     slug: project.slug,
-    title: project.title,
-    redirectLink: /^https?:\/\//i.test(project.redirectLink) ? project.redirectLink : `https://${project.redirectLink}`,
+    title: project.title ?? 'Untitled',
+    redirectLink: link ? (/^https?:\/\//i.test(link) ? link : `https://${link}`) : '#',
     caseStudyPath: project.caseStudyPath ?? null,
-    industry: project.industry.slug as ProjectIndustry,
-    platform: project.platform.slug as ProjectPlatform,
+    industry: (project.industry?.slug ?? 'other') as ProjectIndustry,
+    platform: (project.platform?.slug ?? 'website') as ProjectPlatform,
     types,
-    typesDisplay: project.type,
+    typesDisplay: project.type ?? '',
     featured: Boolean(project.featured),
     createdAt: project.publishedAt,
-    image: {
-      src: picked.url,
-      alt: project.thumbnailAlt ?? project.thumbnail.alternativeText ?? project.title,
-      width: picked.width ?? 1080,
-      height: picked.height ?? 608,
-    },
+    image: picked
+      ? {
+          src: picked.url,
+          alt: project.thumbnailAlt ?? project.thumbnail?.alternativeText ?? project.title ?? 'Untitled',
+          width: picked.width ?? 1080,
+          height: picked.height ?? 608,
+        }
+      : null,
   }
 }
