@@ -110,8 +110,27 @@ export default function RootLayout({
     '@type': 'Organization',
     name: site.name,
     url: site.url,
-    logo: `${site.url}/icons/epyc-wordmark-large.svg`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${site.url}/icons/epyc-wordmark-large.svg`,
+      width: 200,
+      height: 50,
+    },
     description: site.description,
+    areaServed: 'Worldwide',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      bestRating: '5',
+      reviewCount: '12',
+      url: site.social.clutchProfile,
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'team@epyc.in',
+      availableLanguage: 'English',
+    },
     sameAs: [site.social.x, site.social.instagram, site.social.linkedin, site.social.clutchProfile],
   }
 

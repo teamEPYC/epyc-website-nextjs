@@ -23,6 +23,7 @@ export type StrapiBlog = {
   slug: string
   publishedDate: string | null
   publishedAt: string
+  updatedAt: string
   // Typed nullable because draft entries (staging `?status=draft`) may have
   // these unset. Normalisers/pages guard accordingly.
   coverImage?: StrapiMedia | null
