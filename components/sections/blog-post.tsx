@@ -10,6 +10,7 @@ import { BlogProse } from '@/components/ui/blog-prose'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { Sparkle } from '@/components/icons/sparkle'
 import type { NormalisedBlog } from '@/lib/blogs/normalise'
+import { ReadingProgress } from '@/components/ui/reading-progress'
 
 type BlogPostProps = {
   blog: NormalisedBlog
@@ -19,6 +20,8 @@ type BlogPostProps = {
 
 export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
   return (
+    <>
+    <ReadingProgress />
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4">
       <div className="relative mx-auto w-full overflow-hidden border-l border-r border-t border-ink px-0 py-11">
         <SiteNav className="-mt-11 mb-12" />
@@ -108,5 +111,6 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
         </Container>
       </div>
     </Section>
+    </>
   )
 }
