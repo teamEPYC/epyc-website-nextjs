@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
 import { Reveal } from '@/components/ui/reveal'
-import { CaseStudyShell, CaseStudyViewToggle, HideInTldr } from '@/components/ui/case-study-shell'
+import { CaseStudyShell, HideInTldr } from '@/components/ui/case-study-shell'
 
 export const metadata: Metadata = {
   title: 'Accel Atoms Internal Review Application — Case Study',
@@ -137,7 +137,6 @@ export default function AccelAtomsCaseStudy() {
                 >
                   ← Projects
                 </Link>
-                <CaseStudyViewToggle />
               </div>
 
               <div className="mb-8 flex flex-wrap gap-2">
