@@ -100,22 +100,56 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
     headline: blog.title,
     description: blog.metaDescription ?? (blog.content ? stripHtml(blog.content) : site.description),
     datePublished: blog.publishedDate ?? blog.publishedAt,
-    dateModified: blog.publishedAt,
+    dateModified: blog.updatedAt,
     url: `${site.url}/blog/${slug}`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${site.url}/blog/${slug}`,
+    },
     image: blog.coverImage
-      ? toAbsoluteMediaUrl(blog.coverImage.url)
-      : `${site.url}/og/default.jpg`,
-    author: { '@type': 'Person', name: blog.author?.name ?? 'Team EPYC' },
+      ? {
+          '@type': 'ImageObject',
+          url: toAbsoluteMediaUrl(blog.coverImage.url),
+          width: blog.coverImage.width,
+          height: blog.coverImage.height,
+        }
+      : {
+          '@type': 'ImageObject',
+          url: `${site.url}/og/default.jpg`,
+          width: 1200,
+          height: 630,
+        },
+    author: {
+      '@type': 'Person',
+      name: blog.author?.name ?? 'Team EPYC',
+      ...(blog.author?.slug ? { url: `${site.url}/blog/author/${blog.author.slug}` } : {}),
+    },
     publisher: {
       '@type': 'Organization',
       name: site.name,
-      logo: { '@type': 'ImageObject', url: `${site.url}/icons/epyc-wordmark-large.svg` },
+      logo: {
+        '@type': 'ImageObject',
+        url: `${site.url}/icons/epyc-wordmark-large.svg`,
+        width: 200,
+        height: 50,
+      },
     },
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site.url}/blog` },
+      { '@type': 'ListItem', position: 3, name: blog.title, item: `${site.url}/blog/${slug}` },
+    ],
   }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <BlogPost
         blog={normalise(blog, 'banner')}
         body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content ?? '') }} className="prose" />}
