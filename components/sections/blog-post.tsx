@@ -46,7 +46,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           </div>
 
           {/* Banner */}
-          <div className="relative  w-[90%] mx-auto lg:h-[632px] overflow-hidden rounded-[4px]">
+          <div className="relative w-[90%] mx-auto mt-6 lg:mt-0 lg:h-[632px] overflow-hidden rounded-[4px]">
             {blog.image ? (
               <Image
                 src={blog.image.src}
