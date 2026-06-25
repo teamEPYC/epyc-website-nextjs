@@ -46,7 +46,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           </div>
 
           {/* Banner */}
-          <div className="relative w-[90%] mx-auto mt-6 lg:mt-0 lg:h-[632px] overflow-hidden rounded-[4px]">
+          <div className="relative w-[90%] mx-auto mt-6 lg:mt-0 overflow-hidden rounded-[4px]">
             {blog.image ? (
               <Image
                 src={blog.image.src}
@@ -54,7 +54,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
                 priority
                 height={632}
                 width={1000}
-                className="object-contain mx-auto rounded-[4px] bg-cream"
+                className="w-full h-auto rounded-[4px]"
                 style={
                   blog.image.focalX !== undefined && blog.image.focalY !== undefined
                     ? { objectPosition: `${blog.image.focalX}% ${blog.image.focalY}%` }
@@ -62,10 +62,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
                 }
               />
             ) : (
-              // No cover image — neutral placeholder box in the banner shape.
-              // On lg the parent is a fixed 632px tall, so fill it; on smaller
-              // screens the parent has no height, so derive it from the ratio.
-              <div className="h-full w-full rounded-[4px] bg-bone max-lg:aspect-[1000/632]" />
+              <div className="w-full rounded-[4px] bg-bone aspect-[1000/632]" />
             )}
           </div>
 
