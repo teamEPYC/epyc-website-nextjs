@@ -553,6 +553,59 @@ body {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+
+  .blog-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    display: block;
+  }
+
+  @media (min-width: 810px) {
+    .blog-prose table {
+      display: table;
+      font-size: 15px;
+    }
+  }
+
+  .blog-prose thead {
+    background-color: var(--color-ink);
+  }
+
+  .blog-prose thead th {
+    color: var(--color-cream);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    text-align: left;
+    padding: 0.625rem 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-ink) 80%, transparent);
+    white-space: nowrap;
+  }
+
+  .blog-prose tbody tr {
+    border-bottom: 1px solid color-mix(in oklab, var(--color-sand) 60%, transparent);
+  }
+
+  .blog-prose tbody tr:nth-child(even) {
+    background-color: color-mix(in oklab, var(--color-bone) 40%, transparent);
+  }
+
+  .blog-prose tbody td {
+    color: var(--color-ink);
+    padding: 0.625rem 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-sand) 60%, transparent);
+    vertical-align: top;
+  }
+
+  .blog-prose tbody td:first-child {
+    font-weight: 700;
+    white-space: nowrap;
+  }
 }
 
 /* Simple on-load entrance: fade + rise, played once when the element first
