@@ -13,6 +13,7 @@ import { BrandTile } from "@/components/ui/brand-tile";
 import { ServiceCard } from "@/components/ui/service-card";
 import { FAQItem } from "@/components/ui/faq-item";
 import { Testimonial } from "@/components/ui/testimonial";
+import { Voices } from "@/components/sections/voices";
 import { OrnamentDivider } from "@/components/ui/ornament-divider";
 import { DashedDivider } from "@/components/ui/dashed-divider";
 import { PaperBackground } from "@/components/ui/paper-background";
@@ -104,6 +105,7 @@ const navLinks = [
   ["service-card", "Service Card"],
   ["faq-item", "FAQ Item"],
   ["testimonial", "Testimonial"],
+  ["voices", "Voices (Section)"],
   ["paper-background", "Paper Background"],
   ["icons", "Icons"],
   ["dot-line-divider", "Dot Line Divider"],
@@ -480,6 +482,15 @@ export default function StyleGuide() {
                 tags={["Project Management", "Collaboration", "Pixel Perfect Implementation"]}
               />
             </div>
+          </SectionBlock>
+
+          {/* Voices ------------------------------------------------------ */}
+          <SectionBlock
+            id="voices"
+            title="Voices (Section)"
+            description="Canonical testimonial section — use <Voices /> instead of composing Testimonial manually. Renders the paper texture bg, all testimonials via TestimonialSlider, and a Clutch CTA. Used on the homepage and all service pages."
+          >
+            <Voices />
           </SectionBlock>
 
           {/* Paper background -------------------------------------------- */}
