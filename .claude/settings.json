@@ -1,6 +1,7 @@
 {
   "hooks": {},
   "enabledPlugins": {
-    "paper-desktop@paper": true
+    "paper-desktop@paper": true,
+    "frontend-design@claude-plugins-official": true
   }
 }
