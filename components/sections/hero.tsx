@@ -5,9 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Star } from '@/components/icons/star'
 import { ClutchWordmark } from '@/components/icons/clutch-wordmark'
-import { BubbleGlyph } from '@/components/icons/bubble-glyph'
-import { WebflowGlyph } from '@/components/icons/webflow-glyph'
-import { FramerGlyph } from '@/components/icons/framer-glyph'
 import { site } from '@/data/site'
 
 export function Hero() {
@@ -27,62 +24,46 @@ export function Hero() {
             <Badge
               tone="cream-on-dark"
               href={site.social.clutchProfile}
-              className="gap-2.5 py-2 px-2 lg:px-6 text-body-sm"
-              icon={<ClutchWordmark className="h-3 lg:h-5 w-auto text-cream" />}
+              className="gap-1.5 py-2 px-3 lg:py-4 lg:px-4 text-body-sm"
+              icon={<ClutchWordmark className="h-3 lg:h-4 w-auto text-cream" />}
             >
-              <span className="flex items-center lg:flex-col gap-2">
+              <span className="flex items-center gap-1.5 lg:gap-2">
+                <span className="text-body-sm font-semibold lg:hidden" style={{ lineHeight: 1, fontSize: 12, marginBottom: -2 }}>4.9/5.0</span>
+                <span className="text-body-sm font-semibold hidden lg:inline" style={{ lineHeight: 1, fontSize: 16, marginBottom: -2 }}>4.9/5.0</span>
                 <span className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={13} className="text-cream" />
+                    <Star key={i} size={11} className="text-cream lg:hidden" />
+                  ))}
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={`lg-${i}`} size={13} className="text-cream hidden lg:inline-block" />
                   ))}
                 </span>
-                <span className="text-body-sm">4.9/5.0</span>
               </span>
             </Badge>
 
-            {/* Partner badges — second row, 3 in a line. Hidden on mobile per source. */}
-            <div className="hidden sm:flex flex-wrap items-center justify-center gap-2.5">
-              <Badge
-                tone="cream-on-dark"
-                className="gap-2 py-4 text-body-sm"
-                icon={<BubbleGlyph className="h-3.5 w-3.5 text-cream" />}
-              >
-                Bubble Bronze Agency
-              </Badge>
-              <Badge
-                tone="cream-on-dark"
-                className="gap-2 py-4 text-body-sm"
-                icon={<WebflowGlyph className="h-3.5 w-auto text-cream" />}
-              >
-                Webflow Professional Partners
-              </Badge>
-              <Badge
-                tone="cream-on-dark"
-                className="gap-2 py-4 text-body-sm"
-                icon={<FramerGlyph className="h-3.5 w-auto text-cream" />}
-              >
-                Framer Enterprise Partners
-              </Badge>
-            </div>
 
-            <h1 className="text-h1 mt-10 lg:mt-0 text-center text-cream ">
-              We build websites for startups that are tired of looking like startups.
+            <h1 className="text-display mt-4 lg:mt-0 text-center text-cream text-balance">
+              Premium design &amp; development for companies that want to be taken seriously.
             </h1>
 
-            <p className="text-body max-w-lg text-center text-beige">
-              We design and build premium websites for funded startups, VCs, and enterprises.
-              Polygon, Accel, Antler, and 75+ others trust us to build sites that match their
-              ambition — not their headcount.
+            <p className="text-body max-w-2xl text-center text-beige" style={{ fontSize: 20 }}>
+              We&apos;re a premium design &amp; development studio. Polygon, Accel, Antler, and
+              75+ others trust us to build products that match their ambition — without the
+              overhead of an in-house team.
             </p>
 
             <div className=" flex w-full  lg:w-auto items-center justify-center gap-3">
-              <Button variant="filled" className="w-full" icon="arrow-down" href="/projects">
+              <Button variant="outline" data-on-dark="true" className="w-full" icon="arrow-right" href="/projects">
                 See Our Work
               </Button>
               <Button variant="filled" className="w-full" icon="arrow-right" href="/contact">
-                Talk to Us
+                Start Your Project
               </Button>
             </div>
+
+            <p className="text-beige" style={{ fontSize: 18, marginTop: 12 }}>
+              Websites&nbsp;&nbsp;|&nbsp;&nbsp;AI Applications&nbsp;&nbsp;|&nbsp;&nbsp;MVPs
+            </p>
           </div>
 
           <div aria-hidden="true" className="hidden lg:block" />

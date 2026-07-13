@@ -8,65 +8,76 @@ import { Voices } from '@/components/sections/voices'
 import { Brands } from '@/components/sections/brands'
 import { FAQs } from '@/components/sections/faqs'
 import { CTAFooter } from '@/components/sections/cta-footer'
-import { faqs } from '@/data/faqs'
-
 // No `title` here: the home page inherits the layout's `title.default`
 // ('EPYC | Website Development | Design Studio'), matching production.
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-const faqJsonLd = {
+const provider = { '@type': 'Organization', name: 'EPYC', url: 'https://epyc.in' }
+
+const servicesJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
+  '@graph': [
+    {
+      '@type': 'Service',
+      name: 'Website Design and Development',
+      provider,
+      serviceType: 'Website Design and Development',
+      description:
+        'Full-service website design and development for funded startups and ambitious companies. Strategy to launch on Webflow, Framer, WordPress, or custom code.',
+      areaServed: 'Worldwide',
+      url: 'https://epyc.in',
+    },
+    {
+      '@type': 'Service',
+      name: 'UI/UX Design',
+      provider,
+      serviceType: 'UI/UX Design',
+      description:
+        'Pixel-perfect interfaces for websites, apps, and digital products. User research, wireframes, interactive prototypes, and design systems.',
+      areaServed: 'Worldwide',
+      url: 'https://epyc.in',
+    },
+    {
+      '@type': 'Service',
+      name: 'Brand and Creative Direction',
+      provider,
+      serviceType: 'Brand and Creative Direction',
+      description:
+        'Visual identity, brand systems, and creative strategy for companies launching or rebranding. The intersection of art, design, and technology.',
+      areaServed: 'Worldwide',
+      url: 'https://epyc.in',
+    },
+    {
+      '@type': 'Service',
+      name: 'Web Apps and Internal Tools',
+      provider,
+      serviceType: 'Web App Development',
+      description:
+        'No-code and custom web apps and internal tools built on Bubble.io, FlutterFlow, Supabase, or React/Next.js. Validated faster, maintainable without a full engineering team.',
+      areaServed: 'Worldwide',
+      url: 'https://epyc.in',
+    },
+  ],
 }
 
 export default function Home() {
   return (
     <>
-      {/* Setion order is the same as DOM order at lg+ (Tailwind's `lg:order-none`
-          collapses to 0 on every wrapper, falling back to DOM order). On mobile
-          the explicit `order-N` classes shift Services down by two slots so the
-          visual flow is: ... More Projects -> Voices -> Brands -> Services -> ... */}
-      <div className="order-1 lg:order-none">
-        <Hero />
-      </div>
-      <div className="order-2 lg:order-none">
-        <StickyImage />
-      </div>
-      <div className="order-3 lg:order-none">
-        <FeaturedProjects />
-      </div>
-      <div className="order-4 lg:order-none">
-        <MoreProjects />
-      </div>
-      {/* DOM position 5, mobile slot 7 (after Brands) */}
-      <div className="order-7 lg:order-none">
-        <Services />
-      </div>
-      {/* DOM position 6, mobile slot 5 */}
-      <div className="order-5 lg:order-none">
-        <Voices />
-      </div>
-      {/* DOM position 7, mobile slot 6 */}
-      <div className="order-6 lg:order-none">
-        <Brands />
-      </div>
-      <div className="order-8 lg:order-none">
-        <FAQs />
-      </div>
-      <div className="order-9 lg:order-none">
-        <CTAFooter />
-      </div>
+      <Hero />
+      <StickyImage />
+      <FeaturedProjects />
+      <MoreProjects />
+      <Services />
+      <Voices />
+      <Brands />
+      <FAQs />
+      <CTAFooter />
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }}
       />
     </>
   )

@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import { Container } from '@/components/ui/container'
 import { Badge } from '@/components/ui/badge'
-import { StarRating } from '@/components/ui/star-rating'
+import { Button } from '@/components/ui/button'
+import { Star } from '@/components/icons/star'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { ClutchWordmark } from '@/components/icons/clutch-wordmark'
 import { Reveal } from '@/components/ui/reveal'
@@ -20,7 +21,7 @@ export function Voices() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
-      className="bg-ink w-full relative flex min-h-screen items-center justify-center overflow-hidden pb-36  px-6 py-12"
+      className="bg-ink w-full relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-12"
     >
       <Container
         width="content"
@@ -50,22 +51,30 @@ export function Voices() {
           </div>
         </Reveal>
 
-        {/* Clutch read-more CTA — fixed 505x84 row, label on left + Clutch badge on right */}
+        <Button variant="filled" icon="arrow-right" href="/contact">
+          Start Your Project
+        </Button>
+
+        {/* Clutch read-more CTA */}
+        <div className="flex h-auto w-full max-w-[505px] flex-col items-center justify-center gap-3 sm:h-[84px] sm:flex-row sm:gap-2.5">
+          <p className="text-cream" style={{ fontSize: 16 }}>Read more reviews by our clients on</p>
+          <Badge
+            tone="cream-on-dark"
+            href={site.social.clutchProfile}
+            className="gap-1.5 py-2 px-3 lg:py-4 lg:px-4"
+            icon={<ClutchWordmark className="h-3 lg:h-4 w-auto text-cream" />}
+          >
+            <span className="flex items-center gap-1.5 lg:gap-2">
+              <span className="font-semibold text-cream" style={{ lineHeight: 1, fontSize: 16, marginBottom: -2 }}>4.9/5.0</span>
+              <span className="flex items-center gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={13} className="text-cream" />
+                ))}
+              </span>
+            </span>
+          </Badge>
+        </div>
       </Container>
-      <div className="absolute mx-auto bottom-8 inset-x-0 flex h-auto w-full max-w-[505px] flex-col items-center justify-center gap-3 sm:h-[84px] sm:flex-row sm:gap-2.5">
-        <p className="text-h5 text-cream">Read more reviews by our clients on</p>
-        <Badge
-          tone="cream-on-dark"
-          href={site.social.clutchProfile}
-          icon={<ClutchWordmark className="h-4 w-auto text-cream" />}
-        >
-          <StarRating
-            score={4.9}
-            className="text-cream flex flex-col h-fit gap-1 py-0"
-            starClassName="text-cream"
-          />
-        </Badge>
-      </div>
     </div>
 
     // </PaperBackground>

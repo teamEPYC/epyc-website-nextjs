@@ -23,7 +23,7 @@ export function GalleryRelatedCard({ item }: GalleryRelatedCardProps) {
             playsInline
             className="h-full w-full object-cover"
           />
-        ) : (
+        ) : item.src ? (
           <Image
             src={item.src}
             alt={item.alt ?? ''}
@@ -31,7 +31,7 @@ export function GalleryRelatedCard({ item }: GalleryRelatedCardProps) {
             sizes="(min-width: 1200px) 25vw, (min-width: 810px) 33vw, 50vw"
             className="object-cover"
           />
-        )}
+        ) : null}
       </figure>
       <div className="mt-3 flex flex-col gap-1">
         <h4 className="text-body-lg text-ink">{title}</h4>

@@ -4,6 +4,7 @@ import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
 import { BlogIndex } from '@/components/sections/blog-index'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { normalise } from '@/lib/blogs/normalise'
+import { site } from '@/data/site'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -24,10 +25,24 @@ export default async function BlogsPage() {
     'sort': 'publishedDate:desc',
     'pagination[limit]': '100',
   })
-  const blogs = data.map((b) => normalise(b))
+  const blogs = data.filter((b) => b.slug).map((b) => normalise(b))
+
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: blogs.map((b, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${site.url}/blog/${b.slug}`,
+    })),
+  }
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+      />
       <BlogIndex blogs={blogs} />
       <CTAFooter />
     </>

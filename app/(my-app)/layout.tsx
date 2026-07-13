@@ -65,11 +65,10 @@ const normsSerif = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'EPYC | Website Development | Design Studio',
+    default: 'EPYC | Design & Development Studio for Ambitious Companies',
     template: '%s | EPYC',
   },
-  description:
-    'EPYC is a full-service creative studio bringing human-centric digital experiences to life, without Code. We build products that touch millions of lives, everyday.',
+  description: site.description,
   alternates: { canonical: '/' },
   // openGraph / twitter intentionally omit `title` & `description`: Next replaces
   // these nested objects wholesale per route (they are not deep-merged), so each
@@ -83,7 +82,7 @@ export const metadata: Metadata = {
         url: '/og/default.jpg',
         width: 2400,
         height: 1260,
-        alt: 'EPYC — Website Development & Design Studio',
+        alt: 'EPYC — Design & Development Studio',
       },
     ],
   },
@@ -111,8 +110,27 @@ export default function RootLayout({
     '@type': 'Organization',
     name: site.name,
     url: site.url,
-    logo: `${site.url}/icons/epyc-wordmark-large.svg`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${site.url}/icons/epyc-wordmark-large.svg`,
+      width: 200,
+      height: 50,
+    },
     description: site.description,
+    areaServed: 'Worldwide',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      bestRating: '5',
+      reviewCount: '12',
+      url: site.social.clutchProfile,
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: 'team@epyc.in',
+      availableLanguage: 'English',
+    },
     sameAs: [site.social.x, site.social.instagram, site.social.linkedin, site.social.clutchProfile],
   }
 
@@ -126,6 +144,15 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${fontVariables} h-full antialiased`}>
+      <head>
+        {/* Preload hero paper texture — it's the LCP element (CSS background-image) */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/site/4svPWouJqvqnznpkeku35FoPOY.webp"
+          fetchPriority="high"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
         {/* <FloatingMenuButton /> */}
@@ -141,9 +168,9 @@ export default function RootLayout({
         {/* Google tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-9YP95GH3E0"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
+        <Script id="gtag-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -153,7 +180,7 @@ export default function RootLayout({
         </Script>
 
         {/* Microsoft Clarity */}
-        <Script id="ms-clarity" strategy="afterInteractive">
+        <Script id="ms-clarity" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -167,9 +194,9 @@ export default function RootLayout({
         <Script
           src="https://tag.clearbitscripts.com/v1/pk_0d660609b8ad02fad0229b6128d90366/tags.js"
           referrerPolicy="strict-origin-when-cross-origin"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="faitracker-init" strategy="afterInteractive">
+        <Script id="faitracker-init" strategy="lazyOnload">
           {`
             ((window.faitracker = window.faitracker || (function(){
               this.q = [];

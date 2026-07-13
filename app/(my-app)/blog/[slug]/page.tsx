@@ -17,6 +17,10 @@ function toAbsoluteMediaUrl(url: string): string {
   return url.startsWith('http') ? url : `${MEDIA_BASE}${url}`
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160)
+}
+
 function rewriteMediaUrls(html: string): string {
   // Rewrite bare src="/..." paths
   let result = html.replace(
@@ -38,6 +42,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { slug } = await params
   const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
     'filters[slug][$eq]': slug,
+    'fields[0]': 'title',
+    'fields[1]': 'metaTitle',
+    'fields[2]': 'metaDescription',
+    'fields[3]': 'content',
+    'fields[4]': 'coverImageAlt',
     'populate[coverImage][fields]': 'url,width,height,alternativeText',
     'pagination[limit]': '1',
   })
@@ -55,7 +64,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   return {
     title: blog.metaTitle ?? blog.title,
-    description: blog.metaDescription ?? site.description,
+    description: blog.metaDescription ?? (blog.content ? stripHtml(blog.content) : undefined),
     alternates: { canonical: `/blog/${slug}` },
     openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
@@ -83,33 +92,67 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
   const blog = data[0]
   if (!blog) notFound()
 
-  const relatedBlogs = relatedData.map((b) => normalise(b))
+  const relatedBlogs = relatedData.filter((b) => b.slug).map((b) => normalise(b))
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: blog.title,
-    description: blog.metaDescription ?? site.description,
+    description: blog.metaDescription ?? (blog.content ? stripHtml(blog.content) : site.description),
     datePublished: blog.publishedDate ?? blog.publishedAt,
-    dateModified: blog.publishedAt,
+    dateModified: blog.updatedAt,
     url: `${site.url}/blog/${slug}`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${site.url}/blog/${slug}`,
+    },
     image: blog.coverImage
-      ? toAbsoluteMediaUrl(blog.coverImage.url)
-      : `${site.url}/og/default.jpg`,
-    author: { '@type': 'Person', name: blog.author.name },
+      ? {
+          '@type': 'ImageObject',
+          url: toAbsoluteMediaUrl(blog.coverImage.url),
+          width: blog.coverImage.width,
+          height: blog.coverImage.height,
+        }
+      : {
+          '@type': 'ImageObject',
+          url: `${site.url}/og/default.jpg`,
+          width: 1200,
+          height: 630,
+        },
+    author: {
+      '@type': 'Person',
+      name: blog.author?.name ?? 'Team EPYC',
+      ...(blog.author?.slug ? { url: `${site.url}/blog/author/${blog.author.slug}` } : {}),
+    },
     publisher: {
       '@type': 'Organization',
       name: site.name,
-      logo: { '@type': 'ImageObject', url: `${site.url}/icons/epyc-wordmark-large.svg` },
+      logo: {
+        '@type': 'ImageObject',
+        url: `${site.url}/icons/epyc-wordmark-large.svg`,
+        width: 200,
+        height: 50,
+      },
     },
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${site.url}/blog` },
+      { '@type': 'ListItem', position: 3, name: blog.title, item: `${site.url}/blog/${slug}` },
+    ],
   }
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <BlogPost
         blog={normalise(blog, 'banner')}
-        body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content) }} className="prose" />}
+        body={<div dangerouslySetInnerHTML={{ __html: rewriteMediaUrls(blog.content ?? '') }} className="prose" />}
         relatedBlogs={relatedBlogs}
       />
       <CTAFooter />

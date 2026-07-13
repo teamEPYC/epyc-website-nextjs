@@ -37,10 +37,5 @@
     "tsx": "^4.22.0",
     "typescript": "^5",
     "wrangler": "^4.91.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "^0.27.0"
-    }
   }
 }

@@ -453,6 +453,95 @@ overlays.
 | `gradient`  | `"top"` \| `"bottom"` \| `"both"` \| `"none"`| `"none"`                |
 | `textureUrl`| `string`                                     | Framer's paper-bg WebP  |
 
+### `<CaseStudyShell />` · `components/ui/case-study-shell.tsx` · `"use client"`
+
+Shell for static case study pages. Provides a Full / TL;DR toggle (URL param `?view=tldr`) via `CaseStudyViewContext`. Wrap the full content in `<CaseStudyFull>` and the condensed summary in `<CaseStudyTldr>` — only the active view renders.
+
+```tsx
+import { CaseStudyShell, CaseStudyFull, CaseStudyTldr } from '@/components/ui/case-study-shell'
+
+<CaseStudyShell>
+  <CaseStudyFull>…full case study…</CaseStudyFull>
+  <CaseStudyTldr>…summary…</CaseStudyTldr>
+</CaseStudyShell>
+```
+
+Reference implementation: `app/(my-app)/case-study/gokwik/page.tsx`.
+
+### `<BlogCard />` · `components/ui/blog-card.tsx`
+
+Blog post card — hero image + title + date/read-time meta. Polymorphic anchor (internal → `next/link`, external → `<a target=_blank>`).
+
+| Prop          | Type                                              | Notes                               |
+|---------------|---------------------------------------------------|-------------------------------------|
+| `href`        | `string`                                          | Required                            |
+| `title`       | `ReactNode`                                       | —                                   |
+| `image`       | `{ src; alt; width; height; focalX?; focalY? }`   | Supports focal-point offset         |
+| `date`        | `string`                                          | Display date string                 |
+| `readTime`    | `string`                                          | e.g. `"4 min read"`                 |
+| `publishedAt` | `string`                                          | ISO string, used for `<time>`       |
+
+### `<BlogProse />` · `components/ui/blog-prose.tsx`
+
+Thin wrapper that applies the `blog-prose` CSS class (defined in `globals.css`) to richtext/MDX content. Use it around the rendered blog body — never apply raw Tailwind typography classes directly.
+
+```tsx
+<BlogProse>{renderedMdx}</BlogProse>
+```
+
+### `<DotLineDivider />` · `components/ui/dot-line-divider.tsx`
+
+Crimson diamond-capped rule. Two variants:
+
+| Prop      | Type                         | Default     |
+|-----------|------------------------------|-------------|
+| `variant` | `"single"` \| `"split"`     | `"single"`  |
+
+`"split"` leaves a gap in the centre (for a title or ornament to sit in). Used between blog cards and as a section separator on newer pages.
+
+### `<Form />` primitives · `components/ui/form.tsx`
+
+Styled form field components. Always import from this file — never write raw `<input>` or `<select>` elements.
+
+| Export       | Renders              | Notes                                          |
+|--------------|----------------------|------------------------------------------------|
+| `Field`      | Label wrapper        | `label` prop (screen-reader only); `error` prop |
+| `Input`      | `<input>`            | Full field style + focus ring                  |
+| `Textarea`   | `<textarea>`         | Same style as Input                            |
+| `Select`     | `<select>`           | Same style, chevron via CSS background-image   |
+
+```tsx
+import { Field, Input, Select, Textarea } from '@/components/ui/form'
+
+<Field label="Company name">
+  <Input placeholder="Acme Inc." {...register('company')} />
+</Field>
+```
+
+### `<GalleryCard />` · `components/ui/gallery-card.tsx`
+
+Masonry card for the gallery index. Accepts a `GalleryItem` and renders image or autoplay video. Links to `/gallery/[slug]`.
+
+| Prop   | Type          |
+|--------|---------------|
+| `item` | `GalleryItem` |
+
+### `<GalleryRelatedCard />` · `components/ui/gallery-related-card.tsx`
+
+Fixed-aspect (16:9) card for the "related items" row on a gallery detail page. Same `GalleryItem` type as `GalleryCard`.
+
+### `<Stamp />` · `components/ui/services-stamp.tsx`
+
+Crimson rounded pill with flanking `<Sparkle>` icons and `"OUR SERVICES"` text. Intended to be `absolute`-positioned over the centre of the 2×2 services grid. Content overridable via `children`.
+
+### `<QuoteLink />` · `components/ui/quote-link.tsx`
+
+Inline hyperlink styled for use inside cream-on-dark testimonial quotes. Stays `text-cream` + underline; fades on hover. Polymorphic (internal → `next/link`, external → `<a target=_blank>`).
+
+### `<PronounceButton />` · `components/ui/pronounce-button.tsx` · `"use client"`
+
+Self-contained play button that streams `/audio/epyc-pronunciation.mp3`. Renders as an `<IconButton>` — no props required. Used once in `<CTAFooter>`.
+
 ---
 
 ## 11. Icons
@@ -529,6 +618,16 @@ Live homepage assembled from `components/sections/*`. Each is wrapped in a
 | `<FAQs />`                             | `components/sections/faqs.tsx`                | `<FAQItem>` list over the dark paper image. SSR-friendly `<details>`.                          |
 | `<CTAFooter />`                        | `components/sections/cta-footer.tsx`          | Bottom CTA + integrated footer with 3 dashed dividers + pronounce-EPYC row.                    |
 | `<ComingSoon />` (helper)              | `components/sections/coming-soon.tsx`         | Shared layout used by the 6 placeholder routes (`/projects`, `/contact`, …).                   |
+| `<ContactHero />`                      | `components/sections/contact-hero.tsx`        | Contact page layout — left copy + feature list + social links + embedded `<ContactForm>`.      |
+| `<ContactForm />`  (`'use client'`)    | `components/sections/contact-form.tsx`        | react-hook-form + zod contact form with idle/submitting/success/error states.                  |
+| `<ExclusivityCTA />`                   | `components/sections/exclusivity-cta.tsx`     | Teal-deep banner — "We only work with 3 new companies per month" urgency section.               |
+| `<ProjectsIndex />` (`'use client'`)   | `components/sections/projects-index.tsx`      | Filterable grid of `<ProjectCard>` rows; filter state is local (industry dropdown).             |
+| `<BlogIndex />`                        | `components/sections/blog-index.tsx`          | Blog listing — `<BlogCard>` list separated by `<DotLineDivider>`.                              |
+| `<BlogPost />`                         | `components/sections/blog-post.tsx`           | Full blog post — hero image + `<BlogProse>` body + related posts row.                          |
+| `<GalleryIndex />`                     | `components/sections/gallery-index.tsx`       | Masonry-style `<GalleryCard>` grid for `/gallery`.                                              |
+| `<GalleryDetail />`                    | `components/sections/gallery-detail.tsx`      | Single gallery item — full image/video + `<GalleryRelatedCard>` row.                           |
+| `<TestimonialSlider />` (`'use client'`)| `components/sections/testimonial-slider.tsx` | Animated slide-through of multiple `Testimonial` objects; used on `/projects` page.            |
+| `<LegalPage />`                        | `components/sections/legal-page.tsx`          | Shell for `/privacy` and `/terms` — nav + display heading + prose slot.                        |
 
 ---
 

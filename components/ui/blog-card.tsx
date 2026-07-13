@@ -14,7 +14,7 @@ type BlogCardProps = {
     height: number
     focalX?: number
     focalY?: number
-  }
+  } | null
   date?: string
   readTime?: string
   publishedAt?: string
@@ -48,19 +48,21 @@ export function BlogCard({
         className,
       )}
     >
-      <div className="relative h-[154px] w-full overflow-hidden rounded-[4px] bg-cream sm:h-[210px] lg:h-[316px]">
-        <Image
-          src={image.src}
-          alt={image.alt}
-          fill
-          sizes="(min-width: 1200px) 540px, (min-width: 810px) 380px, 100vw"
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-          style={
-            image.focalX !== undefined && image.focalY !== undefined
-              ? { objectPosition: `${image.focalX}% ${image.focalY}%` }
-              : undefined
-          }
-        />
+      <div className="relative aspect-video w-full overflow-hidden rounded-[4px] bg-bone">
+        {image && (
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            sizes="(min-width: 1200px) 540px, (min-width: 810px) 380px, 100vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            style={
+              image.focalX !== undefined && image.focalY !== undefined
+                ? { objectPosition: `${image.focalX}% ${image.focalY}%` }
+                : undefined
+            }
+          />
+        )}
       </div>
       <div className="flex flex-col gap-1">
         <h4 className="text-h4-alt w-[90%] text-ink">{title}</h4>

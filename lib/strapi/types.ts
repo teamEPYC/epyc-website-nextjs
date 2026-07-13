@@ -23,11 +23,14 @@ export type StrapiBlog = {
   slug: string
   publishedDate: string | null
   publishedAt: string
-  coverImage: StrapiMedia
+  updatedAt: string
+  // Typed nullable because draft entries (staging `?status=draft`) may have
+  // these unset. Normalisers/pages guard accordingly.
+  coverImage?: StrapiMedia | null
   coverImageAlt?: string | null
-  author: StrapiAuthor
+  author?: StrapiAuthor | null
   readTime?: string | null
-  content: string
+  content?: string | null
   metaTitle?: string | null
   metaDescription?: string | null
 }
@@ -41,12 +44,13 @@ export type StrapiProject = {
   title: string
   slug: string
   publishedAt: string
-  thumbnail: StrapiMedia
+  // Nullable in draft mode (staging `?status=draft`) — normalisers guard.
+  thumbnail?: StrapiMedia | null
   thumbnailAlt?: string | null
-  type: string
-  industry: StrapiIndustry
-  platform: StrapiPlatform
-  redirectLink: string
+  type?: string | null
+  industry?: StrapiIndustry | null
+  platform?: StrapiPlatform | null
+  redirectLink?: string | null
   caseStudyPath?: string | null
   featured: boolean
 }

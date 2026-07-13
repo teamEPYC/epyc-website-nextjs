@@ -47,6 +47,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    robots: { index: false, follow: true },
     alternates: { canonical: `/gallery/${slug}` },
     openGraph: { siteName: 'EPYC', images: [ogImage] },
   }
@@ -76,7 +77,7 @@ export default async function GalleryItemPage({
   if (!raw) notFound()
 
   const item = normaliseGallery(raw)
-  const related = allData.map((r) => normaliseGallery(r))
+  const related = allData.filter((r) => r.slug).map((r) => normaliseGallery(r))
 
   return (
     <>

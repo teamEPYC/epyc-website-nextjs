@@ -11,6 +11,8 @@ export type NormalisedBlog = {
   author?: string
   excerpt?: string
   content?: string
+  // `null` when the blog post has no cover image — consumers render a
+  // neutral `bone` placeholder box in the same shape instead.
   image: {
     src: string
     alt: string
@@ -18,7 +20,7 @@ export type NormalisedBlog = {
     height: number
     focalX?: number
     focalY?: number
-  }
+  } | null
   metaDescription?: string
 }
 
@@ -35,7 +37,9 @@ function pickImageUrl(media: StrapiMedia, size: CoverSize): { url: string; width
 }
 
 export function normalise(blog: StrapiBlog, size: CoverSize = 'card'): NormalisedBlog {
-  const picked = pickImageUrl(blog.coverImage, size)
+  // Strapi returns `null` for an unset media relation even though the type
+  // says otherwise — guard so a cover-less post doesn't crash the render.
+  const picked = blog.coverImage ? pickImageUrl(blog.coverImage, size) : null
   const dateSource = blog.publishedDate ?? blog.publishedAt
 
   return {
@@ -46,13 +50,15 @@ export function normalise(blog: StrapiBlog, size: CoverSize = 'card'): Normalise
     readTime: blog.readTime ?? undefined,
     author: blog.author?.name,
     excerpt: blog.metaDescription ?? undefined,
-    content: blog.content,
-    image: {
-      src: picked.url,
-      alt: blog.coverImageAlt ?? blog.coverImage.alternativeText ?? blog.title,
-      width: picked.width,
-      height: picked.height,
-    },
+    content: blog.content ?? undefined,
+    image: picked
+      ? {
+          src: picked.url,
+          alt: blog.coverImageAlt ?? blog.coverImage?.alternativeText ?? blog.title,
+          width: picked.width,
+          height: picked.height,
+        }
+      : null,
     metaDescription: blog.metaDescription ?? undefined,
   }
 }

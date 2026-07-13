@@ -141,9 +141,9 @@ export function TestimonialSlider({ testimonials, className }: Props) {
         </motion.div>
 
         {current.tags && current.tags.length > 0 && (
-          <div className="flex max-w-[600px] mx-auto lg:mx-0 lg:max-w-none flex-col gap-4">
-            <p className="text-body text-cream">What {current.name.split(' ')[0]} loved about us</p>
-            <div className="flex flex-wrap gap-2.5">
+          <div className="flex max-w-[600px] mx-auto lg:mx-0 lg:max-w-none flex-col gap-4 items-center lg:items-start">
+            <p className="text-body text-cream text-center lg:text-left">What {current.name.split(' ')[0]} loved about us</p>
+            <div className="flex flex-wrap gap-2.5 justify-center lg:justify-start">
               <AnimatePresence mode="popLayout" initial={false}>
                 {current.tags.map((tag) => (
                   <motion.div

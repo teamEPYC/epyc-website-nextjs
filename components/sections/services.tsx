@@ -1,6 +1,6 @@
 import { Container } from '@/components/ui/container'
 import { ServiceCard } from '@/components/ui/service-card'
-import { ServicesStamp } from '@/components/ui/services-stamp'
+import { Stamp } from '@/components/ui/services-stamp'
 import { Reveal } from '@/components/ui/reveal'
 import { services } from '@/data/services'
 import { PaperBackground } from '../ui/paper-background'
@@ -15,7 +15,7 @@ export function Services() {
       />
 
       {/* Mobile-only heading. Plain h2 (no "/ ... /" slashes) to match the
-          design reference; sm+ shows the crimson ServicesStamp instead. */}
+          design reference; sm+ shows the crimson Stamp instead. */}
       <h2 className="mb-8 text-center text-h2-light text-cream sm:hidden">Our Services</h2>
 
       <Container
@@ -47,7 +47,7 @@ export function Services() {
 
       {/* Crimson stamp at section center — sm+ only */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
-        <ServicesStamp />
+        <Stamp />
       </div>
     </PaperBackground>
   )

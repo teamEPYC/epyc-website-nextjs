@@ -13,10 +13,20 @@ import { BrandTile } from "@/components/ui/brand-tile";
 import { ServiceCard } from "@/components/ui/service-card";
 import { FAQItem } from "@/components/ui/faq-item";
 import { Testimonial } from "@/components/ui/testimonial";
+import { Voices } from "@/components/sections/voices";
 import { OrnamentDivider } from "@/components/ui/ornament-divider";
 import { DashedDivider } from "@/components/ui/dashed-divider";
 import { PaperBackground } from "@/components/ui/paper-background";
 import { FloatingMenuButton } from "@/components/ui/floating-menu";
+import { DotLineDivider } from "@/components/ui/dot-line-divider";
+import { Stamp } from "@/components/ui/services-stamp";
+import { QuoteLink } from "@/components/ui/quote-link";
+import { Field, Input, Textarea, Select } from "@/components/ui/form";
+import { PronounceButton } from "@/components/ui/pronounce-button";
+import { BlogCard } from "@/components/ui/blog-card";
+
+import { GalleryCard } from "@/components/ui/gallery-card";
+import { GalleryRelatedCard } from "@/components/ui/gallery-related-card";
 import { ClickButtonDemo } from "./_demos/button-demo";
 import {
   ArrowDown,
@@ -95,9 +105,17 @@ const navLinks = [
   ["service-card", "Service Card"],
   ["faq-item", "FAQ Item"],
   ["testimonial", "Testimonial"],
+  ["voices", "Voices (Section)"],
   ["paper-background", "Paper Background"],
   ["icons", "Icons"],
-  ["floating-menu", "Floating Menu"],
+  ["dot-line-divider", "Dot Line Divider"],
+  ["stamp", "Stamp"],
+  ["quote-link", "Quote Link"],
+  ["form", "Form Fields"],
+  ["pronounce-button", "Pronounce Button"],
+  ["blog-card", "Blog Card"],
+  ["gallery-card", "Gallery Card"],
+  ["gallery-related-card", "Gallery Related Card"],
 ] as const;
 
 const icons = [
@@ -466,6 +484,15 @@ export default function StyleGuide() {
             </div>
           </SectionBlock>
 
+          {/* Voices ------------------------------------------------------ */}
+          <SectionBlock
+            id="voices"
+            title="Voices (Section)"
+            description="Canonical testimonial section — use <Voices /> instead of composing Testimonial manually. Renders the paper texture bg, all testimonials via TestimonialSlider, and a Clutch CTA. Used on the homepage and all service pages."
+          >
+            <Voices />
+          </SectionBlock>
+
           {/* Paper background -------------------------------------------- */}
           <SectionBlock id="paper-background" title="Paper Background">
             <PaperBackground
@@ -524,16 +551,188 @@ export default function StyleGuide() {
             </div>
           </SectionBlock>
 
-          {/* Floating menu ----------------------------------------------- */}
+          {/* Dot Line Divider -------------------------------------------- */}
           <SectionBlock
-            id="floating-menu"
-            title="Floating Menu Button"
-            description="Stateful client component. Renders fixed-bottom-centre on every page in production. The instance below is live (scroll down)."
+            id="dot-line-divider"
+            title="DotLineDivider"
+            description="Crimson diamond-capped rule. variant='single' is a full-width line; variant='split' leaves a centre gap for a title or ornament."
           >
-            <p className="text-body text-ink/70">
-              The actual floating menu is rendered at the bottom of this page. Click it to expand.
-            </p>
+            <div className="flex flex-col gap-8">
+              <div>
+                <p className="text-body-sm mb-3 text-ink/60">variant=&quot;single&quot; (default)</p>
+                <DotLineDivider />
+              </div>
+              <div>
+                <p className="text-body-sm mb-3 text-ink/60">variant=&quot;split&quot;</p>
+                <DotLineDivider variant="split" />
+              </div>
+            </div>
           </SectionBlock>
+
+          {/* Stamp ------------------------------------------------------- */}
+          <SectionBlock
+            id="stamp"
+            title="Stamp"
+            description="Crimson pill with flanking Sparkle icons. Absolute-positioned over the centre of the 2×2 services grid in production."
+          >
+            <div className="flex items-center justify-center rounded-md bg-ink p-16">
+              <Stamp />
+            </div>
+          </SectionBlock>
+
+          {/* Quote Link -------------------------------------------------- */}
+          <SectionBlock
+            id="quote-link"
+            title="QuoteLink"
+            description="Inline hyperlink for use inside cream-on-dark testimonial quotes. Stays cream + underline; fades on hover."
+          >
+            <div className="rounded-md bg-ink p-8">
+              <p className="text-body-lg text-cream max-w-2xl">
+                &ldquo;Honestly, I never worked with a better partner before — check out our work on{" "}
+                <QuoteLink href="/projects">the projects page</QuoteLink> or read more on{" "}
+                <QuoteLink href="https://clutch.co/profile/epyc">Clutch</QuoteLink>.&rdquo;
+              </p>
+            </div>
+          </SectionBlock>
+
+          {/* Form Fields ------------------------------------------------- */}
+          <SectionBlock
+            id="form"
+            title="Form · Field / Input / Textarea / Select"
+            description="Styled form primitives from components/ui/form.tsx. Always import from there — never write raw <input> or <select>."
+          >
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <Field label="Company name">
+                <Input placeholder="Acme Inc." />
+              </Field>
+              <Field label="How did you hear about us?">
+                <Select>
+                  <option value="">Select an option</option>
+                  <option value="referral">Referral</option>
+                  <option value="search">Search</option>
+                  <option value="social">Social</option>
+                </Select>
+              </Field>
+              <div className="sm:col-span-2 lg:col-span-1">
+                <Field label="Message">
+                  <Textarea placeholder="Tell us about your project…" rows={4} />
+                </Field>
+              </div>
+            </div>
+          </SectionBlock>
+
+          {/* Pronounce Button -------------------------------------------- */}
+          <SectionBlock
+            id="pronounce-button"
+            title="PronounceButton"
+            description="Self-contained play button. Streams /audio/epyc-pronunciation.mp3 on click. Used once in CTAFooter."
+          >
+            <div className="flex items-center gap-4">
+              <PronounceButton />
+              <span className="text-body text-ink/70">Click to hear &ldquo;EPYC&rdquo; pronounced</span>
+            </div>
+          </SectionBlock>
+
+          {/* Blog Card --------------------------------------------------- */}
+          <SectionBlock
+            id="blog-card"
+            title="BlogCard"
+            description="Blog post card — hero image + title + date / read-time. Polymorphic anchor (internal → next/link, external → <a target=_blank>)."
+          >
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              <BlogCard
+                href="/blog/demo-post"
+                title="How We Rebuilt a SaaS Dashboard for 10× Faster Onboarding"
+                image={{
+                  src: "/images/site/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png",
+                  alt: "Demo blog post cover",
+                  width: 1868,
+                  height: 1050,
+                }}
+                date="Jun 2025"
+                readTime="5 min read"
+                publishedAt="2025-06-01T00:00:00Z"
+              />
+              <BlogCard
+                href="/blog/demo-post-2"
+                title="Why Every Pixel Matters: Our Design Process at EPYC"
+                image={{
+                  src: "/images/site/lB7xt9A0ReUM3hjaHFTp8kCY9eA.webp",
+                  alt: "Demo blog post cover 2",
+                  width: 1788,
+                  height: 992,
+                }}
+                date="May 2025"
+                readTime="3 min read"
+                publishedAt="2025-05-15T00:00:00Z"
+              />
+            </div>
+          </SectionBlock>
+
+          {/* Gallery Card ------------------------------------------------ */}
+          <SectionBlock
+            id="gallery-card"
+            title="GalleryCard"
+            description="Masonry card for the gallery index. Accepts a GalleryItem. Renders image or autoplay video. Links to /gallery/[slug]."
+          >
+            <div className="columns-2 gap-4 sm:columns-3">
+              <GalleryCard
+                item={{
+                  slug: "demo-piece",
+                  kind: "image",
+                  src: "/images/site/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png",
+                  alt: "Demo gallery piece",
+                  width: 1868,
+                  height: 1050,
+                  title: "Demo Piece",
+                }}
+              />
+              <GalleryCard
+                item={{
+                  slug: "demo-tall",
+                  kind: "image",
+                  src: "/images/site/VIky596fhtCQGcuZWqm4IOau4M.webp",
+                  alt: "Demo tall gallery piece",
+                  width: 400,
+                  height: 600,
+                  title: "Demo Tall",
+                }}
+              />
+            </div>
+          </SectionBlock>
+
+          {/* Gallery Related Card ---------------------------------------- */}
+          <SectionBlock
+            id="gallery-related-card"
+            title="GalleryRelatedCard"
+            description="Fixed 16:9 aspect card for the 'related items' row on a gallery detail page. Same GalleryItem type as GalleryCard."
+          >
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <GalleryRelatedCard
+                item={{
+                  slug: "related-piece",
+                  kind: "image",
+                  src: "/images/site/7Ql5MP7u1jXJ69ZQUw5e7o1tMU.png",
+                  alt: "Related piece",
+                  width: 1868,
+                  height: 1050,
+                  title: "Related Piece",
+                }}
+              />
+              <GalleryRelatedCard
+                item={{
+                  slug: "related-piece-2",
+                  kind: "image",
+                  src: "/images/site/lB7xt9A0ReUM3hjaHFTp8kCY9eA.webp",
+                  alt: "Related piece 2",
+                  width: 1788,
+                  height: 992,
+                  title: "Related Piece 2",
+                }}
+              />
+            </div>
+          </SectionBlock>
+
         </Container>
       </Section>
 

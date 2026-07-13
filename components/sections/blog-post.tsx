@@ -10,6 +10,7 @@ import { BlogProse } from '@/components/ui/blog-prose'
 import { DotLineDivider } from '@/components/ui/dot-line-divider'
 import { Sparkle } from '@/components/icons/sparkle'
 import type { NormalisedBlog } from '@/lib/blogs/normalise'
+import { ReadingProgress } from '@/components/ui/reading-progress'
 
 type BlogPostProps = {
   blog: NormalisedBlog
@@ -19,6 +20,8 @@ type BlogPostProps = {
 
 export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
   return (
+    <>
+    <ReadingProgress />
     <Section tone="beige" className="px-4 py-4 lg:px-4 lg:py-4">
       <div className="relative mx-auto w-full overflow-hidden border-l border-r border-t border-ink px-0 py-11">
         <SiteNav className="-mt-11 mb-12" />
@@ -29,7 +32,7 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           <div className="flex flex-col items-center justify-center gap-12 lg:gap-24">
             {/* Hero */}
             <header className="flex w-full flex-col items-center gap-6 lg:gap-[30px]">
-              <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal">
+              <h1 className="text-[31px] leading-[1.1em]! tablet:text-display text-center text-ink! font-display font-normal text-balance">
                 {blog.title}
               </h1>
               {(blog.date || blog.readTime) && (
@@ -43,20 +46,24 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
           </div>
 
           {/* Banner */}
-          <div className="relative  w-[90%] mx-auto lg:h-[632px] overflow-hidden rounded-[4px]">
-            <Image
-              src={blog.image.src}
-              alt={blog.image.alt || blog.title}
-              priority
-              height={632}
-              width={1000}
-              className="object-contain mx-auto rounded-[4px] bg-cream"
-              style={
-                blog.image.focalX !== undefined && blog.image.focalY !== undefined
-                  ? { objectPosition: `${blog.image.focalX}% ${blog.image.focalY}%` }
-                  : undefined
-              }
-            />
+          <div className="relative w-[90%] mx-auto mt-6 lg:mt-0 overflow-hidden rounded-[4px]">
+            {blog.image ? (
+              <Image
+                src={blog.image.src}
+                alt={blog.image.alt || blog.title}
+                priority
+                height={632}
+                width={1000}
+                className="w-full h-auto rounded-[4px]"
+                style={
+                  blog.image.focalX !== undefined && blog.image.focalY !== undefined
+                    ? { objectPosition: `${blog.image.focalX}% ${blog.image.focalY}%` }
+                    : undefined
+                }
+              />
+            ) : (
+              <div className="w-full rounded-[4px] bg-bone aspect-[1000/632]" />
+            )}
           </div>
 
           {/* Article body */}
@@ -101,5 +108,6 @@ export function BlogPost({ blog, body, relatedBlogs }: BlogPostProps) {
         </Container>
       </div>
     </Section>
+    </>
   )
 }
