@@ -49,5 +49,15 @@ next-env.d.ts
 !.dev.vars.example
 # cloudflare-env.d.ts is committed — CI needs it for typechecking without wrangler credentials
 
+# Graphify analysis output (generated)
+graphify-out/
+
 # ShipStudio metadata
 .shipstudio/
+
+# design-sync (converter + build output — transient, never commit)
+/.ds-sync/
+/ds-bundle/
+/.design-sync/.cache/
+/.design-sync/learnings/
+/.design-sync/node_modules
