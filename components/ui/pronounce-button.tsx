@@ -3,13 +3,14 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { IconButton } from '@/components/ui/icon-button'
 import { Play } from '@/components/icons/play'
+import { cn } from '@/lib/cn'
 
 // Recorded pronunciation of "epic" (EPYC) — the same clip epyc.in plays,
 // self-hosted from /public/audio. Using a real recording instead of the
 // browser's speech synthesis keeps the voice consistent across devices.
 const AUDIO_SRC = '/audio/epyc-pronunciation.mp3'
 
-export function PronounceButton() {
+export function PronounceButton({ className }: { className?: string }) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export function PronounceButton() {
     <IconButton
       tone="ink"
       aria-label="Hear how to pronounce EPYC"
-      className="bg-ink/80 ring-1 ring-cream/30"
+      className={cn('bg-ink/80 ring-1 ring-cream/30', className)}
       onClick={play}
     >
       <Play size={18} />

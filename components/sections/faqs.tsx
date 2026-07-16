@@ -3,10 +3,11 @@ import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { FAQItem } from '@/components/ui/faq-item'
 import { Reveal } from '@/components/ui/reveal'
-import { faqs } from '@/data/faqs'
-import { PaperBackground } from '../ui/paper-background'
+import { faqs, type FAQ } from '@/data/faqs'
 
-export function FAQs() {
+/** `items` swaps the question set; the design is fixed. Defaults to the
+ *  homepage's `data/faqs.ts`. */
+export function FAQs({ items = faqs }: { items?: FAQ[] }) {
   return (
     <section className="relative w-full overflow-hidden bg-ink px-6 py-12">
       {/* Full-bleed background texture. `z-0` keeps it above the section's
@@ -26,7 +27,7 @@ export function FAQs() {
             <SectionHeading tone="cream">Questions?</SectionHeading>
           </div>
           <div className="flex flex-col">
-            {faqs.map((f) => (
+            {items.map((f) => (
               <FAQItem key={f.question} question={f.question}>
                 {f.answer}
               </FAQItem>

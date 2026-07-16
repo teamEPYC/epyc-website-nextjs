@@ -17,7 +17,7 @@ import { menuLinks } from '@/data/nav'
  * side borders. Transparent, so it blends with the page background.
  * Route-aware via `usePathname()`; not sticky (scrolls with the page):
  *
- *  - Homepage: cream content over the dark hero, EPYC mark + wordmark.
+ *  - Dark-hero routes: cream content over the dark hero, EPYC mark + wordmark.
  *  - Every other page: ink content over beige, mark only.
  *
  * Desktop (≥810px): the four links sit at the far right, each with an
@@ -29,6 +29,13 @@ import { menuLinks } from '@/data/nav'
 /** Snappy out-quint bezier — `as const` so it types as a cubic-bezier tuple. */
 const EASE = [0.22, 1, 0.36, 1] as const
 
+/**
+ * Routes that open on a dark <PaperBackground> hero, where the nav needs the
+ * cream treatment to stay legible. Every other route opens on beige and gets
+ * ink. Add a route here when you give it a dark hero.
+ */
+const DARK_HERO_ROUTES = new Set(['/', '/ai-training'])
+
 /** A nav link is "active" on its own page and any page nested under it. */
 function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
@@ -36,7 +43,7 @@ function isActive(pathname: string, href: string) {
 
 export function SiteNav({ className }: { className?: string }) {
   const pathname = usePathname()
-  const isHome = pathname === '/'
+  const onDarkHero = DARK_HERO_ROUTES.has(pathname)
   const [open, setOpen] = useState(false)
   const reduce = useReducedMotion()
 
@@ -47,16 +54,16 @@ export function SiteNav({ className }: { className?: string }) {
   }, [pathname])
 
   return (
-    <header className={cn(isHome ? 'text-cream' : 'text-ink', className)}>
+    <header className={cn(onDarkHero ? 'text-cream' : 'text-ink', className)}>
       <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15">
-        {/* Logo — mark always; the wordmark joins it on the homepage. */}
+        {/* Logo — mark always; the wordmark joins it on the dark heroes. */}
         <Link
           href="/"
           aria-label="EPYC home"
           className="flex shrink-0 items-center gap-2.5 transition-opacity duration-200 hover:opacity-80"
         >
           <EpycMark className="h-4 w-auto lg:h-5" />
-          {isHome && <EpycWordmark className="h-4 w-auto lg:h-5" />}
+          {onDarkHero && <EpycWordmark className="h-4 w-auto lg:h-5" />}
         </Link>
 
         {/* Desktop links */}
