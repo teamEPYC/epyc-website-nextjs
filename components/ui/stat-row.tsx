@@ -1,20 +1,21 @@
 import { cn } from '@/lib/cn'
 
-export type AiStat = { value: string; label: string }
+export type Stat = { value: string; label: string }
 
 /**
- * The AI-training stats row — a crimson `text-h2-light` value over a
- * `text-body-lg` label, three-up from `sm`. Shared by WhyEpyc and TrainedTeams,
- * which draw the same row from different data.
+ * A row of stats — crimson `text-h2-light` value over a `text-body-lg` label,
+ * three-up from `sm`. For light grounds; the case studies draw their metrics as
+ * dark hairline-gridded tiles instead (see case-study/gokwik), which is a
+ * different treatment, not a variant of this one.
  *
  * Figma draws the value at 40px Rationalist Light; `text-h2-light` is the
  * closest token (31/38/48, same Light weight).
  */
-export function AiStats({
+export function StatRow({
   items,
   className,
 }: {
-  items: readonly AiStat[]
+  items: readonly Stat[]
   className?: string
 }) {
   return (

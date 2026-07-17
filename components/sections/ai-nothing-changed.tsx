@@ -1,13 +1,13 @@
 import Image from 'next/image'
 import { Section } from '@/components/ui/section'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 
 export function AiNothingChanged() {
   return (
-    <Section tone="beige" className="py-14 sm:py-20 lg:py-[120px]">
-      <AiContainer>
+    <Section tone="beige">
+      <Container width="wide">
         <Reveal className="flex flex-col gap-12 lg:gap-[60px]">
           {/* Banner image — 1256×510, sharp corners (Figma) */}
           <div className="relative aspect-[1256/510] w-full overflow-hidden">
@@ -46,7 +46,7 @@ export function AiNothingChanged() {
             </p>
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </Section>
   )
 }

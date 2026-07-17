@@ -1,8 +1,7 @@
 import Image from 'next/image'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
-import { AiTexture } from '@/components/ui/ai-texture'
 import { OrnamentDivider } from '@/components/ui/ornament-divider'
 
 const mentors = [
@@ -32,11 +31,20 @@ const mentors = [
  */
 export function AiMentors() {
   return (
-    <section className="relative isolate overflow-hidden bg-grey-primary">
-      <AiTexture />
+    <section className="relative isolate overflow-hidden bg-ink">
+      {/* Full-bleed background texture. `z-0` keeps it above the section's
+          `bg-ink` fill but below the content — same treatment as <FAQs> and
+          <CTAFooter>. */}
+      <Image
+        src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
+        alt=""
+        fill
+        loading="eager"
+        sizes="100vw"
+        className="z-0 object-cover"
+      />
 
-      {/* 120 top / 90 bottom — mentor col ends at y=566 in the 656px frame */}
-      <AiContainer className="py-14 sm:py-20 lg:pt-[120px] lg:pb-[90px]">
+      <Container width="wide" className="relative z-10 py-[30px] lg:py-12">
         <Reveal className="grid grid-cols-1 gap-12 lg:grid-cols-[721fr_553fr] lg:gap-0">
           {/* Figma (3787:48397) sets two lines:
                 / Meet our
@@ -79,7 +87,7 @@ export function AiMentors() {
             ))}
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </section>
   )
 }

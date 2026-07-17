@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Section } from '@/components/ui/section'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
 
@@ -17,8 +17,8 @@ import { Pill } from '@/components/ui/pill'
  */
 export function AiPractitionerBridge() {
   return (
-    <Section tone="beige" className="py-14 sm:py-20 lg:py-[120px]">
-      <AiContainer>
+    <Section tone="beige">
+      <Container width="wide">
         <Reveal className="grid grid-cols-1 items-stretch gap-12 lg:grid-cols-[514fr_726fr] lg:gap-4">
           {/* Pill + heading up top, body pinned to the bottom */}
           <div className="flex flex-col gap-8 text-center lg:justify-between lg:gap-0 lg:text-left">
@@ -59,7 +59,7 @@ export function AiPractitionerBridge() {
             />
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </Section>
   )
 }

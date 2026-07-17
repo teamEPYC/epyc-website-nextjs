@@ -41,8 +41,8 @@ export async function POST(req: Request) {
   // notifications are needed.
   await neonSql(
     process.env.NEON_DATABASE_URL!,
-    'INSERT INTO training_submissions (name, email, company, role) VALUES ($1, $2, $3, $4)',
-    [data.name, data.email, data.company, data.role],
+    'INSERT INTO training_submissions (name, email, company, role, format) VALUES ($1, $2, $3, $4, $5)',
+    [data.name, data.email, data.company, data.role, data.format],
   )
 
   return NextResponse.json({ ok: true })

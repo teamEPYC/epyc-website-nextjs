@@ -4,7 +4,7 @@ import { Ribbon } from '@/components/icons'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { PaperBackground } from '@/components/ui/paper-background'
 
 /**
@@ -33,7 +33,7 @@ export function AiHero() {
           className="pointer-events-none absolute inset-0 border-l border-r border-t border-beige [mask-image:linear-gradient(to_bottom,#000_0%,#000_40%,transparent_95%)]"
         />
         <SiteNav />
-        <AiContainer className="pb-12 pt-8 lg:px-[77px] lg:pb-[2px] lg:pt-[27px]">
+        <Container width="wide" className="pb-12 pt-8 lg:px-[77px] lg:pb-[2px] lg:pt-[27px]">
           <Reveal className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[620px_628px] lg:gap-4">
             <div className="flex flex-col items-center gap-6 text-center lg:items-start lg:gap-10 lg:text-left">
               <div className="flex flex-col items-center gap-6 lg:items-start">
@@ -86,7 +86,7 @@ export function AiHero() {
               />
             </div>
           </Reveal>
-        </AiContainer>
+        </Container>
       </div>
     </PaperBackground>
   )

@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import { Section } from '@/components/ui/section'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
-import { AiBadge } from '@/components/ui/ai-badge'
+import { Disc } from '@/components/ui/disc'
+import { cn } from '@/lib/cn'
 
 const steps = [
   {
@@ -37,7 +38,7 @@ const steps = [
  */
 export function AiHowItWorks() {
   return (
-    <Section tone="beige" className="relative isolate overflow-hidden py-14 sm:py-20 lg:pt-[120px] lg:pb-[128px]">
+    <Section tone="beige" className="relative isolate overflow-hidden">
       {/* Faint smoke wash — flattened export of Figma layer 3787:47651. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <Image
@@ -49,7 +50,7 @@ export function AiHowItWorks() {
         />
       </div>
 
-      <AiContainer>
+      <Container width="wide">
         <Reveal className="flex flex-col gap-12 lg:flex-row lg:gap-0">
           {/* Pill + heading (Figma 3787:47679 — x=72, hence the -20px pull).
               Centred while stacked, left-aligned once the two columns split. */}
@@ -73,14 +74,27 @@ export function AiHowItWorks() {
           {/* Steps timeline (Figma 3787:47652 — 408px col, 79px below the
               heading top, 80px row gap, crimson line through badge centres) */}
           <div className="relative flex w-full max-w-[408px] flex-col gap-20 lg:ml-auto lg:mt-[79px]">
-            <div
-              aria-hidden="true"
-              className="absolute left-[27px] top-[73px] hidden h-[477px] w-px bg-crimson lg:block"
-            />
             {steps.map((s, i) => (
-              <div key={s.title} className="flex items-center gap-6 lg:gap-[52px]">
+              <div key={s.title} className="relative flex items-center gap-6 lg:gap-[52px]">
+                {/* Connector, drawn per row rather than as one fixed-height rule
+                    over the whole column: rows are `items-center`, so a badge's
+                    centre sits at its own row's midpoint, which moves as the body
+                    copy rewraps. Anchoring each segment to `top-1/2` tracks that
+                    at any width. `-bottom-20` spans the column's `gap-20` to meet
+                    the next row's segment; the first row starts at its centre and
+                    the last ends at its own, so the rule stops dead on the outer
+                    badges instead of overshooting. `left-[27px]` is the 54px
+                    badge's centre. */}
+                <div
+                  aria-hidden="true"
+                  className={cn(
+                    'pointer-events-none absolute left-[27px] w-px bg-crimson',
+                    i === 0 ? 'top-1/2' : 'top-0',
+                    i === steps.length - 1 ? 'h-1/2' : '-bottom-20',
+                  )}
+                />
                 {/* `relative` lifts the badge above the crimson connector line */}
-                <AiBadge className="relative">{String(i + 1).padStart(2, '0')}</AiBadge>
+                <Disc className="relative">{String(i + 1).padStart(2, '0')}</Disc>
                 {/* min-w-0 so the copy can shrink below its 302px design width
                     instead of pushing the row past a narrow viewport. */}
                 <div className="flex w-full min-w-0 flex-col gap-5 lg:w-[302px]">
@@ -95,7 +109,7 @@ export function AiHowItWorks() {
             ))}
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </Section>
   )
 }

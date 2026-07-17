@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import { Section } from '@/components/ui/section'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
-import { AiStats } from '@/components/ui/ai-stats'
+import { StatRow } from '@/components/ui/stat-row'
 
 const stats = [
   { value: '12,000+', label: 'People trained' },
@@ -18,7 +18,7 @@ const stats = [
  */
 export function AiWhyEpyc() {
   return (
-    <Section tone="beige" className="relative isolate overflow-hidden py-14 sm:py-20 lg:py-[120px]">
+    <Section tone="beige" className="relative isolate overflow-hidden">
       {/* Faint smoke wash — flattened export of Figma layer 3787:47298
           (already clipped to the 1440×653 section). Decorative. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
@@ -31,7 +31,7 @@ export function AiWhyEpyc() {
         />
       </div>
 
-      <AiContainer>
+      <Container width="wide">
         <Reveal className="flex flex-col items-center gap-10 text-center lg:items-start lg:text-left">
           <Pill tone="ink-on-light">Why EPYC</Pill>
 
@@ -59,11 +59,11 @@ export function AiWhyEpyc() {
                 your team leaves able to build, not just prompt.
               </p>
 
-              <AiStats items={stats} />
+              <StatRow items={stats} />
             </div>
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </Section>
   )
 }

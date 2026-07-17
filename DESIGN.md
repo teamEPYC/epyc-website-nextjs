@@ -287,6 +287,26 @@ Outline rounded-pill, icon + text. Polymorphic.
 
 Source: hero Clutch / Bubble / Webflow / Framer badges.
 
+### `<Disc />` · `components/ui/disc.tsx`
+
+54px crimson circle marker. Holds a two-digit step number (the default cream
+`text-body` treatment) or an icon glyph. Static `<span>` — never a link, no tones.
+
+| Prop        | Type        | Default |
+|-------------|-------------|---------|
+| `children`  | `ReactNode` | —       |
+| `className` | `string`    | —       |
+
+```tsx
+<Disc>01</Disc>                                {/* numbered — the default */}
+<Disc className="text-cream">{icon}</Disc>     {/* glyph variant */}
+```
+
+Not a variant of `<Badge>` despite the shared "badge" mental model — `Badge` is an
+outlined, polymorphic text+icon pill; `Disc` is a solid fixed-size circle.
+
+Source: `/ai-training` — How It Works steps, Workshop Outcomes, Workshop Formats.
+
 ### `<StarRating />` · `components/ui/star-rating.tsx`
 
 5-star strip + optional brand logo + score text. All colour via `currentColor`.

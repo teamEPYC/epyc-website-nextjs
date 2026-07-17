@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import { Section } from '@/components/ui/section'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
-import { AiStats } from '@/components/ui/ai-stats'
+import { StatRow } from '@/components/ui/stat-row'
 
 const stats = [
   { value: '50+', label: 'AI Workshops' },
@@ -39,7 +39,7 @@ const logos = [
  */
 export function AiTrainedTeams() {
   return (
-    <Section tone="beige" className="relative isolate overflow-hidden py-14 sm:py-20 lg:py-[120px]">
+    <Section tone="beige" className="relative isolate overflow-hidden">
       {/* Faint smoke wash — flattened export of Figma layer 3787:48079. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <Image
@@ -51,7 +51,7 @@ export function AiTrainedTeams() {
         />
       </div>
 
-      <AiContainer>
+      <Container width="wide">
         <Reveal className="flex flex-col gap-12 lg:gap-20">
           {/* Header block — mirrors WhyEpyc (Figma 3787:48082). Centred while
               stacked, left-aligned once the two columns split at lg. */}
@@ -84,7 +84,7 @@ export function AiTrainedTeams() {
                   with practical AI skills they can apply from day one.
                 </p>
 
-                <AiStats items={stats} />
+                <StatRow items={stats} />
               </div>
             </div>
           </div>
@@ -137,7 +137,7 @@ export function AiTrainedTeams() {
             </div>
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </Section>
   )
 }

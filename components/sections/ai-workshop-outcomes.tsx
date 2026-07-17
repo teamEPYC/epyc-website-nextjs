@@ -1,9 +1,9 @@
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
-import { AiBadge } from '@/components/ui/ai-badge'
-import { AiTexture } from '@/components/ui/ai-texture'
+import { Disc } from '@/components/ui/disc'
+import Image from 'next/image'
 
 const outcomes = [
   { title: 'Foundations', body: 'How the tools actually work, not just what they’re called.' },
@@ -19,10 +19,19 @@ const outcomes = [
 export function AiWorkshopOutcomes() {
   return (
     <section className="relative isolate overflow-hidden bg-ink">
-      <AiTexture band={1014} />
+      {/* Full-bleed background texture. `z-0` keeps it above the section's
+          `bg-ink` fill but below the content — same treatment as <FAQs> and
+          <CTAFooter>. */}
+      <Image
+        src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
+        alt=""
+        fill
+        loading="eager"
+        sizes="100vw"
+        className="z-0 object-cover"
+      />
 
-      {/* 120 top / 150 bottom — grid bottom sits at y=749 in the 899px frame */}
-      <AiContainer className="py-14 sm:py-20 lg:pt-[120px] lg:pb-[150px]">
+      <Container width="wide" className="relative z-10 py-[30px] lg:py-12">
         <Reveal className="flex flex-col gap-12 lg:gap-20">
           <div className="flex flex-col items-center gap-10 text-center lg:items-start lg:text-left">
             {/* Gold pill (Figma 3787:47199) */}
@@ -41,13 +50,16 @@ export function AiWorkshopOutcomes() {
 
           {/* 4-up grid — every cell carries its own full 1px beige border,
               exactly as drawn in Figma (adjacent edges double up). */}
+          {/* Cell gap/padding step down the DESIGN.md rhythm (30/50/80, 24/32/40)
+              — matches <AiWorkshopFormats>; the Figma 80/40 is a desktop
+              measurement. */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {outcomes.map((o, i) => (
               <div
                 key={o.title}
-                className="flex flex-col items-start gap-20 border border-beige p-10"
+                className="flex flex-col items-start gap-[30px] border border-beige p-6 sm:gap-[50px] sm:p-8 lg:gap-20 lg:p-10"
               >
-                <AiBadge>{String(i + 1).padStart(2, '0')}</AiBadge>
+                <Disc>{String(i + 1).padStart(2, '0')}</Disc>
                 <div className="flex flex-col gap-6 lg:max-w-[228px]">
                   {/* 24px TT Rationalist, bottom-aligned in a 2-line box so
                       one-line titles ("Foundations") sit on the baseline of
@@ -60,7 +72,7 @@ export function AiWorkshopOutcomes() {
             ))}
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </section>
   )
 }

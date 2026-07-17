@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import { CalendarCheck, ChevronRight, Polaroid, Users } from '@/components/icons'
 import { Reveal } from '@/components/ui/reveal'
-import { AiContainer } from '@/components/ui/ai-container'
+import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Pill } from '@/components/ui/pill'
-import { AiBadge } from '@/components/ui/ai-badge'
-import { AiTexture } from '@/components/ui/ai-texture'
+import { Disc } from '@/components/ui/disc'
+import Image from 'next/image'
 
 const formats = [
   {
@@ -36,10 +36,19 @@ const formats = [
 export function AiWorkshopFormats() {
   return (
     <section className="relative isolate overflow-hidden bg-ink">
-      <AiTexture band={1014} />
+      {/* Full-bleed background texture. `z-0` keeps it above the section's
+          `bg-ink` fill but below the content — same treatment as <FAQs> and
+          <CTAFooter>. */}
+      <Image
+        src="/images/site/kyS26IYlxhpf1ogFNR9ihcWa8Q.jpg"
+        alt=""
+        fill
+        loading="eager"
+        sizes="100vw"
+        className="z-0 object-cover"
+      />
 
-      {/* 120 top / 85 bottom — grid bottom sits at y=813.7 in the 899px frame */}
-      <AiContainer className="py-14 sm:py-20 lg:pt-[120px] lg:pb-[85px]">
+      <Container width="wide" className="relative z-10 py-[30px] lg:py-12">
         <Reveal className="flex flex-col gap-12 lg:gap-20">
           <div className="flex flex-col items-center gap-10 text-center lg:items-start lg:text-left">
             <Pill tone="cream-on-dark">Who it&apos;s for</Pill>
@@ -54,13 +63,19 @@ export function AiWorkshopFormats() {
             </SectionHeading>
           </div>
 
-          {/* 3-up grid — full 1px beige border per cell, as drawn in Figma. */}
+          {/* 3-up grid — full 1px beige border per cell, as drawn in Figma.
+              Cell gap/padding step down the DESIGN.md rhythm (30/50/80, 24/32/40)
+              — the Figma 80/40 is a desktop measurement and left the boxes
+              spending most of a small viewport on their own chrome. */}
           <div className="grid grid-cols-1 sm:grid-cols-3">
             {formats.map((f) => (
-              <div key={f.title} className="flex flex-col items-start gap-20 border border-beige p-10">
+              <div
+                key={f.title}
+                className="flex flex-col items-start gap-[30px] border border-beige p-6 sm:gap-[50px] sm:p-8 lg:gap-20 lg:p-10"
+              >
                 {/* Icon variant — glyph instead of the default numeral */}
-                <AiBadge className="text-cream">{f.icon}</AiBadge>
-                <div className="flex w-full flex-col items-start gap-10">
+                <Disc className="text-cream">{f.icon}</Disc>
+                <div className="flex w-full flex-col items-start gap-6 lg:gap-10">
                   <div className="flex flex-col gap-6">
                     {/* 24px TT Rationalist */}
                     <h3 className="text-h4-alt text-cream">{f.title}</h3>
@@ -69,7 +84,7 @@ export function AiWorkshopFormats() {
                   </div>
                   {/* 14px serif + 31.7px chevron, 4px gap (Figma 3787:47263) */}
                   <Link
-                    href="/contact"
+                    href="#request-workshop"
                     className="group flex items-center gap-1 text-cream transition-opacity hover:opacity-80"
                   >
                     <span className="text-h5">Request this format</span>
@@ -80,7 +95,7 @@ export function AiWorkshopFormats() {
             ))}
           </div>
         </Reveal>
-      </AiContainer>
+      </Container>
     </section>
   )
 }
