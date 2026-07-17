@@ -2,6 +2,7 @@ export { ArrowDown } from "./arrow-down";
 export { ArrowRight } from "./arrow-right";
 export { Star } from "./star";
 export { Sparkle } from "./sparkle";
+export { FourPointStar } from "./four-point-star";
 export { Plus } from "./plus";
 export { Minus } from "./minus";
 export { ChevronRight } from "./chevron-right";
