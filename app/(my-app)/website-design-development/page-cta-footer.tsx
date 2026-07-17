@@ -5,7 +5,7 @@ import { DashedDivider } from '@/components/ui/dashed-divider'
 import { Reveal } from '@/components/ui/reveal'
 import { PronounceButton } from '@/components/ui/pronounce-button'
 import { site } from '@/data/site'
-import { PageCTAFooterForm } from './page-cta-footer-form'
+import { ContactForm } from '@/components/sections/contact-form'
 
 const FOOTER_COLUMNS: { label: string; href: string }[][] = [
   [
@@ -76,8 +76,11 @@ export function PageCTAFooter() {
               </p>
             </div>
 
-            <div className="w-full lg:max-w-[480px] lg:justify-self-end">
-              <PageCTAFooterForm />
+            {/* pt-12 clears the founder avatars, which overhang the card's top
+                edge by 45px — the grid is `items-start`, so there is nothing
+                above for them to bleed into. */}
+            <div className="w-full pt-12 lg:max-w-[492px] lg:justify-self-end">
+              <ContactForm tone="beige" />
             </div>
           </div>
 
