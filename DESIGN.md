@@ -307,6 +307,30 @@ outlined, polymorphic text+icon pill; `Disc` is a solid fixed-size circle.
 
 Source: `/ai-training` — How It Works steps, Workshop Outcomes, Workshop Formats.
 
+### `<StatRow />` · `components/ui/stat-row.tsx`
+
+A row of stats — crimson `text-h2-light` value over a `text-body-lg` ink label,
+three-up from `sm`. For **light** grounds.
+
+| Prop        | Type              | Default |
+|-------------|-------------------|---------|
+| `items`     | `readonly Stat[]` | —       |
+| `className` | `string`          | —       |
+
+`Stat` is `{ value: string; label: string }`, exported from the same file.
+
+```tsx
+<StatRow items={[{ value: '12,000+', label: 'People trained' }]} />
+```
+
+Not the only metric treatment in the codebase, and deliberately so: the case
+studies draw theirs as dark hairline-gridded tiles on `bg-ink` (see
+`app/(my-app)/case-study/gokwik/page.tsx`). That one is inline, not a component
+— if it ever gets extracted, `StatGrid` is the name it should take. Don't merge
+the two; one lives on light, one on dark.
+
+Source: `/ai-training` — Why EPYC, Trained Teams.
+
 ### `<StarRating />` · `components/ui/star-rating.tsx`
 
 5-star strip + optional brand logo + score text. All colour via `currentColor`.
@@ -371,11 +395,26 @@ The `/ Title /` heading pattern. Slashes are added automatically — pass plain 
 
 ### `<Container />` · `components/ui/container.tsx`
 
-Horizontal max-width clamp + responsive gutters (16/24/60 px).
+Horizontal max-width clamp + responsive gutters (16/24/60 px by default).
 
-| Prop   | Type                                    | Default     |
-|--------|------------------------------------------|-------------|
-| `width`| `"content"` \| `"outer"` \| `"prose"`   | `"content"` |
+| Prop   | Type                                                | Default     |
+|--------|------------------------------------------------------|-------------|
+| `width`| `"content"` \| `"outer"` \| `"wide"` \| `"prose"`   | `"content"` |
+
+The cap and the gutters together decide the content column, so the variants are
+not a simple size ladder — `wide` shares `outer`'s cap but pads harder, giving a
+*narrower* column:
+
+| Variant   | Cap    | Desktop gutter | Content column | Used by |
+|-----------|--------|----------------|----------------|---------|
+| `content` | 1150px | 60px           | 1150px         | homepage sections |
+| `outer`   | 1440px | 60px           | 1320px         | `<CTAFooter>` |
+| `wide`    | 1440px | **92px**       | **1256px**     | `/ai-training` |
+| `prose`   | prose  | 60px           | reading width  | — |
+
+`wide` overrides the base gutters (32/92 vs 24/60) from inside the variant;
+`cn()` runs `tailwind-merge`, so those win over the base and a caller's own
+`px-*` still wins over both.
 
 ### `<Section />` · `components/ui/section.tsx`
 
