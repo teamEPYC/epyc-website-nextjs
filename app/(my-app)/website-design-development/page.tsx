@@ -421,7 +421,7 @@ export default function WebsiteDesignDevelopmentPage() {
           }}
         />
         <Container width="outer" className="relative">
-          <Reveal className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-20">
+          <Reveal className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between lg:gap-20">
             <div className="flex flex-col lg:max-w-[460px]">
               <Badge tone="ink-on-light" className="w-fit">
                 How we work
