@@ -14,8 +14,8 @@ export default function TermsPage() {
       <LegalPage title="Terms and Conditions">
         <h3>Welcome to EPYC!</h3>
         <p>
-          These terms and conditions outline the rules and regulations for using EPYC Thoughtworks
-          Private Limited&apos;s Website, located at{' '}
+          These terms and conditions outline the rules and regulations for using EPYC&apos;s Website,
+          located at{' '}
           <a href="https://epyc.in/" rel="noopener noreferrer">
             https://epyc.in/
           </a>{' '}
@@ -48,8 +48,8 @@ export default function TermsPage() {
 
         <h4>Cookies</h4>
         <p>
-          We employ the use of cookies. By accessing EPYC, you agree to use cookies in agreement
-          with EPYC Thoughtworks Private Limited&apos;s Privacy Policy.
+          We employ the use of cookies. By accessing EPYC, you agree to use cookies in agreement with
+          EPYC&apos;s Privacy Policy.
         </p>
         <p>
           Most interactive websites use cookies to let us retrieve the user&apos;s details for each
@@ -60,10 +60,9 @@ export default function TermsPage() {
 
         <h4>License</h4>
         <p>
-          Unless otherwise stated, EPYC Thoughtworks Private Limited and/or its licensors own the
-          intellectual property rights for all material on EPYC. All intellectual property rights
-          are reserved. You may access this from EPYC for your personal use, subject to restrictions
-          set in these terms and conditions.
+          Unless otherwise stated, EPYC and/or its licensors own the intellectual property rights for
+          all material on EPYC. All intellectual property rights are reserved. You may access this
+          from EPYC for your personal use, subject to restrictions set in these terms and conditions.
         </p>
         <p>You must not:</p>
         <ul>
@@ -78,19 +77,17 @@ export default function TermsPage() {
         </p>
         <p>
           Parts of this website offer an opportunity for users to post and exchange opinions and
-          information in certain areas of the website. EPYC Thoughtworks Private Limited does not
-          filter, edit, publish or review Comments before their presence on the website. Comments do
-          not reflect the views and opinions of EPYC Thoughtworks Private Limited, its agents and/or
-          affiliates. Comments reflect the views and opinions of the person who posts their views
-          and opinions. To the extent permitted by applicable laws, EPYC Thoughtworks Private
-          Limited shall not be liable for the Comments or any liability, damages or expenses caused
+          information in certain areas of the website. EPYC does not filter, edit, publish or review
+          Comments before their presence on the website. Comments do not reflect the views and
+          opinions of EPYC, its agents and/or affiliates. Comments reflect the views and opinions of
+          the person who posts their views and opinions. To the extent permitted by applicable laws,
+          EPYC shall not be liable for the Comments or any liability, damages or expenses caused
           and/or suffered as a result of any use of and/or posting of and/or appearance of the
           Comments on this website.
         </p>
         <p>
-          EPYC Thoughtworks Private Limited reserves the right to monitor all Comments and to remove
-          any Comments which can be considered inappropriate, offensive or cause a breach of these
-          Terms and Conditions.
+          EPYC reserves the right to monitor all Comments and to remove any Comments which can be
+          considered inappropriate, offensive or cause a breach of these Terms and Conditions.
         </p>
         <p>You warrant and represent that:</p>
         <ul>
@@ -111,9 +108,9 @@ export default function TermsPage() {
             commercial or unlawful activities.
           </li>
           <li>
-            You hereby grant EPYC Thoughtworks Private Limited a non-exclusive license to use,
-            reproduce, edit and authorise others to use, reproduce and edit any of your Comments in
-            any and all forms, formats or media.
+            You hereby grant EPYC a non-exclusive license to use, reproduce, edit and authorise
+            others to use, reproduce and edit any of your Comments in any and all forms, formats or
+            media.
           </li>
         </ul>
 
@@ -157,7 +154,7 @@ export default function TermsPage() {
           We will approve link requests from these organisations if we decide that: (a) the link
           would not make us look unfavourably to ourselves or our accredited businesses; (b) the
           organisation does not have any negative records with us; (c) the benefit to us from the
-          visibility of the hyperlink compensates the absence of EPYC Thoughtworks Private Limited;
+          visibility of the hyperlink compensates the absence of EPYC;
           and (d) the link is in the context of general resource information.
         </p>
         <p>
@@ -168,11 +165,10 @@ export default function TermsPage() {
         </p>
         <p>
           If you are one of the organisations listed in paragraph 2 above and are interested in
-          linking to our website, you must inform us by sending an e-mail to EPYC Thoughtworks
-          Private Limited. Please include your name, organisation name, and contact information as
-          well as the URL of your site, a list of any URLs from which you intend to link to our
-          Website, and a list of the URLs on our site to which you would like to link. Wait 1-2
-          weeks for a response.
+          linking to our website, you must inform us by sending an e-mail to EPYC. Please include
+          your name, organisation name, and contact information as well as the URL of your site, a
+          list of any URLs from which you intend to link to our Website, and a list of the URLs on
+          our site to which you would like to link. Wait 1-2 weeks for a response.
         </p>
         <p>Approved organisations may hyperlink to our Website as follows:</p>
         <ul>
@@ -183,7 +179,7 @@ export default function TermsPage() {
             the context and format of content on the linking party&apos;s site.
           </li>
           <li>
-            No use of EPYC Thoughtworks Private Limited&apos;s logo or other artwork will be allowed
+            No use of EPYC&apos;s logo or other artwork will be allowed
             for linking absent a trademark license agreement.
           </li>
         </ul>
