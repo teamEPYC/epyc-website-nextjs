@@ -35,7 +35,7 @@ export const site = {
     clutchProfile: "https://clutch.co/profile/epyc#reviews",
   },
   legal: {
-    entity: "EPYC THOUGHTWORKS PRIVATE LIMITED",
+    entity: "EPYC",
     year: 2026,
   },
 } as const;

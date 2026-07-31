@@ -633,6 +633,28 @@ body {
   }
 }
 
+/* Infinite horizontal scroll for logo/marquee strips. The track renders its
+   children twice back-to-back and scrolls exactly -50% so the loop seams
+   invisibly. Used by <Marquee> (components/ui/marquee.tsx). */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
 /* Always-visible scrollbar for scrollable preview containers (e.g. case study before/after) */
 .scrollable-preview {
   overflow-y: scroll;

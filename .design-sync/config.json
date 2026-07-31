@@ -1,0 +1,12 @@
+{
+  "pkg": "epyc-website",
+  "globalName": "EpycDS",
+  "projectId": "451abde1-1d97-4e40-b6f4-962be13643d7",
+  "shape": "package",
+  "srcDir": "components",
+  "tsconfig": "./tsconfig.json",
+  "cssEntry": ".design-sync/compiled-styles.css",
+  "componentSrcMap": {
+    "SiteNav": null
+  }
+}
