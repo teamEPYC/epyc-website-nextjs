@@ -2,25 +2,6 @@ import { NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { contactSchema } from '@/lib/contact/schema'
 
-// Replicates @neondatabase/serverless HTTP transport without the package,
-// avoiding esbuild/OpenNext bundling incompatibilities in Cloudflare Workers.
-async function neonSql(connectionString: string, query: string, params: unknown[] = []) {
-  const { hostname } = new URL(connectionString)
-  const domain = hostname.slice(hostname.indexOf('.') + 1)
-  const res = await fetch(`https://api.${domain}/sql`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Neon-Connection-String': connectionString,
-      'Neon-Raw-Text-Output': 'true',
-      'Neon-Array-Mode': 'true',
-    },
-    body: JSON.stringify({ query, params }),
-  })
-  if (!res.ok) throw new Error(`Neon error ${res.status}: ${await res.text()}`)
-  return res.json()
-}
-
 export async function POST(req: Request) {
   const json = await req.json().catch(() => null)
   const parsed = contactSchema.safeParse(json)
@@ -36,17 +17,22 @@ export async function POST(req: Request) {
   // Honeypot tripped — pretend success, drop on the floor.
   if (website) return NextResponse.json({ ok: true })
 
-  await neonSql(
-    process.env.NEON_DATABASE_URL!,
-    'INSERT INTO contact_submissions (name, email, budget, details, source) VALUES ($1, $2, $3, $4, $5)',
-    [data.name, data.email, data.budget, data.details, data.source],
+  const { env } = getCloudflareContext()
+
+  // D1 is the durable record and the only copy we control — the webhook path
+  // below depends on n8n staying up. A failure here must fail the request
+  // rather than show the visitor a success screen for a lost enquiry.
+  await env.DB.prepare(
+    'INSERT INTO contact_submissions (name, email, budget, details, source) VALUES (?, ?, ?, ?, ?)',
   )
+    .bind(data.name, data.email, data.budget, data.details, data.source)
+    .run()
 
   // Hand the submission to the webhook background job (Cloudflare Queue —
   // consumed by workers/contact-webhook). A queue failure must not fail the
-  // request: the enquiry is already persisted to Neon above.
+  // request: the enquiry is already persisted to D1 above.
   try {
-    await getCloudflareContext().env.CONTACT_QUEUE.send(data)
+    await env.CONTACT_QUEUE.send(data)
   } catch (err) {
     console.error('contact webhook enqueue failed', err)
   }
