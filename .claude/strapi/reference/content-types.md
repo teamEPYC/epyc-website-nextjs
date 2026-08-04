@@ -104,18 +104,20 @@ Populated inline on blogs. Not fetched directly by the frontend.
 
 ---
 
-## Submissions — `/api/submissions`
+## Contact form submissions — NOT in Strapi
 
-POST-only from the contact form. Never fetched by the frontend.
+There is no submissions collection in Strapi. `/api/submissions` returns 404 on
+both instances — an earlier version of this file documented one, but it never
+existed under Strapi (it was a Payload collection, and Payload was replaced).
 
-| Field | Type |
-|-------|------|
-| `name` | string |
-| `email` | string |
-| `company` | string? |
-| `message` | string |
-| `budget` | string? |
-| `timeline` | string? |
+Enquiries are written to **Cloudflare D1** by `app/api/contact/route.ts` via the
+`DB` binding, and separately delivered to an n8n webhook through the
+`CONTACT_QUEUE` Cloudflare Queue. Schema:
+`db/migrations/0001_contact_submissions.sql`. Field shape:
+`lib/contact/schema.ts`.
+
+Do not add a Strapi collection for these without also changing the contact route
+— the two are unrelated systems.
 
 ---
 
