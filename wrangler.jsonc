@@ -1,43 +1,85 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "epyc-website",
-  "main": ".open-next/worker.js",
-  "compatibility_date": "2025-03-01", // pinned — bump only after testing against new Workers runtime
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  // `run_worker_first` MUST stay false: when true, every request — including
-  // static /public files (OG images, icons, fonts) — is routed through the
-  // OpenNext Worker. That gave OG images variable TTFB (0.3-1.8s) and the
-  // Worker-injected Vary/Critical-CH headers, so social scrapers (Slackbot,
-  // facebookexternalhit) intermittently timed out fetching the preview image.
-  // With false, /public assets are served directly from Cloudflare's edge;
-  // dynamic routes have no matching asset and fall through to the Worker.
-  "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS",
-    "run_worker_first": false,
-  },
-  "observability": {
-    "enabled": true,
-  },
-  // Producer side of the contact-form webhook job. The consumer is a separate
-  // worker — see workers/contact-webhook/. Named environments do NOT inherit
-  // `queues`, so each env repeats its own producer binding below.
-  "queues": {
-    "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
-  },
-
-  "env": {
-    "staging": {
-      "name": "epyc-website-staging",
-      "queues": {
-        "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-staging" }],
-      },
-    },
-    "production": {
-      "name": "epyc-website-production",
-      "queues": {
-        "producers": [{ "binding": "CONTACT_QUEUE", "queue": "epyc-contact-webhook-production" }],
-      },
-    },
-  },
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "epyc-website",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-03-01", // pinned — bump only after testing against new Workers runtime
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	// `run_worker_first` MUST stay false: when true, every request — including
+	// static /public files (OG images, icons, fonts) — is routed through the
+	// OpenNext Worker. That gave OG images variable TTFB (0.3-1.8s) and the
+	// Worker-injected Vary/Critical-CH headers, so social scrapers (Slackbot,
+	// facebookexternalhit) intermittently timed out fetching the preview image.
+	// With false, /public assets are served directly from Cloudflare's edge;
+	// dynamic routes have no matching asset and fall through to the Worker.
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS",
+		"run_worker_first": false,
+	},
+	"observability": {
+		"enabled": true,
+	},
+	// Producer side of the contact-form webhook job. The consumer is a separate
+	// worker — see workers/contact-webhook/. Named environments do NOT inherit
+	// `queues`, so each env repeats its own producer binding below.
+	"queues": {
+		"producers": [
+			{
+				"binding": "CONTACT_QUEUE",
+				"queue": "epyc-contact-webhook-staging"
+			}
+		],
+	},
+	// Contact-form submissions. D1 is the durable record app/api/contact/route.ts
+	// writes before enqueuing — the webhook path depends on n8n staying up, this
+	// one doesn't. Repeated per env for the same reason `queues` is.
+	// Schema: db/migrations/0001_contact_submissions.sql
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "epyc-contact-form-aug-26-live-staging",
+			"database_id": "33c3b7d3-33e2-4d27-9c4c-e433b65f6c1b",
+		},
+	],
+	"env": {
+		"staging": {
+			"name": "epyc-website-staging",
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "epyc-contact-form-aug-26-live-staging",
+					"database_id": "33c3b7d3-33e2-4d27-9c4c-e433b65f6c1b",
+				},
+			],
+			"queues": {
+				"producers": [
+					{
+						"binding": "CONTACT_QUEUE",
+						"queue": "epyc-contact-webhook-staging"
+					}
+				],
+			},
+		},
+		"production": {
+			"name": "epyc-website-production",
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "epyc-contact-form-aug-26-live-production",
+					"database_id": "c89847d0-d78b-451b-afdc-7a9d8f1c98d6",
+				},
+			],
+			"queues": {
+				"producers": [
+					{
+						"binding": "CONTACT_QUEUE",
+						"queue": "epyc-contact-webhook-production"
+					}
+				],
+			},
+		},
+	},
 }

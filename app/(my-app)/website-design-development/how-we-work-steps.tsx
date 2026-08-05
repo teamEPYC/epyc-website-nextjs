@@ -62,12 +62,12 @@ function Step({
   const segmentFill = useTransform(scrollYProgress, [threshold, nextThreshold], [0, 1])
 
   return (
-    <div className="relative flex gap-6 pb-10 last:pb-0">
+    <div className="relative flex gap-6 pb-6 last:pb-0 lg:pb-10">
       {!isLast ? (
         <>
           <span
             aria-hidden="true"
-            className="absolute left-[19px] top-[40px] h-[calc(100%-24px)] w-px bg-crimson/20"
+            className="absolute left-[19px] top-[40px] h-[calc(100%-24px)] w-px bg-crimson/15"
           />
           <motion.span
             aria-hidden="true"
@@ -77,6 +77,10 @@ function Step({
         </>
       ) : null}
       <span className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+        {/* Opaque backing so the line never shows through the translucent
+            crimson/25 fill below — the line must stop dead at the circle's
+            edge, not bleed through it. */}
+        <span className="absolute inset-0 rounded-full bg-beige" />
         <span className="absolute inset-0 rounded-full bg-crimson/25" />
         <motion.span
           aria-hidden="true"
@@ -85,7 +89,7 @@ function Step({
         />
         <span className="relative text-body-sm font-semibold text-cream">{step.n}</span>
       </span>
-      <div className="flex flex-col gap-2 pt-1">
+      <div className="flex min-h-[60px] flex-col gap-2 pt-1 sm:min-h-[76px] lg:min-h-[108px]">
         <h3 className="text-h3 text-ink">{step.title}</h3>
         <p className="text-body text-ink/70">{step.body}</p>
       </div>
