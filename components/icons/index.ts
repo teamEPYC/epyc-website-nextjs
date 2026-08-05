@@ -2,7 +2,6 @@ export { ArrowDown } from "./arrow-down";
 export { ArrowRight } from "./arrow-right";
 export { Star } from "./star";
 export { Sparkle } from "./sparkle";
-export { SparkleFilled } from "./sparkle-filled";
 export { Ribbon } from "./ribbon";
 export { Polaroid } from "./polaroid";
 export { Users } from "./users";
