@@ -8,13 +8,21 @@ const badge = cva(
   {
     variants: {
       tone: {
-        'cream-on-dark': 'border-cream text-cream hover:bg-cream/10',
-        'ink-on-light': 'border-ink/15 text-ink hover:bg-ink/5',
+        'cream-on-dark': 'border-cream text-cream',
+        'ink-on-light': 'border-ink/15 text-ink',
       },
     },
     defaultVariants: { tone: 'cream-on-dark' },
   },
 )
+
+// Hover feedback only makes sense when the badge is an actual link — applied
+// separately from the base tone so the non-interactive `<span>` render path
+// (eyebrow labels like "The problem", "How we work") never gets a hover state.
+const hoverByTone = {
+  'cream-on-dark': 'hover:bg-cream/10',
+  'ink-on-light': 'hover:bg-ink/5',
+} as const
 
 type CommonProps = VariantProps<typeof badge> & {
   icon?: ReactNode
@@ -38,7 +46,9 @@ function isInternal(href: string) {
 
 export function Badge(props: AnchorProps | StaticProps) {
   const { tone, icon, className, children, ...rest } = props
+  const resolvedTone = tone ?? 'cream-on-dark'
   const classes = cn(badge({ tone }), className, '')
+  const interactiveClasses = cn(badge({ tone }), hoverByTone[resolvedTone], className, '')
   const content = (
     <>
       {icon ? <span className="flex shrink-0 items-center">{icon}</span> : null}
@@ -50,7 +60,7 @@ export function Badge(props: AnchorProps | StaticProps) {
     const { href, target, rel, ...anchorRest } = rest as AnchorProps
     if (isInternal(href)) {
       return (
-        <Link href={href} className={classes} target={target} rel={rel} {...anchorRest}>
+        <Link href={href} className={interactiveClasses} target={target} rel={rel} {...anchorRest}>
           {content}
         </Link>
       )
@@ -60,7 +70,7 @@ export function Badge(props: AnchorProps | StaticProps) {
         href={href}
         target={target ?? '_blank'}
         rel={rel ?? 'noopener noreferrer'}
-        className={classes}
+        className={interactiveClasses}
         {...anchorRest}
       >
         {content}

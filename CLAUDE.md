@@ -42,6 +42,7 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 | `lib/cn.ts` | `cn()` helper — `clsx` + `tailwind-merge` |
 | `lib/image-loader.ts` | Custom Next.js image loader for Cloudflare CDN |
 | `public/images/` | Self-hosted images (case study screenshots go here) |
+| `db/migrations/` | SQL schema for the Cloudflare D1 contact-submissions table |
 | `workers/` | Cloudflare Worker for contact form webhook |
 | `wrangler.jsonc` | Cloudflare Workers deployment config |
 | `open-next.config.ts` | OpenNext Cloudflare adapter config |
@@ -72,7 +73,7 @@ Dynamic content (projects, blog posts, gallery) is fetched from Strapi via `lib/
 - `STRAPI_URL` and `STRAPI_API_TOKEN` must be set in the environment. In dev, 401s from Strapi are expected and non-fatal — pages gracefully return empty lists and re-hydrate on first real request via ISR (`revalidate: 60`).
 - Types are in `lib/strapi/types.ts`.
 - Static case study pages (e.g. `app/(my-app)/case-study/gokwik/`) do **not** use Strapi — they are fully static, hand-authored pages.
-- **Separate Strapi instances per environment**: staging and production each have their own Strapi. Updating content in one does not affect the other. If a CMS change needs to appear on epyc.in, it must be made against the production Strapi (`cms.epyc.in`). Required env vars differ per environment: staging uses `STRAPI_URL` / `STRAPI_API_TOKEN`; production uses `PRODUCTION_STRAPI_URL` / `PRODUCTION_STRAPI_API_TOKEN` (plus `PRODUCTION_STRAPI_PREVIEW`, `PRODUCTION_NEON_DATABASE_URL`, `PRODUCTION_NEXT_PUBLIC_MEDIA_BASE_URL`).
+- **Separate Strapi instances per environment**: staging and production each have their own Strapi. Updating content in one does not affect the other. If a CMS change needs to appear on epyc.in, it must be made against the production Strapi (`cms.epyc.in`). Required env vars differ per environment: staging uses `STRAPI_URL` / `STRAPI_API_TOKEN`; production uses `PRODUCTION_STRAPI_URL` / `PRODUCTION_STRAPI_API_TOKEN` (plus `PRODUCTION_STRAPI_PREVIEW`, `PRODUCTION_NEXT_PUBLIC_MEDIA_BASE_URL`).
 - **`mcp__strapi-epyc` connects to production** (`cms.epyc.in`). MCP edits go live on epyc.in, not staging.
 - **Strapi updates — always read before write**: before calling any `update_*` MCP tool, call `get_*` first to fetch the full current document. Carry every field forward in the update payload, changing only the target field(s). Omitting a required field (e.g. `thumbnail`, `slug`, `type`) silently clears it on save.
 
@@ -92,4 +93,5 @@ Dynamic content (projects, blog posts, gallery) is fetched from Strapi via `lib/
 - **CI auto-deploys** on push to either branch (`.github/workflows/deploy-staging.yml` / `deploy-production.yml`). Manual deploy: `pnpm deploy:staging` or `pnpm deploy:production`.
 - Both commands run `opennextjs-cloudflare build` then `wrangler deploy`.
 - The contact form runs as a separate Cloudflare Worker (`workers/contact-webhook/`).
+- **Contact form storage**: enquiries are written to **Cloudflare D1** (binding `DB`, one database per environment — see `wrangler.jsonc`), then handed to `CONTACT_QUEUE` for webhook delivery to n8n. D1 is the durable record; the webhook is how the team reads them. There is no Strapi collection for enquiries. Read rows with `wrangler d1 execute <db> --remote --command "SELECT * FROM contact_submissions"`.
 - **CMS content changes do not require a redeploy** — pages use ISR (`revalidate: 60`) and pick up Strapi changes within 60 seconds.
