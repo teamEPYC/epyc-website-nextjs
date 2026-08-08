@@ -18,12 +18,33 @@ type FormState = 'idle' | 'submitting' | 'success' | 'error'
 
 // Card shell shared by form view and success view — same border/bg/radius so
 // the swap reads as intentional. Padding matches the Framer source (80×40 desktop).
-const CARD_BASE = 'rounded-[16px] border-[0.5px] border-ink bg-bone/10 px-4 py-12 lg:px-10 sm:py-20'
+// The fill is the only thing that varies by host, hence `tone`.
+const CARD_BASE = 'rounded-[16px] border-[0.5px] border-ink px-4 py-12 lg:px-10 sm:py-20'
+
+const TONE = {
+  /** /contact — a 10%-opaque wash, which reads as a soft card on that light page. */
+  bone: 'bg-bone/10',
+  /** Dark grounds — `bone/10` would dissolve into them, so this fill is opaque. */
+  beige: 'bg-beige',
+} as const
 
 const AVATAR_FRONT = '/images/site/9kfynLGYhcGa9MrgHJQYqrLd4Ww.webp'
 const AVATAR_BACK = '/images/site/pJhRncaatIpf1PdD5SxKHlhOcQ.png'
 
-export function ContactForm() {
+type ContactFormProps = {
+  /** Card fill. `bone` for light grounds, `beige` for dark ones. */
+  tone?: keyof typeof TONE
+}
+
+/**
+ * The site's enquiry form — `contactSchema`, POSTs to /api/contact.
+ *
+ * Shared by /contact and /website-design-development's CTA footer. Only the card
+ * fill differs, so they use one component: the geometry here (submit overlapping
+ * the card border, grid-stacked success crossfade, field rhythm) is fiddly enough
+ * that two copies would drift the first time either was touched.
+ */
+export function ContactForm({ tone = 'bone' }: ContactFormProps = {}) {
   const reduceMotion = useReducedMotion()
   const [state, setState] = useState<FormState>('idle')
   const [serverError, setServerError] = useState<string | null>(null)
@@ -111,7 +132,10 @@ export function ContactForm() {
             />
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className={`${CARD_BASE} flex flex-col gap-4`}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={`${CARD_BASE} ${TONE[tone]} flex flex-col gap-4`}
+          >
             <p className="text-body mt-8 tablet:mt-0 text-ink">
               Talk to Mayank &amp; Keshav about your organisation needs and how EPYC can help.
             </p>
@@ -230,7 +254,7 @@ export function ContactForm() {
         <div
           role="status"
           aria-live="polite"
-          className={`${CARD_BASE} flex flex-col items-center gap-6 text-center`}
+          className={`${CARD_BASE} ${TONE[tone]} flex flex-col items-center gap-6 text-center`}
         >
           <SuccessCheck animate={isSuccess && !reduceMotion} />
           <div className="flex flex-col gap-3">
