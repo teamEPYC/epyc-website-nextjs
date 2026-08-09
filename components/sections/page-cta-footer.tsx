@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { Container } from '@/components/ui/container'
 import { Badge } from '@/components/ui/badge'
 import { DashedDivider } from '@/components/ui/dashed-divider'
@@ -49,8 +50,31 @@ function FooterLink({ href, label }: { href: string; label: string }) {
  * Page-specific CTA + footer — distinct from the sitewide <CTAFooter />
  * (different copy, a redesign-work callout, and different footer link set),
  * matching the Figma frame for this page exactly.
+ *
+ * Badge, heading, body, and trust-line copy are parameterized so other
+ * service pages can reuse the shell — the footer link columns and
+ * `ContactForm` wiring stay fixed. Defaults match the original
+ * website-design-development copy exactly, byte-for-byte.
  */
-export function PageCTAFooter() {
+export type PageCTAFooterProps = {
+  badge?: ReactNode
+  heading?: ReactNode
+  body?: ReactNode
+  trustLine?: ReactNode
+}
+
+export function PageCTAFooter({
+  badge = 'Start your Project',
+  heading = 'Ready for a website that matches your product?',
+  body = (
+    <>
+      We take on three new clients a month, and one of those spots could be yours. Book a call
+      — we&apos;ll review your goals and walk you through how we&apos;d approach the build. No
+      pitch deck, no obligation.
+    </>
+  ),
+  trustLine = '75+ companies served · 4.9 / 5.0 · Trusted by Polygon, Accel, Antler',
+}: PageCTAFooterProps) {
   return (
     <section className="relative w-full overflow-hidden bg-grey-primary py-16 lg:py-24">
       <Container width="outer" className="relative">
@@ -58,22 +82,14 @@ export function PageCTAFooter() {
           <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-2">
             <div className="flex max-w-[598px] flex-col gap-8">
               <Badge tone="cream-on-dark" className="w-fit">
-                Start your Project
+                {badge}
               </Badge>
               <div className="flex flex-col gap-6">
-                <h2 className="text-h1 text-cream">
-                  Ready for a website that matches your product?
-                </h2>
-                <p className="max-w-[555px] text-body text-cream/80">
-                  We take on three new clients a month, and one of those spots could be yours.
-                  Book a call — we&apos;ll review your goals and walk you through how we&apos;d
-                  approach the build. No pitch deck, no obligation.
-                </p>
+                <h2 className="text-h1 text-cream">{heading}</h2>
+                <p className="max-w-[555px] text-body text-cream/80">{body}</p>
               </div>
               <DashedDivider />
-              <p className="text-body text-cream/70">
-                75+ companies served · 4.9 / 5.0 · Trusted by Polygon, Accel, Antler
-              </p>
+              <p className="text-body text-cream/70">{trustLine}</p>
             </div>
 
             {/* pt-12 clears the founder avatars, which overhang the card's top
