@@ -324,43 +324,20 @@ const FOCUS_ITEMS = [
   },
 ]
 
+// Hero trust strip. Uses the tight-cropped wordmarks in
+// `/images/site/trust-logos/`, NOT the square tiles in `/images/brands/` —
+// the latter are 272x290 with a filled background, sized for the `Brands`
+// grid (object-cover at 290x290). Scaled to `h-4` here they render as a
+// near-invisible speck. Same set and same dimensions as the
+// website-design-development hero so the two service pages match.
 const TRUST_LOGOS = [
-  {
-    id: 'polygon',
-    src: '/images/brands/3Y807gIg19CCRqNIdIO62NOMum4.svg',
-    alt: 'Polygon',
-    width: 73,
-    height: 16,
-  },
-  { id: 'accel', src: '/images/brands/YU0shGm539fk6SAKf9F7GB73o0.svg', alt: 'Accel', width: 60, height: 16 },
-  {
-    id: 'antler',
-    src: '/images/brands/nL7BdoPEpQWmIhGQLQ9z5bbLZA4.svg',
-    alt: 'Antler',
-    width: 60,
-    height: 16,
-  },
-  {
-    id: 'upgrad',
-    src: '/images/brands/br15O4ToYXz2uL5OxIoAjysrRLg.svg',
-    alt: 'upGrad Enterprise',
-    width: 90,
-    height: 16,
-  },
-  {
-    id: 'seedtoscale',
-    src: '/images/brands/8bxLk37MO3lp4dJbClTpiZ4N8QI.svg',
-    alt: 'SeedToScale',
-    width: 90,
-    height: 16,
-  },
-  {
-    id: '3one4',
-    src: '/images/brands/53k80Ut7BG5zhF0xLznGdMGy0dk.svg',
-    alt: '3one4 Capital',
-    width: 80,
-    height: 16,
-  },
+  { id: 'stoa', src: '/images/site/trust-logos/stoa.png', alt: 'Stoa', width: 46, height: 16 },
+  { id: 'cleartrip', src: '/images/site/trust-logos/cleartrip.png', alt: 'Cleartrip', width: 72, height: 16 },
+  { id: 'amazon', src: '/images/site/trust-logos/amazon.png', alt: 'Amazon', width: 54, height: 17 },
+  { id: 'jupiter', src: '/images/site/trust-logos/jupiter.png', alt: 'Jupiter', width: 54, height: 17 },
+  { id: 'nova-benefits', src: '/images/site/trust-logos/nova-benefits.png', alt: 'Nova Benefits', width: 62, height: 17 },
+  { id: 'accel', src: '/images/site/trust-logos/accel.png', alt: 'Accel', width: 42, height: 16 },
+  { id: 'polygon', src: '/images/site/trust-logos/polygon.svg', alt: 'Polygon', width: 73, height: 16 },
 ]
 
 export default function WebsiteRedesignPage() {
@@ -507,7 +484,7 @@ export default function WebsiteRedesignPage() {
                 What we do
               </Badge>
               <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
-                <h2 className="text-h1 max-w-[540px] text-cream">A redesign is not a reskin.</h2>
+                <h2 className="text-h1 max-w-[540px] text-cream">A redesign is not a re-skin.</h2>
                 <p className="text-body text-cream/70 lg:max-w-[380px]">
                   We take a tired, dated, or hard-to-maintain site and rebuild it into something
                   premium, fast, and easy to run. We rework the structure, the message, and the
