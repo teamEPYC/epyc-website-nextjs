@@ -85,8 +85,12 @@ export function ContactForm({ tone = 'bone' }: ContactFormProps = {}) {
         return
       }
       setState('success')
+      // Deliberately NOT named `form_submit`: GA4 enhanced measurement has Form
+      // interactions enabled, which auto-collects `form_submit` for every form on
+      // the site. A custom event of that name merges into the same bucket, so
+      // marking it as a key event would count every form as a conversion.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(window as any).gtag?.('event', 'form_submit', {
+      ;(window as any).gtag?.('event', 'contact_form_submit', {
         form_id: 'contact',
         form_name: 'Contact Form',
       })
