@@ -14,8 +14,8 @@
 --
 -- Apply with --remote, or you only touch the local simulated database:
 --   pnpm exec wrangler d1 execute epyc-contact-form-aug-26-live-staging --remote \
---     --file=db/migrations/0002_training_submissions.sql
-CREATE TABLE IF NOT EXISTS training_submissions (
+--     --file=db/migrations/0002_epyc_ai_training_submissions.sql
+CREATE TABLE IF NOT EXISTS epyc_ai_training_submissions (
   id         INTEGER PRIMARY KEY AUTOINCREMENT,
   name       TEXT    NOT NULL,
   email      TEXT    NOT NULL,

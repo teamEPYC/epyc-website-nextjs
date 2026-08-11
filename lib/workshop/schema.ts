@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 /**
  * The three formats <AiWorkshopFormats> offers. Keep `value` in step with the
- * CHECK constraint in db/migrations/0002_training_submissions.sql — the
+ * CHECK constraint in db/migrations/0002_epyc_ai_training_submissions.sql — the
  * database rejects anything outside this list.
  */
 export const FORMAT_OPTIONS = [
