@@ -21,7 +21,7 @@ import { PaperBackground } from '@/components/ui/paper-background'
  */
 export function AiHero() {
   return (
-    <PaperBackground gradient="bottom" className="p-[15px] lg:pb-[44px]">
+    <PaperBackground gradient="bottom" className="p-[15px] text-cream lg:pb-[44px]">
       {/* Bordered frame — 15px inset, 751px tall on desktop (Figma Rectangle 25515).
           Top + sides only, no bottom edge, and the sides fade out around the
           midpoint as they descend (per the Figma render). The border lives on

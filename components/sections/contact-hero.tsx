@@ -20,7 +20,7 @@ const BUTTERFLY = '/images/site/ytaCR7YksH4wtdWD4UKUk1bf0Y.png'
 
 export function ContactHero() {
   return (
-    <section className="w-full bg-beige p-4">
+    <section className="w-full bg-beige p-4 text-ink">
       <div
         id="form"
         className="flex flex-col items-center gap-16 border-t border-r border-l border-ink px-4 lg:px-6 py-10 lg:gap-24"
@@ -37,10 +37,10 @@ export function ContactHero() {
           <div className="hidden tablet:flex w-full  flex-col gap-12 lg:h-[649px] lg:w-[40%] justify-between">
             {/* Heading */}
             <div className="relative flex flex-col gap-[30px]">
-              <h1 className="hidden tablet:block text-display text-ink">
+              <p className="hidden tablet:block text-display text-ink">
                 Start your <br />
                 EPYC Journey
-              </h1>
+              </p>
               <Image
                 src={BUTTERFLY}
                 alt=""

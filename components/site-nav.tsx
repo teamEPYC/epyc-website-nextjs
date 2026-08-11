@@ -17,8 +17,11 @@ import { menuLinks } from '@/data/nav'
  * side borders. Transparent, so it blends with the page background.
  * Route-aware via `usePathname()`; not sticky (scrolls with the page):
  *
- *  - Dark-hero routes: cream content over the dark hero, EPYC mark + wordmark.
- *  - Every other page: ink content over beige, mark only.
+ *  - Dark-hero routes: EPYC mark + wordmark.
+ *  - Every other page: mark only.
+ *
+ * Text colour is inherited — each page's hero sets `text-cream` / `text-ink`
+ * on the wrapper the nav renders inside.
  *
  * Desktop (≥810px): the four links sit at the far right, each with an
  * underline that grows from the left on hover/focus; the link for the current
@@ -30,9 +33,8 @@ import { menuLinks } from '@/data/nav'
 const EASE = [0.22, 1, 0.36, 1] as const
 
 /**
- * Routes that open on a dark <PaperBackground> hero, where the nav needs the
- * cream treatment to stay legible. Every other route opens on beige and gets
- * ink. Add a route here when you give it a dark hero.
+ * Routes that open on a dark <PaperBackground> hero, where the logo shows its
+ * wordmark. Add a route here when you give it a dark hero.
  */
 const DARK_HERO_ROUTES = new Set(['/', '/ai-training'])
 
@@ -54,7 +56,7 @@ export function SiteNav({ className }: { className?: string }) {
   }, [pathname])
 
   return (
-    <header className={cn(onDarkHero ? 'text-cream' : 'text-ink', className)}>
+    <header className={cn(className)}>
       <div className="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-15">
         {/* Logo — mark always; the wordmark joins it on the dark heroes. */}
         <Link

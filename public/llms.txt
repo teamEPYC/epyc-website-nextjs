@@ -26,7 +26,7 @@ EPYC is a design and development studio, not a "no-code agency" or "Webflow agen
 
 ## Resources
 
-- [Blog](https://epyc.in/blogs): Articles on website design, no-code platforms, platform comparisons, and build best practices.
+- [Blog](https://epyc.in/blog): Articles on website design, no-code platforms, platform comparisons, and build best practices.
 - [Gallery](https://epyc.in/gallery): UI/UX and web design project visuals.
 
 ## Optional
