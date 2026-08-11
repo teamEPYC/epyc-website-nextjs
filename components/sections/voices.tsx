@@ -11,7 +11,10 @@ import { testimonials } from '@/data/testimonials'
 import { site } from '@/data/site'
 import { PaperBackground } from '../ui/paper-background'
 
-export function Voices() {
+/** `showProjectCta` drops the "Start Your Project" button — the AI-training
+ *  page carries its own CTAs and doesn't want a second, conflicting one. The
+ *  Clutch reviews row stays either way; it's social proof, not a CTA. */
+export function Voices({ showProjectCta = true }: { showProjectCta?: boolean } = {}) {
   return (
     // <PaperBackground className="bg-green-300 w-full flex h-screen items-center justify-center overflow-hidden  px-6 py-12">
 
@@ -51,9 +54,11 @@ export function Voices() {
           </div>
         </Reveal>
 
-        <Button variant="filled" icon="arrow-right" href="/contact">
-          Start Your Project
-        </Button>
+        {showProjectCta && (
+          <Button variant="filled" icon="arrow-right" href="/contact">
+            Start Your Project
+          </Button>
+        )}
 
         {/* Clutch read-more CTA */}
         <div className="flex h-auto w-full max-w-[505px] flex-col items-center justify-center gap-3 sm:h-[84px] sm:flex-row sm:gap-2.5">

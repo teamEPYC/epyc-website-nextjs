@@ -1,23 +1,29 @@
 /// <reference types="@cloudflare/workers-types" />
 
 /**
- * Contact-form webhook consumer.
+ * Form webhook consumer.
  *
- * The Next.js app enqueues each successful contact submission onto a Cloudflare
- * Queue (producer binding `CONTACT_QUEUE`). This worker drains that queue and
- * POSTs each submission to an external webhook.
+ * The Next.js app enqueues each successful submission — from the contact form
+ * and the AI-training workshop form alike — onto a Cloudflare Queue (producer
+ * binding `CONTACT_QUEUE`). This worker drains that queue and POSTs each
+ * submission to an external webhook, `table` field included, so the receiver
+ * can route on which form it came from.
  *
  * Delivery is at-least-once: a failed POST is retried (up to `max_retries` in
  * wrangler.jsonc), after which the message lands in the dead-letter queue.
  */
 
-/** The submission, exactly as written to the Payload `submissions` table. */
-type ContactSubmission = {
-  name: string
-  email: string
-  budget: number
-  details: string
-  source: 'LINKEDIN' | 'FACEBOOK' | 'X' | 'INSTAGRAM'
+/**
+ * A submission, exactly as written to D1, plus the table it landed in.
+ *
+ * Two forms share this queue — the contact form and the AI-training workshop
+ * request — so `table` is what the webhook receiver switches on. The remaining
+ * fields differ per form and are forwarded verbatim; this worker never reads
+ * them.
+ */
+type Submission = {
+  table: 'contact_submissions' | 'epyc_ai_training_submissions'
+  [field: string]: unknown
 }
 
 type Env = {
@@ -26,7 +32,7 @@ type Env = {
 }
 
 export default {
-  async queue(batch: MessageBatch<ContactSubmission>, env: Env): Promise<void> {
+  async queue(batch: MessageBatch<Submission>, env: Env): Promise<void> {
     for (const message of batch.messages) {
       try {
         const res = await fetch(env.CONTACT_WEBHOOK_URL, {
@@ -45,4 +51,4 @@ export default {
       }
     }
   },
-} satisfies ExportedHandler<Env, ContactSubmission>
+} satisfies ExportedHandler<Env, Submission>
