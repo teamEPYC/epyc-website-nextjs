@@ -31,8 +31,11 @@ export async function POST(req: Request) {
   // Hand the submission to the webhook background job (Cloudflare Queue —
   // consumed by workers/contact-webhook). A queue failure must not fail the
   // request: the enquiry is already persisted to D1 above.
+  //
+  // `table` rides along because two forms now share this queue — it is how the
+  // webhook consumer tells a contact enquiry from a workshop request.
   try {
-    await env.CONTACT_QUEUE.send(data)
+    await env.CONTACT_QUEUE.send({ table: 'contact_submissions', ...data })
   } catch (err) {
     console.error('contact webhook enqueue failed', err)
   }

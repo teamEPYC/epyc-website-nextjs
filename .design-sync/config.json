@@ -1,12 +1,38 @@
 {
   "pkg": "epyc-website",
   "globalName": "EpycDS",
-  "projectId": "451abde1-1d97-4e40-b6f4-962be13643d7",
+  "projectId": "9c967345-de40-458a-8be4-20d09e6375b2",
   "shape": "package",
   "srcDir": "components",
   "tsconfig": "./tsconfig.json",
   "cssEntry": ".design-sync/compiled-styles.css",
+  "extraEntries": [
+    "./.design-sync/shims/process-shim.ts"
+  ],
+  "guidelinesGlob": [
+    "DESIGN.md"
+  ],
+  "readmeHeader": ".design-sync/conventions.md",
   "componentSrcMap": {
     "SiteNav": null
+  },
+  "overrides": {
+    "ProjectCard": {
+      "cardMode": "column"
+    },
+    "SectionHeading": {
+      "cardMode": "column"
+    },
+    "Testimonial": {
+      "cardMode": "column"
+    },
+    "FloatingMenuButton": {
+      "cardMode": "single",
+      "primaryStory": "DefaultLinks"
+    },
+    "ReadingProgress": {
+      "cardMode": "single",
+      "primaryStory": "AtTopOfArticle"
+    }
   }
 }

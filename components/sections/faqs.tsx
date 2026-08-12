@@ -4,8 +4,9 @@ import { SectionHeading } from '@/components/ui/section-heading'
 import { FAQItem } from '@/components/ui/faq-item'
 import { Reveal } from '@/components/ui/reveal'
 import { faqs, type FAQ } from '@/data/faqs'
-import { PaperBackground } from '../ui/paper-background'
 
+/** `items` swaps the question set; the design is fixed. Defaults to the
+ *  homepage's `data/faqs.ts`. */
 export function FAQs({ items = faqs }: { items?: FAQ[] }) {
   return (
     <section className="relative w-full overflow-hidden bg-ink px-6 py-12">

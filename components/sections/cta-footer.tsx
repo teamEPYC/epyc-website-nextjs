@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { Button } from '@/components/ui/button'
@@ -29,7 +30,27 @@ function FooterLink({ href, label }: { href: string; label: string }) {
   )
 }
 
-export function CTAFooter() {
+/**
+ * Bottom CTA strip + site footer.
+ *
+ * The CTA copy is swappable so a landing page can speak to its own offer; the
+ * design, footer columns, and dividers are fixed. `actions` defaults to the
+ * homepage's single "Tell Us What You're Building" button — pass a fragment
+ * for multi-button CTAs.
+ */
+export function CTAFooter({
+  eyebrow = '/Start Your Project/',
+  heading = <>It&apos;s Time, We Create</>,
+  actions = (
+    <Button variant="filled" icon="arrow-right" href="/contact">
+      Tell Us What You&apos;re Building
+    </Button>
+  ),
+}: {
+  eyebrow?: ReactNode
+  heading?: ReactNode
+  actions?: ReactNode
+} = {}) {
   return (
     <section className="relative w-full overflow-hidden bg-grey-primary px-6 py-12">
       {/* Full-bleed background texture. `z-0` keeps it above the section's
@@ -58,13 +79,13 @@ export function CTAFooter() {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-6 text-center">
-              <p className="text-body uppercase text-cream/80">/Start Your Project/</p>
+              <p className="text-body uppercase text-cream/80">{eyebrow}</p>
               <SectionHeading tone="cream" size="h2" as="h2">
-                It&apos;s Time, We Create
+                {heading}
               </SectionHeading>
-              <Button variant="filled" icon="arrow-right" href="/contact">
-                Tell Us What You&apos;re Building
-              </Button>
+              <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
+                {actions}
+              </div>
             </div>
 
             <div className="relative hidden h-[306px] w-[216px] overflow-hidden border-l border-cream/40 lg:block">
