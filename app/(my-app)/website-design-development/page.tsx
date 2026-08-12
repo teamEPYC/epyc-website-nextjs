@@ -14,9 +14,9 @@ import { FeaturedProjects } from '@/components/sections/featured-projects'
 import { MoreProjects } from '@/components/sections/more-projects'
 import { Voices } from '@/components/sections/voices'
 import { Brands } from '@/components/sections/brands'
-import { ProblemAccordion } from './problem-accordion'
-import { HowWeWorkSteps } from './how-we-work-steps'
-import { PageCTAFooter } from './page-cta-footer'
+import { ProblemAccordion } from '@/components/sections/problem-accordion'
+import { HowWeWorkSteps } from '@/components/sections/how-we-work-steps'
+import { PageCTAFooter } from '@/components/sections/page-cta-footer'
 import { cn } from '@/lib/cn'
 
 export const metadata: Metadata = {
