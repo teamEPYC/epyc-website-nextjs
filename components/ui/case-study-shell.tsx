@@ -10,10 +10,27 @@ const CaseStudyViewContext = createContext<{ isTldr: boolean }>({ isTldr: false 
 
 // ─── Toggle UI ────────────────────────────────────────────────────────────────
 
-function ViewToggle() {
+/** Toggle colourways — `cream` sits on an ink surface, `ink` on beige/cream. */
+type ToggleTone = 'cream' | 'ink'
+
+const toggleTones: Record<ToggleTone, { frame: string; active: string; idle: string }> = {
+  cream: {
+    frame: 'border-cream/20',
+    active: 'bg-cream/15 text-cream',
+    idle: 'text-cream/40 hover:text-cream/70',
+  },
+  ink: {
+    frame: 'border-ink/20',
+    active: 'bg-ink/10 text-ink',
+    idle: 'text-ink/45 hover:text-ink/75',
+  },
+}
+
+function ViewToggle({ tone = 'cream' }: { tone?: ToggleTone }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isTldr = searchParams.get('view') === 'tldr'
+  const t = toggleTones[tone]
 
   function setMode(tldr: boolean) {
     const params = new URLSearchParams(searchParams.toString())
@@ -27,12 +44,12 @@ function ViewToggle() {
   }
 
   return (
-    <div className="inline-flex rounded-full border border-cream/20 p-0.5">
+    <div className={cn('inline-flex rounded-full border p-0.5', t.frame)}>
       <button
         onClick={() => setMode(false)}
         className={cn(
           'rounded-full px-4 py-1.5 text-h5 uppercase tracking-wider transition-colors',
-          !isTldr ? 'bg-cream/15 text-cream' : 'text-cream/40 hover:text-cream/70',
+          !isTldr ? t.active : t.idle,
         )}
       >
         Full story
@@ -41,7 +58,7 @@ function ViewToggle() {
         onClick={() => setMode(true)}
         className={cn(
           'rounded-full px-4 py-1.5 text-h5 uppercase tracking-wider transition-colors',
-          isTldr ? 'bg-cream/15 text-cream' : 'text-cream/40 hover:text-cream/70',
+          isTldr ? t.active : t.idle,
         )}
       >
         TL;DR
@@ -73,10 +90,10 @@ export function CaseStudyShell({ children }: { children: React.ReactNode }) {
 
 // ─── Toggle export ────────────────────────────────────────────────────────────
 
-export function CaseStudyViewToggle() {
+export function CaseStudyViewToggle({ tone }: { tone?: ToggleTone }) {
   return (
     <Suspense fallback={null}>
-      <ViewToggle />
+      <ViewToggle tone={tone} />
     </Suspense>
   )
 }

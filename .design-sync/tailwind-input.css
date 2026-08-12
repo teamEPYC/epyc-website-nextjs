@@ -1,0 +1,24 @@
+/* Tailwind input for design-sync only — NOT used by the Next.js app.
+ *
+ * Why this exists: the app's own build emits only the utilities its source
+ * actually references, so a compiled snapshot of it is missing token
+ * utilities that are perfectly legal in the design system (bg-sand,
+ * border-bone, …). The claude.ai/design agent gets a STATIC stylesheet with
+ * no JIT compiler behind it, so anything absent here silently renders
+ * unstyled. These @source inline directives force the whole documented
+ * vocabulary into the shipped CSS.
+ *
+ * Keep in sync with .design-sync/conventions.md — every family named there
+ * must be safelisted here.
+ */
+@import "../app/(my-app)/globals.css";
+
+/* Colour utilities across every brand token, plus the opacity steps the
+   components and docs actually use (text-ink/60, border-cream/25, …). */
+@source inline("{bg,text,border}-{ink,crimson,beige,cream,sand,bone,teal-deep}");
+@source inline("{bg,text,border}-{ink,crimson,beige,cream,sand,bone}/{5,10,15,20,25,30,40,50,60,70,75,80,90}");
+
+/* Type scale, families, radii. */
+@source inline("text-{display,h1,h2,h2-light,h3,h4,h4-alt,h5,body-lg,body,body-sm,quote,code}");
+@source inline("font-{display,serif,sans,plex-serif,mono}");
+@source inline("rounded-{sm,md,lg,xl,pill,full}");

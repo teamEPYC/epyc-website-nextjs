@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { site } from '@/data/site'
@@ -7,10 +8,17 @@ import { CTAFooter } from '@/components/sections/cta-footer'
 import { Section } from '@/components/ui/section'
 import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
+import { DashedDivider } from '@/components/ui/dashed-divider'
 import { Pill } from '@/components/ui/pill'
 import { Button } from '@/components/ui/button'
 import { Reveal } from '@/components/ui/reveal'
-import { CaseStudyShell, CaseStudyViewToggle, HideInTldr, ShowInTldr } from '@/components/ui/case-study-shell'
+import { Quote } from '@/components/icons/quote'
+import { cn } from '@/lib/cn'
+import {
+  CaseStudyShell,
+  CaseStudyViewToggle,
+  HideInTldr,
+} from '@/components/ui/case-study-shell'
 
 export const metadata: Metadata = {
   title: 'GoKwik — Case Study',
@@ -30,21 +38,34 @@ export const metadata: Metadata = {
   },
 }
 
+const MEDIA = '/images/case-studies/gokwik'
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+type MetaItem = { label: string; value: ReactNode }
 type StatItem = { number: string; label: string }
-type PhaseItem = { num: string; title: string; body: string }
-type InteractionItem = { title: string; caption: string }
+type NumberedItem = { num: string; title: string; body: string }
+type ClipItem = { src: string; caption: string }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const tags = [
-  'D2C / E-commerce SaaS',
-  'Strategy',
-  'UX Design',
-  'Visual Design',
-  'Motion Design',
+const heroMeta: MetaItem[] = [
+  { label: 'Category', value: 'UX, Visual, Motion' },
+  { label: 'Industry', value: 'D2C / E-commerce SaaS' },
+  { label: 'Scope', value: '50+ Pages' },
+  {
+    label: 'Outcome',
+    value: (
+      <>
+        50–60% lift in traffic
+        <br />
+        and conversion
+      </>
+    ),
+  },
 ]
+
+const lovedTags = ['Design System', 'Motion Design', 'Speed of Delivery', 'Project Management']
 
 const stats: StatItem[] = [
   { number: '50–60%', label: 'Actual lift in traffic & conversions' },
@@ -52,7 +73,25 @@ const stats: StatItem[] = [
   { number: '50+', label: 'Pages across desktop & mobile' },
 ]
 
-const phases: PhaseItem[] = [
+const challenges: NumberedItem[] = [
+  {
+    num: '01',
+    title: 'A homepage selling an award programme',
+    body: 'The hero promoted “GoKwik Hall Of Glory”. Below it: “We’ve Got Your Business Covered,” a tab of client logos, and a YouTube embed. The product suite was nowhere to be seen.',
+  },
+  {
+    num: '02',
+    title: 'Nine products, no narrative',
+    body: "Merchants couldn't find what was relevant to them. No demo flow, no PLG motion, no sense of the platform's depth across the D2C journey.",
+  },
+  {
+    num: '03',
+    title: 'Credibility that didn’t show',
+    body: '50M+ completed checkouts, 15,000+ brands, 9x the GMV of its nearest competitor — and a dark navy site with orange accents and a 3D globe saying none of it.',
+  },
+]
+
+const phases: NumberedItem[] = [
   {
     num: 'Phase 01',
     title: 'Discovery & Direction',
@@ -70,24 +109,87 @@ const phases: PhaseItem[] = [
   },
 ]
 
-const interactions: InteractionItem[] = [
+const clips: ClipItem[] = [
+  { src: 'features.mp4', caption: 'Features section — progressive reveal.' },
+  { src: 'pricing.mp4', caption: 'Pricing page layout and hierarchy.' },
   {
-    title: 'Hero Lottie',
-    caption: 'Homepage hero — video + custom animation, the visual anchor for the site.',
+    src: 'testimonial-blue-section.mp4',
+    caption: 'Testimonial section — social proof at scale.',
   },
-  {
-    title: 'Integration Loop',
-    caption: 'Partner logos looping in orbit, GoKwik logo anchored at centre.',
-  },
-  {
-    title: 'Platform Expand',
-    caption: 'Platform section: icons appear progressively after click.',
-  },
-  {
-    title: 'Product Orbits',
-    caption: 'Logo orbits and pin interactions — each product distinct within a shared system.',
-  },
+  { src: 'Kwik-ads-bouqet_loop.mp4', caption: 'KwikAds — looping brand visual.' },
 ]
+
+// ─── Local building blocks ────────────────────────────────────────────────────
+
+/**
+ * Section opener with a dashed rule running out either side of the title.
+ * Local to this page — the shared `<SectionHeading>` is the `/ Title /` marker
+ * pattern, which is a different shape.
+ */
+function RuledHeading({ children, tone }: { children: ReactNode; tone: 'ink' | 'cream' }) {
+  return (
+    <div className="flex items-center gap-5 pb-10 lg:gap-8 lg:pb-16">
+      <DashedDivider className={cn('hidden flex-1 sm:block', tone === 'ink' ? 'text-ink' : 'text-cream')} />
+      <h2
+        className={cn(
+          'text-h2 whitespace-nowrap',
+          tone === 'ink' ? 'text-ink' : 'text-cream',
+        )}
+      >
+        {children}
+      </h2>
+      <DashedDivider className={cn('flex-1', tone === 'ink' ? 'text-ink' : 'text-cream')} />
+    </div>
+  )
+}
+
+/** Mock browser chrome — traffic-light dots + centred URL — around a screenshot. */
+function BrowserFrame({
+  url,
+  tone,
+  children,
+}: {
+  url: string
+  tone: 'on-dark' | 'on-light'
+  children: ReactNode
+}) {
+  return (
+    <div
+      className={cn(
+        'overflow-hidden rounded-md border bg-cream',
+        tone === 'on-dark' ? 'border-sand/35' : 'border-ink/15',
+      )}
+    >
+      <div className="flex items-center gap-4 border-b border-ink/10 px-5 py-3.5">
+        <div className="flex gap-[7px]">
+          <span className="block size-2.5 rounded-full bg-crimson" />
+          <span className="block size-2.5 rounded-full bg-sand" />
+          <span className="block size-2.5 rounded-full bg-teal-deep" />
+        </div>
+        <span className="flex-1 text-center text-h5 text-ink/55">{url}</span>
+        <span className="w-11" />
+      </div>
+      {children}
+    </div>
+  )
+}
+
+/** Caption that trails off into a hairline rule — sits under the browser frames. */
+function TrailingCaption({ children, tone }: { children: ReactNode; tone: 'ink' | 'cream' }) {
+  return (
+    <div className="mt-4 flex items-center gap-5">
+      <span
+        className={cn(
+          'text-body uppercase tracking-wider',
+          tone === 'ink' ? 'text-ink/55' : 'text-cream/50',
+        )}
+      >
+        {children}
+      </span>
+      <div className={cn('h-px flex-1', tone === 'ink' ? 'bg-ink/20' : 'bg-cream/25')} />
+    </div>
+  )
+}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -128,307 +230,308 @@ const jsonLd = {
 
 export default function GoKwikCaseStudy() {
   return (
-    // The entire case study lives on an ink surface — warm dark green, not black.
     <CaseStudyShell>
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
-    <div className="min-h-screen bg-ink text-cream">
-      {/* Nav: force cream text since SiteNav defaults to ink on non-home routes */}
-      <div className="border-b border-cream/10">
-        <SiteNav className="text-cream" />
-      </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {/* Opens on beige — the ink surfaces carry the quote, the challenge, the close. */}
+      <div className="min-h-screen bg-beige text-ink">
+        <SiteNav />
 
-      {/* ── HERO ────────────────────────────────────────────────────────────── */}
-      <Section tone="ink">
-        <Container>
-          <Reveal>
-            {/* Back link + view toggle */}
-            <div className="mb-10 flex items-center justify-between">
-              <Link
-                href="/projects"
-                className="inline-block text-h5 uppercase tracking-wider text-cream/40 underline-offset-4 transition-colors hover:text-cream/70"
-              >
-                ← Projects
-              </Link>
-              <CaseStudyViewToggle />
-            </div>
-
-            {/* Service + industry tags */}
-            <div className="mb-8 flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <Pill key={tag} tone="cream-on-dark">
-                  {tag}
-                </Pill>
-              ))}
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-display text-cream">
-              15,000 brands. 50M+ shoppers.
-              <br />
-              A website that told none of it.
-            </h1>
-
-            {/* Subhead */}
-            <p className="mt-8 text-body-lg text-cream/60">
-              GoKwik had built India&apos;s leading D2C growth platform. Their website was still
-              describing the company they used to be.
-            </p>
-
-            {/* Live link */}
-            <div className="mt-8">
-              <Button variant="outline" href="https://gokwik.co" data-on-dark="true">
-                See it live
-              </Button>
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
-
-      {/* ── OUTCOME STATS ───────────────────────────────────────────────────── */}
-      <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <Reveal>
-            {/* Full story: original large stats + quote */}
-            <HideInTldr>
-              <div className="grid grid-cols-2 gap-px bg-cream/10 lg:grid-cols-3">
-                {stats.map((s) => (
-                  <div key={s.number} className="bg-ink p-6 sm:p-8">
-                    <p className="text-h2 text-cream">{s.number}</p>
-                    <p className="mt-2 text-body-lg uppercase text-cream/60">{s.label}</p>
-                  </div>
-                ))}
+        {/* ── HERO ──────────────────────────────────────────────────────────── */}
+        <Section tone="beige">
+          <Container>
+            <Reveal>
+              <div className="mb-10 flex items-center justify-between">
+                <Link
+                  href="/projects"
+                  className="inline-block text-h5 uppercase tracking-wider text-ink/45 transition-colors hover:text-ink/75"
+                >
+                  ← Projects
+                </Link>
+                <CaseStudyViewToggle tone="ink" />
               </div>
-              <blockquote className="mt-12 border-l-2 border-cream/20 bg-cream/5 px-8 py-8 sm:px-12 sm:py-10">
-                <p className="text-h3 font-normal italic text-cream/75">
-                  &ldquo;Good stuff, guys. We trust you completely.&rdquo;
-                </p>
-                <cite className="mt-4 block text-h5 not-italic uppercase tracking-wider text-cream/50">
-                  — GoKwik team, during project
-                </cite>
-              </blockquote>
-            </HideInTldr>
 
-            {/* TL;DR: compact single-row stats, no quote */}
-            <ShowInTldr>
-              <div className="grid grid-cols-3 gap-px bg-cream/10">
-                {stats.map((s) => (
-                  <div key={s.number} className="bg-ink p-4 sm:p-6">
-                    <p className="text-h3 text-cream">{s.number}</p>
-                    <p className="mt-1 text-body uppercase text-cream/60">{s.label}</p>
+              <div className="grid items-start gap-10 pb-16 lg:grid-cols-2 lg:gap-20">
+                <div className="flex flex-col items-start gap-7">
+                  {/* GoKwik's own wordmark, served from gokwik.co — plain <img> so
+                      the remote host doesn't need whitelisting in next.config. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="https://www.gokwik.co/gokwik/svg/logo.svg"
+                    alt="GoKwik"
+                    className="block h-[34px] w-auto"
+                  />
+                  <h1 className="text-h1 text-ink">
+                    15,000 brands. 50M+ shoppers. A website that told none of it.
+                  </h1>
+                </div>
+
+                <div className="flex flex-col gap-5 lg:pt-2">
+                  <p className="text-body-lg text-ink/80">
+                    GoKwik had built India&apos;s leading D2C growth platform. Their website was
+                    still describing the company they used to be.
+                  </p>
+                  <HideInTldr>
+                    <p className="text-body-lg text-ink/80">
+                      Nine products across the full D2C journey — KwikCheckout, KwikPass, KwikAds,
+                      KwikEngage, GoKwik Cart, KwikShip, Return Prime, Kwik AI Popups, KwikGEO —
+                      presented as disconnected pages with no clear narrative.
+                    </p>
+                  </HideInTldr>
+                  <div className="pt-2">
+                    <Button variant="filled" size="md" icon="arrow-right" href="https://gokwik.co">
+                      See it live
+                    </Button>
                   </div>
-                ))}
+                </div>
               </div>
-            </ShowInTldr>
-          </Reveal>
-        </Container>
-      </Section>
+            </Reveal>
 
-      {/* ── BEFORE ──────────────────────────────────────────────────────────── */}
-      <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <Reveal>
-            <SectionHeading tone="cream" size="h3" as="h2" className="mb-8">
-              Before
-            </SectionHeading>
+            {/* Project meta strip */}
+            <Reveal>
+              <div className="flex flex-col items-center gap-8 pb-12">
+                <DashedDivider className="text-ink" />
+                <div className="grid w-full grid-cols-2 gap-x-6 gap-y-8 sm:flex sm:items-start sm:justify-between">
+                  {heroMeta.map((item) => (
+                    <div key={item.label} className="flex flex-col gap-2">
+                      <span className="text-h5 text-crimson">{item.label}</span>
+                      <span className="text-h4 font-normal text-ink">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
 
-            <figure className="relative w-full">
-              <div className="scrollable-preview h-[600px]">
+            {/* Hero shot — the fold of the new homepage, clipped to a fixed frame */}
+            <Reveal>
+              <div className="h-[420px] w-full overflow-hidden rounded-md bg-ink sm:h-[560px] lg:h-[735px]">
                 <Image
-                  src="/images/case-studies/gokwik/old-homepage-aug2025-clean.png"
-                  alt="The old GoKwik homepage, Aug 2025 — before the redesign"
-                  width={1440}
-                  height={900}
+                  src={`${MEDIA}/new-homepage.webp`}
+                  alt="The new GoKwik homepage — merchant-first, Lottie-driven, outcome-led"
+                  width={1286}
+                  height={8192}
+                  priority
                   sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                  className="w-full"
+                  className="block w-full"
                 />
               </div>
-            </figure>
-            <p className="mt-3 text-body text-cream/50">
-              The old site, Aug 2025 — last archived version before the redesign.
-            </p>
-
-            <HideInTldr>
-              <div className="mt-8 space-y-4">
-                <p className="text-body-lg text-cream/60">
-                  The hero was promoting &ldquo;GoKwik Hall Of Glory&rdquo; — an award programme.
-                  Below it: &ldquo;We&apos;ve Got Your Business Covered,&rdquo; a tab of client
-                  logos, and a YouTube embed. Then &ldquo;The GoKwik Advantage&rdquo; — four generic
-                  bullets. Dark navy, orange accents, a 3D globe.
-                </p>
-                <p className="text-body-lg text-cream/60">
-                  The products weren&apos;t on the homepage at all. Nine solutions, none of them
-                  findable.
-                </p>
-              </div>
-            </HideInTldr>
-          </Reveal>
-        </Container>
-      </Section>
-
-      {/* ── CHALLENGE ───────────────────────────────────────────────────────── */}
-      <HideInTldr>
-        <Section tone="ink" className="border-t border-cream/10">
-          <Container>
-            <Reveal>
-              <SectionHeading tone="cream" size="h3" as="h2" className="mb-8">
-                Challenge
-              </SectionHeading>
-
-              <div className="space-y-6">
-                <p className="text-h3 font-normal leading-relaxed text-cream/80">
-                  GoKwik had scaled far beyond their original website. Nine products — KwikCheckout,
-                  KwikPass, KwikAds, KwikEngage, GoKwik Cart, KwikShip, Return Prime, Kwik AI
-                  Popups, KwikGEO — but the site presented them as disconnected pages with no clear
-                  narrative.
-                </p>
-                <p className="text-body-lg text-cream/55">
-                  Merchants couldn&apos;t find what was relevant to them. No demo flow, no PLG
-                  motion, no sense of the platform&apos;s depth. Visually, it didn&apos;t reflect the
-                  credibility of a company with 50M+ completed checkouts, 15,000+ brands, and 9x the
-                  GMV of its nearest competitor.
-                </p>
-                <p className="text-body-lg text-cream/55">
-                  The homepage gave prime real estate to an award programme. The product suite — nine
-                  solutions across the full D2C journey — was nowhere to be seen.
-                </p>
-                <p className="text-body-lg italic text-cream/50">
-                  The site wasn&apos;t just outdated. It was actively working against them.
-                </p>
-              </div>
             </Reveal>
           </Container>
         </Section>
-      </HideInTldr>
 
-      {/* ── OUR APPROACH ────────────────────────────────────────────────────── */}
-      <HideInTldr>
-        <Section tone="ink" className="border-t border-cream/10">
+        {/* ── VOICE OF THE CLIENT + OUTCOME ─────────────────────────────────── */}
+        <Section tone="ink">
           <Container>
             <Reveal>
-              <SectionHeading tone="cream" size="h3" as="h2" className="mb-10">
-                Our Approach
-              </SectionHeading>
-            </Reveal>
-
-            {/* Phase grid — gap rendered as hairline via bg-cream/10 */}
-            <div className="grid gap-px bg-cream/10 sm:grid-cols-3">
-              {phases.map((phase, i) => (
-                <Reveal key={phase.num} delay={i * 0.08}>
-                  <div className="flex h-full flex-col gap-3 bg-ink p-7 sm:p-8">
-                    <p className="text-h5 uppercase tracking-wider text-cream/50">{phase.num}</p>
-                    <h3 className="text-h4-alt text-cream">{phase.title}</h3>
-                    <p className="text-body-lg text-cream/50">{phase.body}</p>
+              <div className="mx-auto flex max-w-[900px] flex-col items-start gap-8">
+                <Quote size={44} className="text-crimson" />
+                <p className="text-h2 text-cream">Good stuff, guys. We trust you completely.</p>
+                <DashedDivider className="text-cream" />
+                <div className="flex w-full flex-wrap items-start justify-between gap-8">
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-h4 text-cream">The GoKwik team</span>
+                    <span className="text-body-lg text-cream/60">Growth &amp; Brand, GoKwik</span>
                   </div>
-                </Reveal>
-              ))}
-            </div>
-          </Container>
-        </Section>
-      </HideInTldr>
-
-      {/* ── THE WORK — HOMEPAGE ─────────────────────────────────────────────── */}
-      <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <Reveal>
-            <SectionHeading tone="cream" size="h3" as="h2" className="mb-8">
-              The Work
-            </SectionHeading>
-
-            <figure className="relative w-full overflow-hidden">
-              <Image
-                src="/images/case-studies/gokwik/new-homepage.webp"
-                alt="The new GoKwik homepage — merchant-first, Lottie-driven, outcome-led"
-                width={1286}
-                height={8192}
-                sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
-                className="w-full"
-              />
-            </figure>
-            <p className="mt-3 text-body text-cream/50">
-              The new homepage — merchant-first, Lottie-driven, outcome-led.
-            </p>
+                  <div className="flex flex-col items-start gap-3.5">
+                    <span className="text-h5 uppercase tracking-wider text-cream/50">
+                      What they loved about us
+                    </span>
+                    <div className="flex flex-wrap gap-2.5">
+                      {lovedTags.map((tag) => (
+                        <Pill key={tag} tone="cream-on-dark">
+                          {tag}
+                        </Pill>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
 
             <HideInTldr>
-              <p className="mt-8 text-body-lg text-cream/60">
-                A ground-up redesign of gokwik.co. The homepage leads with &ldquo;Built for D2C.
-                Powered by AI.&rdquo; — the full product suite surfaced, each product given a Lottie
-                animation and a dedicated page. Custom photography creates a consistent human feel
-                across the brand.
-              </p>
+              <Reveal>
+                <div className="mt-16 grid gap-px bg-cream/15 sm:grid-cols-3 lg:mt-20">
+                  {stats.map((s) => (
+                    <div key={s.number} className="bg-ink p-8">
+                      <p className="text-h1 text-cream">{s.number}</p>
+                      <p className="mt-2 text-body uppercase tracking-wide text-cream/60">
+                        {s.label}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </Reveal>
             </HideInTldr>
-          </Reveal>
-        </Container>
-      </Section>
+          </Container>
+        </Section>
 
-      {/* ── THE WORK — SECTION VIDEOS ───────────────────────────────────────── */}
-      <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <div className="flex flex-col gap-10">
-            {[
-              { src: 'homepage-scroll_loop.mp4', caption: 'Homepage — full scroll, end to end.' },
-              { src: 'homepage-tabs-1-Edited.mp4', caption: 'Product tab interactions on the homepage.' },
-              { src: 'features.mp4', caption: 'Features section — progressive reveal.' },
-              { src: 'pricing.mp4', caption: 'Pricing page layout and hierarchy.' },
-              { src: 'testimonial-blue-section.mp4', caption: 'Testimonial section — social proof at scale.' },
-              { src: 'Kwik-ads-bouqet_loop.mp4', caption: 'KwikAds — looping brand visual.' },
-            ].map(({ src, caption }) => (
-              <Reveal key={src}>
-                <figure>
+        {/* ── PROJECT CHALLENGES + BEFORE ───────────────────────────────────── */}
+        <Section tone="ink">
+          <Container>
+            <HideInTldr>
+              <Reveal>
+                <RuledHeading tone="cream">Project Challenges</RuledHeading>
+              </Reveal>
+
+              <div className="grid gap-10 sm:grid-cols-3 sm:gap-6">
+                {challenges.map((item, i) => (
+                  <Reveal key={item.num} delay={i * 0.08}>
+                    <div className="flex h-full flex-col gap-4">
+                      <span className="text-h5 uppercase tracking-wider text-cream/50">
+                        {item.num}
+                      </span>
+                      <div className="h-px w-20 bg-cream" />
+                      <div className="flex flex-col gap-2">
+                        {/* 24px / weight 400 → text-h4-alt (Rationalist Reg, 24px
+                            desktop). text-h4 is the same size but Norms Serif Bold. */}
+                        <span className="text-h4-alt text-cream">{item.title}</span>
+                        <span className="text-body-lg text-cream/75">{item.body}</span>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </HideInTldr>
+
+            <Reveal>
+              <SectionHeading tone="cream" size="h3" as="h3" className="mb-6 mt-16 lg:mt-[72px]">
+                Before EPYC
+              </SectionHeading>
+              <BrowserFrame url="gokwik.co" tone="on-dark">
+                <div className="scrollable-preview scrollable-preview-ink h-[420px] overflow-x-hidden sm:h-[520px] lg:h-[620px]">
+                  <Image
+                    src={`${MEDIA}/old-homepage-aug2025-clean.png`}
+                    alt="The old GoKwik homepage, Aug 2025 — before the redesign"
+                    width={1440}
+                    height={9000}
+                    sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
+                    className="block w-full"
+                  />
+                </div>
+              </BrowserFrame>
+              <TrailingCaption tone="cream">
+                The old site, Aug 2025 — before the redesign
+              </TrailingCaption>
+            </Reveal>
+          </Container>
+        </Section>
+
+        {/* ── PROJECT STRATEGY + AFTER ──────────────────────────────────────── */}
+        <Section tone="beige">
+          <Container>
+            <HideInTldr>
+              <Reveal>
+                <RuledHeading tone="ink">Project Strategy</RuledHeading>
+              </Reveal>
+
+              <div className="grid gap-10 sm:grid-cols-3 sm:gap-8">
+                {phases.map((phase, i) => (
+                  <Reveal key={phase.num} delay={i * 0.08}>
+                    <div className="flex h-full flex-col gap-4">
+                      <span className="text-h5 uppercase tracking-wider text-crimson">
+                        {phase.num}
+                      </span>
+                      <div className="h-px w-20 bg-ink" />
+                      <div className="flex flex-col gap-2">
+                        <span className="text-h4-alt text-ink">{phase.title}</span>
+                        <span className="text-body-lg text-ink/80">{phase.body}</span>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </HideInTldr>
+
+            <Reveal>
+              <figure className="mt-16">
+                <div className="overflow-hidden rounded-md bg-ink p-4 lg:p-6">
                   <video
-                    src={`/images/case-studies/gokwik/${src}`}
+                    src={`${MEDIA}/homepage-tabs-1-Edited.mp4`}
                     autoPlay
                     loop
                     muted
                     playsInline
-                    className="w-full"
+                    className="block w-full rounded-sm"
                   />
-                  <figcaption className="mt-3 text-body text-cream/50">{caption}</figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
-        </Container>
-      </Section>
+                </div>
+                <figcaption className="mt-3 text-body text-ink/60">
+                  Product tab interactions on the homepage.
+                </figcaption>
+              </figure>
+            </Reveal>
 
-      {/* ── KEY INTERACTIONS ────────────────────────────────────────────────── */}
-      {false && <Section tone="ink" className="border-t border-cream/10">
-        <Container>
-          <Reveal>
-            <SectionHeading tone="cream" size="h3" as="h2" className="mb-8">
-              Key Interactions
-            </SectionHeading>
+            <Reveal>
+              <SectionHeading tone="ink" size="h3" as="h3" className="mb-6 mt-16 lg:mt-[72px]">
+                After EPYC
+              </SectionHeading>
+              <BrowserFrame url="gokwik.co" tone="on-light">
+                <Image
+                  src={`${MEDIA}/new-homepage.webp`}
+                  alt="The new GoKwik homepage — full page, end to end"
+                  width={1286}
+                  height={8192}
+                  sizes="(min-width: 1200px) 1150px, (min-width: 810px) calc(100vw - 48px), calc(100vw - 32px)"
+                  className="block w-full"
+                />
+              </BrowserFrame>
+              <TrailingCaption tone="ink">
+                The new homepage — full page, end to end
+              </TrailingCaption>
+            </Reveal>
+          </Container>
+        </Section>
 
-            <p className="mb-8 text-body-lg text-cream/50">
-              Motion was built in, not added on. Each product has a distinct Lottie animation; the
-              homepage hero combines video and animation for the visual anchor.
-            </p>
-
-            {/* 4-column interaction grid */}
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-              {interactions.map((item, i) => (
-                <Reveal key={item.title} delay={i * 0.07}>
-                  <div className="flex flex-col gap-3 bg-cream/5 p-5">
-                    {/* Placeholder animation frame */}
-                    <div className="flex aspect-video w-full items-center justify-center border border-cream/10 bg-cream/[0.03]">
-                      <span className="text-h5 uppercase tracking-wider text-cream/20">
-                        {item.title}
-                      </span>
+        {/* ── THE WORK — MOTION + STILLS ────────────────────────────────────── */}
+        <Section tone="beige">
+          <Container>
+            <div className="flex flex-col gap-10">
+              {clips.map(({ src, caption }) => (
+                <Reveal key={src}>
+                  <figure>
+                    <div className="overflow-hidden rounded-sm bg-bone">
+                      <video
+                        src={`${MEDIA}/${src}`}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="block w-full"
+                      />
                     </div>
-                    <p className="text-body text-cream/50">{item.caption}</p>
-                  </div>
+                    <figcaption className="mt-2.5 text-body text-ink/60">{caption}</figcaption>
+                  </figure>
                 </Reveal>
               ))}
             </div>
-          </Reveal>
-        </Container>
-      </Section>}
+          </Container>
+        </Section>
 
-      {/* ── FOOTER CTA ──────────────────────────────────────────────────────── */}
-      <CTAFooter />
-    </div>
+        {/* ── CONCLUSION ────────────────────────────────────────────────────── */}
+        <Section tone="ink">
+          <Container>
+            <Reveal>
+              <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-20">
+                <h2 className="text-h2 text-cream">Conclusion</h2>
+                <div className="flex flex-col gap-5">
+                  <p className="text-body-lg text-cream/85">
+                    Fifty-plus pages across desktop and mobile, built off one design system and a
+                    Lottie-first motion language. The homepage now opens on the platform, not an
+                    award programme.
+                  </p>
+                  <p className="text-body-lg text-cream/85">
+                    Pre-launch, GoKwik expected a 30–40% lift in traffic and conversions.
+                    Post-launch, the actual lift landed at 50–60%.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+
+        <CTAFooter />
+      </div>
     </CaseStudyShell>
   )
 }
