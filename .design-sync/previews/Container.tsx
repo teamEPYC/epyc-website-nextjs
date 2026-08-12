@@ -1,21 +1,57 @@
 import { Container, Section } from 'epyc-website'
 
-export default function Preview() {
+// Container has no visual style of its own — it constrains width and applies
+// the responsive gutters. The dashed outlines are preview scaffolding so the
+// three widths are legible; they are not part of the component.
+const outline = (color: string) => ({
+  outline: `1px dashed ${color}`,
+  padding: 16,
+})
+
+const label = {
+  margin: 0,
+  fontSize: 12,
+  letterSpacing: '0.04em',
+  color: '#183228',
+  fontFamily: 'var(--font-inter, sans-serif)',
+} as const
+
+export function Widths() {
   return (
     <Section tone="beige">
-      <Container width="content">
-        <div style={{ outline: '1px dashed #183228', padding: 16, marginBottom: 16 }}>
-          <p style={{ margin: 0, fontSize: 12, color: '#183228', fontFamily: 'var(--font-inter, sans-serif)' }}>Container width="content" — 1150px max, 16/24/60px gutters</p>
+      <Container width="outer">
+        <div style={{ ...outline('#b91646'), marginBottom: 16 }}>
+          <p style={label}>width=&quot;outer&quot; — 1440px max, widest shell</p>
         </div>
       </Container>
-      <Container width="outer">
-        <div style={{ outline: '1px dashed #b91646', padding: 16, marginBottom: 16 }}>
-          <p style={{ margin: 0, fontSize: 12, color: '#183228', fontFamily: 'var(--font-inter, sans-serif)' }}>Container width="outer" — 1440px max</p>
+      <Container width="content">
+        <div style={{ ...outline('#183228'), marginBottom: 16 }}>
+          <p style={label}>width=&quot;content&quot; — 1150px max, the default page measure</p>
         </div>
       </Container>
       <Container width="prose">
-        <div style={{ outline: '1px dashed #dec8a0', padding: 16 }}>
-          <p style={{ margin: 0, fontSize: 12, color: '#183228', fontFamily: 'var(--font-inter, sans-serif)' }}>Container width="prose" — reading width</p>
+        <div style={outline('#dec8a0')}>
+          <p style={label}>width=&quot;prose&quot; — reading measure for long-form copy</p>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
+export function InSection() {
+  return (
+    <Section tone="ink">
+      <Container>
+        <div style={{ outline: '1px dashed rgba(247,239,221,0.5)', padding: 24 }}>
+          <p
+            style={{
+              ...label,
+              color: '#f7efdd',
+            }}
+          >
+            The canonical pairing: Section owns vertical rhythm, Container owns
+            horizontal measure and gutters.
+          </p>
         </div>
       </Container>
     </Section>
