@@ -679,3 +679,21 @@ body {
 .scrollable-preview::-webkit-scrollbar-thumb:hover {
   background: rgb(255 240 208 / 0.65);
 }
+
+/* Ink-tinted variant — for previews sitting on a cream/beige surface
+   (e.g. the browser-chrome frames on the case study pages). */
+.scrollable-preview-ink {
+  scrollbar-color: rgb(24 50 40 / 0.28) rgb(24 50 40 / 0.06);
+}
+
+.scrollable-preview-ink::-webkit-scrollbar-track {
+  background: rgb(24 50 40 / 0.06);
+}
+
+.scrollable-preview-ink::-webkit-scrollbar-thumb {
+  background: rgb(24 50 40 / 0.28);
+}
+
+.scrollable-preview-ink::-webkit-scrollbar-thumb:hover {
+  background: rgb(24 50 40 / 0.45);
+}
