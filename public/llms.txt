@@ -8,7 +8,8 @@ EPYC is a design and development studio, not a "no-code agency" or "Webflow agen
 
 ## Services
 
-- [Website Design & Development](https://epyc.in/): Full-service builds from strategy to launch, on Webflow, Framer, WordPress, or custom code.
+- [Website Design & Development](https://epyc.in/website-design-development): Full-service builds from strategy to launch, on Webflow, Framer, WordPress, or custom code.
+- [Website Redesign](https://epyc.in/website-redesign): Rebuilds and platform migrations for companies whose site no longer matches the business.
 - [Brand & Creative Direction](https://epyc.in/): Visual identity, brand systems, and creative strategy for companies launching or rebranding.
 - [UI/UX Design](https://epyc.in/): Pixel-perfect interfaces, user research, wireframes, interactive prototypes, and design systems.
 - [Web Apps & Internal Tools](https://epyc.in/): Custom web applications, dashboards, and portals built on Bubble.io, FlutterFlow, or custom code.
@@ -17,11 +18,14 @@ EPYC is a design and development studio, not a "no-code agency" or "Webflow agen
 
 - [Home](https://epyc.in/): Overview of the studio, services, and featured work.
 - [Projects](https://epyc.in/projects): Portfolio of client work including Polygon, Accel, Antler, upGrad, GoKwik, and more.
+- [AI Training](https://epyc.in/ai-training): Hands-on AI training workshops for teams.
 - [Contact](https://epyc.in/contact): Start a project or schedule a consultation call.
 
 ## Work and proof
 
 - [Featured clients](https://epyc.in/projects): Polygon (Web3), Accel and Antler and 3One4 Capital (VCs), upGrad and Tetr (EdTech), GoKwik and Blue Copa and Factors Design (SaaS).
+- [GoKwik case study](https://epyc.in/case-study/gokwik): Website design and development for a checkout and e-commerce enablement SaaS company.
+- [Accel Atoms case study](https://epyc.in/case-study/accel-atoms-internal-review-application): Internal review application built for Accel's Atoms program.
 - [Partner badges](https://epyc.in/): Bubble Bronze Agency, Webflow Professional Partner, Framer Enterprise Partner.
 
 ## Resources

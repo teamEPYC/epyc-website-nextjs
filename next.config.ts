@@ -11,6 +11,22 @@ const nextConfig: NextConfig = {
         destination: '/blog',
         statusCode: 301,
       },
+      // The GoKwik case study was rebuilt at /case-study/gokwik (b1bc7e4). The old
+      // /projects/gokwik route stayed live and self-canonicalising, so Google saw
+      // two copies of the same page. Redirect instead of 404 — the old URL has
+      // been indexed and linked.
+      {
+        source: '/projects/gokwik',
+        destination: '/case-study/gokwik',
+        statusCode: 301,
+      },
+      // Leftover model-comparison build of the service page. It shipped live and
+      // indexable on EPYC's primary commercial keyword.
+      {
+        source: '/website-design-development-sonnet',
+        destination: '/website-design-development',
+        statusCode: 301,
+      },
     ]
   },
   async headers() {
