@@ -165,51 +165,40 @@ function LaunchIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
-// TODO(assets): the 4 stills below are placeholders — they do not exist yet
-// and must be sourced/shot before this page ships. Each should depict the
-// redesign-specific pain point in its row title, not the website-design-
-// development in-house/agency/freelancer set (those stills are wrong here).
-// Needed files, all under /public/images/site/:
-//   redesign-problem-01-slow-mobile.png    — the current site loading slowly
-//                                             and breaking on a mobile screen
-//   redesign-problem-02-dev-ticket.png     — a small edit stuck in a dev
-//                                             ticket queue / backlog
-//   redesign-problem-03-platform-lockin.png — a dated CMS/platform dashboard
-//                                             that feels risky to leave
-//   redesign-problem-04-lost-deal.png      — a prospect's screen or inbox
-//                                             going quiet after visiting the
-//                                             site, implying a lost deal
+// Conceptual stills, shot to the EPYC palette (ink-green panelling, crimson
+// accents) rather than literal UI screenshots — each staged object stands in
+// for the pain point in its row title.
 const PROBLEM_ROWS = [
   {
     n: '01',
     title: "It loads slowly, breaks on mobile, and nobody wants to touch the code.",
     image: {
-      src: '/images/site/redesign-problem-01-slow-mobile.png',
-      alt: 'A website loading slowly and breaking on a mobile screen',
+      src: '/images/site/redesign-problem-01-slow-mobile.webp',
+      alt: 'A glowing loading spinner above a plaque reading "Loading in a few years"',
     },
   },
   {
     n: '02',
     title: "Every small edit means a ticket to a developer who's busy with the product.",
     image: {
-      src: '/images/site/redesign-problem-02-dev-ticket.png',
-      alt: 'A small website edit stuck in a developer ticket queue',
+      src: '/images/site/redesign-problem-02-dev-ticket.webp',
+      alt: 'A complaints counter trailing an endless roll of tickets across the floor',
     },
   },
   {
     n: '03',
     title: "It was built on a platform you've outgrown, and migrating feels risky.",
     image: {
-      src: '/images/site/redesign-problem-03-platform-lockin.png',
-      alt: 'A dated CMS dashboard for a platform the team has outgrown',
+      src: '/images/site/redesign-problem-03-platform-lockin.webp',
+      alt: 'A small potted sapling casting the shadow of a full-grown tree',
     },
   },
   {
     n: '04',
     title: 'It quietly costs you deals, before a prospect ever talks to you.',
     image: {
-      src: '/images/site/redesign-problem-04-lost-deal.png',
-      alt: 'A prospect going quiet after visiting a dated website',
+      src: '/images/site/redesign-problem-04-lost-deal.webp',
+      alt: 'A red rotary telephone on a marble table with its handset left off the hook',
     },
   },
 ]
