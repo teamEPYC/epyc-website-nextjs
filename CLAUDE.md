@@ -16,6 +16,7 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 - **Images** → all production images are served from `https://website-media.epyc.in` (Cloudflare R2). Self-hosted case study screenshots go in `public/images/`. The custom image loader is at `lib/image-loader.ts` — do not bypass it.
 - **Dev server** → `pnpm dev` (runs `next dev --webpack` — Turbopack is disabled due to recurring panics on this Next.js version).
 - **No invented copy or metrics** → pull proof points from the marketing repo's `assets/` and `copy/` directories.
+- **Every new page must be readable as markdown** → see [Markdown for Agents](#markdown-for-agents). Auto-conversion covers new routes with no work, but content hidden behind client state (accordions, sliders, tabs) is invisible to it. Check the markdown before calling a page done: `curl -sH "Accept: text/markdown" http://localhost:3000/your-new-page`.
 
 ---
 
@@ -40,6 +41,9 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 | `lib/strapi/` | Strapi CMS client (`fetchStrapi`) + TypeScript types |
 | `lib/projects/` | Normalisation helpers for Strapi project data |
 | `lib/cn.ts` | `cn()` helper — `clsx` + `tailwind-merge` |
+| `proxy.ts` | Content negotiation — rewrites `Accept: text/markdown` requests to the markdown renderer (Next 16 renamed `middleware` → `proxy`) |
+| `app/md/[[...path]]/route.ts` | Markdown renderer for every page route |
+| `lib/markdown/` | `negotiate.ts` (Accept parsing), `from-html.ts` (HTML → Markdown), `sources.ts` (CMS-backed markdown + FAQ supplements) |
 | `lib/image-loader.ts` | Custom Next.js image loader for Cloudflare CDN |
 | `public/images/` | Self-hosted images (case study screenshots go here) |
 | `db/migrations/` | SQL schema for the Cloudflare D1 contact-submissions table |
@@ -48,6 +52,36 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 | `open-next.config.ts` | OpenNext Cloudflare adapter config |
 
 **Static vs CMS data split for projects**: The homepage `FeaturedProjects` section is driven by `data/projects.ts` (static). The `/projects` index page is driven by Strapi. Case study pages under `app/(my-app)/case-study/` are fully static — they do not use Strapi. The `caseStudyPath` field on a Strapi project entry controls the link from the `/projects` page to the case study.
+
+---
+
+## Markdown for Agents
+
+Every page URL serves two representations. A normal request gets HTML; a request with `Accept: text/markdown` gets a formatting-stripped markdown version of the same URL. Browsers never name `text/markdown`, so nothing about the site's HTML behaviour changes.
+
+```bash
+curl -sH "Accept: text/markdown" https://epyc.in/website-redesign   # negotiated
+curl -s https://epyc.in/md/website-redesign                          # same body, plain URL
+```
+
+**How it works**
+
+1. `proxy.ts` parses the `Accept` header (`lib/markdown/negotiate.ts`). Markdown wins only when it is named **and** ranked at least as high as HTML — `text/html,...,*/*;q=0.8` from a browser does not qualify. Matching requests are rewritten to `/md/<path>`.
+2. `app/md/[[...path]]/route.ts` builds the markdown:
+   - **CMS routes** (`/blog`, `/blog/[slug]`, `/projects`, `/gallery`, `/gallery/[slug]`) are built from Strapi fields in `lib/markdown/sources.ts` — the author, date, and tags come through as data, not layout.
+   - **Every other route** is rendered by fetching that page's own HTML and converting it (`lib/markdown/from-html.ts`). New pages are covered the day they ship with no extra work.
+3. Responses carry `Content-Type: text/markdown; charset=utf-8`, `Vary: Accept`, `x-markdown-tokens`, `x-robots-tag: noindex, follow`, and a `Link: rel="canonical"` back to the HTML page. Markdown served under a page's own URL is marked `private` — Cloudflare keys its cache on the URL and ignores `Vary`, so a shared-cached copy would otherwise reach a browser.
+
+**Rules for new pages**
+
+- Always spot-check the output: `curl -sH "Accept: text/markdown" http://localhost:3000/new-page`.
+- **Content that only exists in client state is invisible to the converter.** Server HTML is what gets converted, so a closed `<FAQItem>` accordion, an off-screen slider frame, or an unselected tab contributes nothing. Two ways to fix it, in order of preference:
+  1. Emit the content as structured data on the page — a `FAQPage` JSON-LD block is harvested automatically by `faqSection()` (this is how `/website-redesign` gets its answers) and it earns rich results at the same time.
+  2. Add the route to a supplement or an explicit builder in `lib/markdown/sources.ts` (this is how the shared `data/faqs.ts` set reaches `/`, `/contact`, and `/gallery`).
+- Images need real `alt` text or the converter drops them as decorative; runs of 3+ images collapse to an `Images: alt, alt, …` line.
+- A new Strapi-driven route should get a builder in `sources.ts` rather than relying on HTML conversion — the fields are cleaner than the layout.
+
+**Known gaps** — the `Voices` testimonial slider only server-renders its first slide, so the rest are missing from markdown (quotes are `ReactNode` in `data/testimonials.tsx`, not strings). Cloudflare's zone-level [Markdown for Agents](https://developers.cloudflare.com/fundamentals/reference/markdown-for-agents/) does the same job with no code, but needs a Pro+ plan on `epyc.in`; this implementation is plan-independent and gives us control over what the markdown contains. Validate the live site with `POST https://isitagentready.com/api/scan` and check `checks.contentAccessibility.markdownNegotiation.status`.
 
 ---
 
