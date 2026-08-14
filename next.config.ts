@@ -4,6 +4,11 @@ import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare'
 initOpenNextCloudflareForDev()
 
 const nextConfig: NextConfig = {
+  // Next's default, set explicitly: every canonical, sitemap entry, and internal
+  // link uses the no-slash form, and `/path/` 308s to `/path`. Flipping this
+  // would invalidate every canonical on the site, so it is pinned rather than
+  // left implicit.
+  trailingSlash: false,
   async redirects() {
     return [
       {

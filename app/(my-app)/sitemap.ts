@@ -23,7 +23,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   return [
-    url("/"),
+    // The homepage canonical resolves to the bare origin (metadataBase + "/"),
+    // so the sitemap has to match it exactly. `url("/")` would emit a trailing
+    // slash and disagree with the canonical on the site's most important URL.
+    { url: site.url },
     url("/website-design-development"),
     url("/website-redesign"),
     url("/ai-training"),
