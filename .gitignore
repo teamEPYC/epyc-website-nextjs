@@ -61,3 +61,6 @@ graphify-out/
 /.design-sync/.cache/
 /.design-sync/learnings/
 /.design-sync/node_modules
+
+# Local-only embed widget test page — never ship this
+public/embed-test.html
