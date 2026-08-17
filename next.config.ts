@@ -47,7 +47,7 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           // Every URL has two representations — HTML by default, markdown when
-          // the request sends `Accept: text/markdown` (see `proxy.ts`) — so the
+          // the request sends `Accept: text/markdown` (see `middleware.ts`) — so the
           // Accept header is part of the cache key. Note that Next replaces this
           // with its own `Vary: rsc, ...` on app-router page responses; the
           // markdown route sets `Vary: Accept` itself, and negotiated markdown is

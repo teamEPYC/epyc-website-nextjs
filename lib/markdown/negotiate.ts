@@ -1,4 +1,4 @@
-// Content negotiation for `Accept: text/markdown` — shared by `proxy.ts` (which
+// Content negotiation for `Accept: text/markdown` — shared by `middleware.ts` (which
 // decides whether to rewrite) and `app/md/[[...path]]/route.ts` (which renders).
 //
 // Only requests that explicitly ask for markdown get markdown. A browser's
@@ -9,11 +9,11 @@
 /** Internal route that renders the markdown representation of a page. */
 export const MARKDOWN_ROUTE_PREFIX = '/md'
 
-/** Set on the self-fetch that pulls a page's HTML, so `proxy` doesn't loop. */
+/** Set on the self-fetch that pulls a page's HTML, so the middleware doesn't loop. */
 export const RENDER_GUARD_HEADER = 'x-epyc-markdown-render'
 
 /**
- * Set by `proxy` when markdown is being served under the page's own URL rather
+ * Set by the middleware when markdown is being served under the page's own URL rather
  * than under `/md/...`. Those responses must not be shared-cached: Cloudflare
  * keys its cache on the URL and ignores `Vary`, so a cached markdown copy would
  * be handed to the next browser that asks for the page.
