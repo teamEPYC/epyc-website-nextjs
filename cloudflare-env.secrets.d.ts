@@ -33,5 +33,13 @@ declare namespace Cloudflare {
      * Setting it also requires SPF and DKIM records on epyc.in.
      */
     RESEND_API_KEY?: string
+    /**
+     * Returns the verification code in the API response instead of only
+     * logging it. **Staging only, while there is no email provider** — with it
+     * set, verifying an address proves nothing, so anyone reaching the page can
+     * claim an embed key. Only takes effect when `RESEND_API_KEY` is unset, so
+     * configuring a provider disables it either way. Never set in production.
+     */
+    TOOLS_REVEAL_CODES?: string
   }
 }

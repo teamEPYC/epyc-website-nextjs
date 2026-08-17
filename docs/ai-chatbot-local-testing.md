@@ -94,6 +94,15 @@ At the bottom of the report:
 
    No email is actually sent — there is no provider yet. The UI says so.
 
+   **On a deployed environment** the log is the Worker's, not your terminal:
+   `pnpm exec wrangler tail --env staging --search "verification code"`, or the
+   Logs tab in the Cloudflare dashboard.
+
+   Easier for staging: set `TOOLS_REVEAL_CODES=true`, then open the browser
+   console and the code is printed there as `[epyc] verification code: 059052`.
+   Staging only — with it set, verifying an address proves nothing, so anyone
+   who reaches the page can claim an embed key.
+
 3. Type the 6 digits → **Verify**
 4. The embed snippet appears with a copy button, and under it a **manage link**.
    That link is the only way to refresh the bot later — there is no button for

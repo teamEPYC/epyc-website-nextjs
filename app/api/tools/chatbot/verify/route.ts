@@ -85,10 +85,19 @@ export async function POST(req: Request) {
     )
   }
 
+  // Staging has no email provider, so the code only reaches a Worker log —
+  // which means nobody outside the team can finish the flow. This hands it back
+  // in the response instead, for a deployed environment that exists to be
+  // tested. Two conditions, deliberately: an explicit opt-in flag, AND the send
+  // having actually been stubbed. Configuring a provider closes this off even
+  // if someone leaves the flag set.
+  const reveal = stubbed && env.TOOLS_REVEAL_CODES === 'true'
+
   return NextResponse.json({
     ok: true,
     expiresInMinutes: CODE_TTL_MINUTES,
-    // Tells the UI to say where the code actually went. Never the code itself.
+    // Tells the UI to say where the code actually went.
     stubbed,
+    ...(reveal ? { code: issued.code } : {}),
   })
 }

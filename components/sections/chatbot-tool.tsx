@@ -773,13 +773,23 @@ function ClaimEmbed({ sessionId, host }: { sessionId: string; host: string }) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ action: 'send', sessionId, email: email.trim() }),
       })
-      const body = (await res.json()) as { ok: boolean; error?: string; stubbed?: boolean }
+      const body = (await res.json()) as {
+        ok: boolean
+        error?: string
+        stubbed?: boolean
+        code?: string
+      }
 
       if (body.ok) {
         setStep('code')
+        // Only present on a build with no email provider and TOOLS_REVEAL_CODES
+        // set — staging, so the flow can be finished without a mailbox. Kept in
+        // the console rather than on the page: it is a testing affordance, not
+        // something to show a visitor.
+        if (body.code) console.info('[epyc] verification code:', body.code)
         setNotice(
           body.stubbed
-            ? 'Email sending is not configured yet — the code is printed in the dev server console.'
+            ? 'Email sending is not configured yet, so this code was written to the server log rather than sent.'
             : `We sent a 6-digit code to ${email.trim()}. It expires in 10 minutes.`,
         )
       } else {
