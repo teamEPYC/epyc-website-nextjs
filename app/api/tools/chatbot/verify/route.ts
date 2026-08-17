@@ -7,7 +7,7 @@ import {
   checkCode,
   issueCode,
 } from '@/lib/tools/chatbot/verification'
-import { getSession } from '@/lib/tools/session'
+import { getSession, toolsSalt } from '@/lib/tools/session'
 
 /**
  * Send a verification code, and check one.
@@ -21,7 +21,14 @@ export async function POST(req: Request) {
 
   const { env } = getCloudflareContext()
   const db = env.DB
-  const pepper = env.TOOLS_IP_SALT ?? 'dev-salt-not-for-production'
+
+  // Codes are stored as an HMAC under this. A published fallback would mean
+  // stored hashes are reversible by brute force over a million six-digit codes.
+  const pepper = toolsSalt(env)
+  if (!pepper) {
+    console.error('TOOLS_IP_SALT is not set')
+    return NextResponse.json({ ok: false, error: 'This is unavailable.' }, { status: 503 })
+  }
 
   if (json?.action === 'check') {
     const parsed = verifyCheckSchema.safeParse(json)

@@ -15,6 +15,7 @@ import {
   loadPagesForScoring,
   savePages,
   saveDiagnosis,
+  toolsSalt,
 } from '@/lib/tools/session'
 
 /**
@@ -45,8 +46,17 @@ export async function POST(req: Request) {
   const { env } = getCloudflareContext()
   const db = env.DB
 
+  // No salt, no crawl: `ip_hash` is the only thing standing between our storage
+  // and a plain record of who visited. Running on a known constant would be
+  // worse than not running.
+  const salt = toolsSalt(env)
+  if (!salt) {
+    console.error('TOOLS_IP_SALT is not set')
+    return NextResponse.json({ ok: false, error: 'This tool is unavailable.' }, { status: 503 })
+  }
+
   const ip = req.headers.get('cf-connecting-ip') ?? '0.0.0.0'
-  const ipHash = await hashIp(ip, env.TOOLS_IP_SALT ?? 'dev-salt-not-for-production')
+  const ipHash = await hashIp(ip, salt)
   const ipKey = counterKeys.ip(ipHash)
 
   // Checked, not consumed: a crawl that fails should not cost the visitor one

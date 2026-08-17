@@ -13,6 +13,22 @@ export const REUSE_WINDOW_MS = 24 * 60 * 60 * 1000
 export type SessionStatus = 'crawling' | 'ready' | 'empty' | 'failed'
 
 /**
+ * The HMAC salt, or null when it is not configured.
+ *
+ * There was a `?? 'dev-salt-not-for-production'` fallback at all four call
+ * sites. That is a published constant, and embed keys are public by design, so
+ * anyone could compute `manageToken(key, fallback)` and recrawl a customer's
+ * site — and every stored `ip_hash` would be a plain hash of an address space
+ * small enough to enumerate. A missing salt now fails closed instead: the
+ * caller returns 503 rather than quietly running on a known secret.
+ *
+ * Local development sets it in `.dev.vars` — see docs/ai-chatbot-local-testing.md.
+ */
+export function toolsSalt(env: { TOOLS_IP_SALT?: string }): string | null {
+  return env.TOOLS_IP_SALT || null
+}
+
+/**
  * HMAC-SHA256 of `value` under `salt`, hex encoded.
  *
  * The one keyed-hash primitive for the tools. Also used for verification codes
@@ -192,23 +208,56 @@ export function readTranscript(row: SessionRow): Turn[] {
 }
 
 /**
- * Record one exchange and consume one of the session's messages.
+ * Claim one of the session's messages, before any model call is made.
  *
- * Single statement so the count cannot drift from the transcript: if the write
- * fails, neither happened. Storing the transcript tells us which questions
- * visitors actually ask, which is the feedback loop for refining the ten.
+ * Returns false when the cap is already reached. This has to be the same
+ * conditional-update shape as the daily counters: reading `messages_used` and
+ * incrementing it later is not atomic, so N requests fired at once for one
+ * session all read the same value, all call the model, and all record a turn —
+ * eight becomes however many the client sends in parallel.
+ *
+ * Reserving up front means a turn can be consumed by a request that then fails.
+ * `releaseTurn` hands it back for the one case we can detect.
  */
-export async function recordTurn(
+export async function reserveTurn(
+  db: D1Database,
+  id: string,
+  limit: number,
+): Promise<boolean> {
+  const res = await db
+    .prepare(
+      `UPDATE tool_sessions SET messages_used = messages_used + 1
+       WHERE id = ? AND messages_used < ?`,
+    )
+    .bind(id, limit)
+    .run()
+
+  return (res.meta.changes ?? 0) > 0
+}
+
+/** Give back a reserved turn when the model never answered. */
+export async function releaseTurn(db: D1Database, id: string): Promise<void> {
+  await db
+    .prepare('UPDATE tool_sessions SET messages_used = messages_used - 1 WHERE id = ? AND messages_used > 0')
+    .bind(id)
+    .run()
+}
+
+/**
+ * Store the conversation so far.
+ *
+ * The count is no longer incremented here — `reserveTurn` owns it, because the
+ * cap has to be enforced before the model call rather than after it. Storing
+ * the transcript tells us which questions visitors actually ask, which is the
+ * feedback loop for refining the ten.
+ */
+export async function saveTranscript(
   db: D1Database,
   id: string,
   transcript: Turn[],
 ): Promise<void> {
   await db
-    .prepare(
-      `UPDATE tool_sessions
-       SET transcript_json = ?, messages_used = messages_used + 1
-       WHERE id = ?`,
-    )
+    .prepare('UPDATE tool_sessions SET transcript_json = ? WHERE id = ?')
     .bind(JSON.stringify(transcript), id)
     .run()
 }

@@ -11,7 +11,14 @@ import {
   manageToken,
 } from '@/lib/tools/chatbot/embed'
 import { scoreDeterministic } from '@/lib/tools/chatbot/diagnosis'
-import { clearPages, finishSession, getSession, savePages, saveDiagnosis } from '@/lib/tools/session'
+import {
+  clearPages,
+  finishSession,
+  getSession,
+  savePages,
+  saveDiagnosis,
+  toolsSalt,
+} from '@/lib/tools/session'
 
 /**
  * Re-read a live embed's site and replace its corpus.
@@ -37,7 +44,15 @@ export async function POST(req: Request) {
 
   const { env } = getCloudflareContext()
   const db = env.DB
-  const salt = env.TOOLS_IP_SALT ?? 'dev-salt-not-for-production'
+
+  // The manage token is the only credential on this route, and the embed key it
+  // is derived from is public. A known fallback salt would make it forgeable by
+  // anyone who can read the customer's page source.
+  const salt = toolsSalt(env)
+  if (!salt) {
+    console.error('TOOLS_IP_SALT is not set')
+    return NextResponse.json({ ok: false, error: 'This is unavailable.' }, { status: 503 })
+  }
 
   const embed = await findEmbedByKey(db, parsed.data.key)
   if (!embed || embed.status !== 'active') {

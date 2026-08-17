@@ -18,7 +18,7 @@ TOOLS_SESSIONS_PER_IP=100
 | Key | Why |
 |---|---|
 | `OPENROUTER_API_KEY` | The only one you cannot invent. Get it from openrouter.ai |
-| `TOOLS_IP_SALT` | Hashes visitor IPs, verification codes, and embed manage links. Any string locally |
+| `TOOLS_IP_SALT` | **Required.** Hashes visitor IPs, verification codes, and embed manage links. Any string locally, but without it every tool route returns 503 — there is deliberately no fallback, since a known salt would make manage links forgeable and stored IP hashes reversible |
 | `TOOLS_SESSIONS_PER_IP` | Local only. Without it you get 3 crawls a day, because localhost has no per-visitor IP and everything shares one counter |
 
 **`TOOLS_SESSIONS_PER_IP` must stay unset in staging and production.** It

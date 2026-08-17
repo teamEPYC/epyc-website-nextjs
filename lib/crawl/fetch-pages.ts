@@ -222,15 +222,23 @@ async function fetchText(
 ): Promise<string | null> {
   if (budgetMs <= 0) return null
 
+  // The budget covers the whole chain, not each hop. Re-arming the full timeout
+  // per redirect let one page take (maxRedirects + 1) × budgetMs — up to 32s
+  // against a 20s crawl deadline, which is the wall-clock cap the route
+  // promises. The caller still decides the size of the budget; a sitemap is
+  // worth waiting longer for than a page.
+  const deadline = Date.now() + budgetMs
+
   let current = url
   for (let hop = 0; hop <= LIMITS.maxRedirects; hop++) {
     const checked = validateUrl(current)
     if (!checked.ok) return null
 
-    // The caller decides the budget — a sitemap is worth waiting longer for
-    // than a page. Clamping here would silently override that.
+    const remaining = deadline - Date.now()
+    if (remaining <= 0) return null
+
     const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), budgetMs)
+    const timer = setTimeout(() => controller.abort(), remaining)
 
     try {
       const res = await doFetch(checked.url, {

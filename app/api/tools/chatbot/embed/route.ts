@@ -10,7 +10,7 @@ import {
   mintKey,
 } from '@/lib/tools/chatbot/embed'
 import { isVerified } from '@/lib/tools/chatbot/verification'
-import { getSession } from '@/lib/tools/session'
+import { getSession, toolsSalt } from '@/lib/tools/session'
 
 /**
  * Claim an embed: mint a key for a verified address and return the snippet.
@@ -60,7 +60,14 @@ export async function POST(req: Request) {
   }
 
   const origin = new URL(req.url).origin
-  const salt = env.TOOLS_IP_SALT ?? 'dev-salt-not-for-production'
+
+  // Minting a manage link under a known salt would hand out a credential
+  // anyone could forge. Refuse rather than issue a worthless one.
+  const salt = toolsSalt(env)
+  if (!salt) {
+    console.error('TOOLS_IP_SALT is not set')
+    return NextResponse.json({ ok: false, error: 'This is unavailable.' }, { status: 503 })
+  }
 
   // The manage link is returned with the snippet, and shown on screen rather
   // than emailed: there is no email provider configured yet, so a link we only

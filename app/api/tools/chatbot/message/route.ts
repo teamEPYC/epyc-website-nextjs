@@ -10,8 +10,10 @@ import {
   loadPages,
   loadPagesForScoring,
   readTranscript,
-  recordTurn,
+  releaseTurn,
+  reserveTurn,
   saveDiagnosis,
+  saveTranscript,
 } from '@/lib/tools/session'
 
 /**
@@ -43,17 +45,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'That session has expired.' }, { status: 404 })
   }
 
-  // The report is the end of the conversation, not an error.
-  if (session.messages_used >= CAPS.messagesPerSession) {
+  if (session.status !== 'ready') {
     return NextResponse.json(
-      { ok: false, capped: true, error: 'You’ve used all your questions.' },
+      { ok: false, error: 'There is not enough on that site to chat about.' },
       { status: 409 },
     )
   }
 
-  if (session.status !== 'ready') {
+  // The report is the end of the conversation, not an error. Claimed in one
+  // conditional statement rather than read here and incremented after the
+  // answer: eight parallel requests would otherwise all see zero used, all call
+  // the model, and all record a turn.
+  if (!(await reserveTurn(db, session.id, CAPS.messagesPerSession))) {
     return NextResponse.json(
-      { ok: false, error: 'There is not enough on that site to chat about.' },
+      { ok: false, capped: true, error: 'You’ve used all your questions.' },
       { status: 409 },
     )
   }
@@ -104,6 +109,9 @@ export async function POST(req: Request) {
     })
   } catch (err) {
     console.error('all model tiers unavailable', err)
+    // The turn was claimed before the call. Nothing was answered, so hand it
+    // back rather than charging them a question for our outage.
+    await releaseTurn(db, session.id).catch(() => {})
     return NextResponse.json(
       { ok: false, error: 'I’m having trouble reaching the model. Try again shortly.' },
       { status: 503 },
@@ -142,7 +150,7 @@ export async function POST(req: Request) {
           { role: 'user' as const, content: parsed.data.message },
           { role: 'assistant' as const, content: answer },
         ]
-        await recordTurn(db, session.id, turns)
+        await saveTranscript(db, session.id, turns)
       } catch (err) {
         console.error('failed to record turn', err)
       }
