@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy:staging": "NEXT_PUBLIC_DEPLOY_ENV=staging opennextjs-cloudflare build && wrangler deploy --env staging && wrangler deploy --env staging --config workers/contact-webhook/wrangler.jsonc",
     "deploy:production": "NEXT_PUBLIC_DEPLOY_ENV=production opennextjs-cloudflare build && wrangler deploy --env production && wrangler deploy --env production --config workers/contact-webhook/wrangler.jsonc",
@@ -28,7 +29,7 @@
     "@cloudflare/workers-types": "^4.20260515.1",
     "@opennextjs/cloudflare": "^1.19.10",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^22.20.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
@@ -36,6 +37,7 @@
     "tailwindcss": "^4",
     "tsx": "^4.22.0",
     "typescript": "^5",
+    "vitest": "^4.1.10",
     "wrangler": "^4.91.0"
   }
 }
