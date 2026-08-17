@@ -1,6 +1,6 @@
 // Markdown representation of any page route.
 //
-// `proxy.ts` rewrites a request carrying `Accept: text/markdown` to this route,
+// `middleware.ts` rewrites a request carrying `Accept: text/markdown` to this route,
 // so `GET /website-redesign` with that header lands on `/md/website-redesign`.
 // The route is also directly addressable — `GET /md/website-redesign` returns the
 // same body — which gives agents a plain URL when they cannot set headers.
@@ -29,7 +29,7 @@ async function renderFromHtml(pathname: string, origin: string, request: NextReq
   const response = await fetch(new URL(pathname, origin), {
     headers: {
       accept: 'text/html',
-      // Tells `proxy` this is the HTML fetch backing a markdown response, so it
+      // Tells the middleware this is the HTML fetch backing a markdown response, so it
       // does not negotiate again and recurse.
       [RENDER_GUARD_HEADER]: '1',
       'user-agent': request.headers.get('user-agent') ?? 'EPYC-markdown-renderer',

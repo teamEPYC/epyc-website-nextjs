@@ -5,7 +5,15 @@
 // the same URL (see `app/md/[[...path]]/route.ts`). Browsers — which never name
 // `text/markdown` — fall through untouched and keep getting HTML.
 //
-// Named `proxy.ts` because Next 16 renamed the `middleware` file convention.
+// DO NOT rename this to `proxy.ts`. Next 16 renamed the convention and logs a
+// deprecation warning for `middleware.ts`, but a `proxy.ts` file *always* runs on
+// the Node.js runtime — Next rejects any `runtime` config on it outright
+// ("Proxy always runs on Node.js runtime"). `@opennextjs/cloudflare` hard-fails
+// the build on Node middleware ("Node.js middleware is not currently supported"),
+// so naming this `proxy.ts` breaks production deploys. `middleware.ts` with no
+// `runtime` key resolves to the edge runtime, which is what the adapter needs.
+// Any explicit `runtime` here is also rejected, so there is nothing to add.
+// If Next drops `middleware.ts`, this negotiation has to move into the Worker.
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
@@ -17,7 +25,7 @@ import {
   prefersMarkdown,
 } from '@/lib/markdown/negotiate'
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // The markdown renderer fetches this app's own HTML to convert it. Negotiating

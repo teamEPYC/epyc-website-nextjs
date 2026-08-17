@@ -4,6 +4,11 @@ import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare'
 initOpenNextCloudflareForDev()
 
 const nextConfig: NextConfig = {
+  // Next's default, set explicitly: every canonical, sitemap entry, and internal
+  // link uses the no-slash form, and `/path/` 308s to `/path`. Flipping this
+  // would invalidate every canonical on the site, so it is pinned rather than
+  // left implicit.
+  trailingSlash: false,
   async redirects() {
     return [
       {
@@ -42,7 +47,7 @@ const nextConfig: NextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           // Every URL has two representations — HTML by default, markdown when
-          // the request sends `Accept: text/markdown` (see `proxy.ts`) — so the
+          // the request sends `Accept: text/markdown` (see `middleware.ts`) — so the
           // Accept header is part of the cache key. Note that Next replaces this
           // with its own `Vary: rsc, ...` on app-router page responses; the
           // markdown route sets `Vary: Accept` itself, and negotiated markdown is

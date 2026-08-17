@@ -41,7 +41,7 @@ Marketing strategy, copy assets, and campaign briefs live in a separate repo (`e
 | `lib/strapi/` | Strapi CMS client (`fetchStrapi`) + TypeScript types |
 | `lib/projects/` | Normalisation helpers for Strapi project data |
 | `lib/cn.ts` | `cn()` helper — `clsx` + `tailwind-merge` |
-| `proxy.ts` | Content negotiation — rewrites `Accept: text/markdown` requests to the markdown renderer (Next 16 renamed `middleware` → `proxy`) |
+| `middleware.ts` | Content negotiation — rewrites `Accept: text/markdown` requests to the markdown renderer. Must NOT be renamed to `proxy.ts`: proxy files are pinned to the Node runtime, which the Cloudflare adapter rejects at build time |
 | `app/md/[[...path]]/route.ts` | Markdown renderer for every page route |
 | `lib/markdown/` | `negotiate.ts` (Accept parsing), `from-html.ts` (HTML → Markdown), `sources.ts` (CMS-backed markdown + FAQ supplements) |
 | `lib/image-loader.ts` | Custom Next.js image loader for Cloudflare CDN |
@@ -66,7 +66,7 @@ curl -s https://epyc.in/md/website-redesign                          # same body
 
 **How it works**
 
-1. `proxy.ts` parses the `Accept` header (`lib/markdown/negotiate.ts`). Markdown wins only when it is named **and** ranked at least as high as HTML — `text/html,...,*/*;q=0.8` from a browser does not qualify. Matching requests are rewritten to `/md/<path>`.
+1. `middleware.ts` parses the `Accept` header (`lib/markdown/negotiate.ts`). Markdown wins only when it is named **and** ranked at least as high as HTML — `text/html,...,*/*;q=0.8` from a browser does not qualify. Matching requests are rewritten to `/md/<path>`.
 2. `app/md/[[...path]]/route.ts` builds the markdown:
    - **CMS routes** (`/blog`, `/blog/[slug]`, `/projects`, `/gallery`, `/gallery/[slug]`) are built from Strapi fields in `lib/markdown/sources.ts` — the author, date, and tags come through as data, not layout.
    - **Every other route** is rendered by fetching that page's own HTML and converting it (`lib/markdown/from-html.ts`). New pages are covered the day they ship with no extra work.
