@@ -100,7 +100,21 @@ const WIDGET = String.raw`
     return b;
   }
 
+  // History survives navigation. Without this the conversation resets every
+  // time the visitor clicks a link, because the script reloads with the page.
+  // sessionStorage, not localStorage: it dies with the tab, which keeps this
+  // out of cookie-consent territory. Scoped per key so two bots cannot mix.
+  var STORE = 'epyc_bot_' + key;
   var history = [];
+  try {
+    history = JSON.parse(sessionStorage.getItem(STORE) || '[]');
+    if (!Array.isArray(history)) history = [];
+  } catch (e) { history = []; }
+
+  function remember() {
+    try { sessionStorage.setItem(STORE, JSON.stringify(history.slice(-8))); } catch (e) {}
+  }
+
   var busy = false;
 
   function ask(text) {
@@ -132,6 +146,7 @@ const WIDGET = String.raw`
           if (chunk.done) {
             history.push({ role: 'user', content: text });
             history.push({ role: 'assistant', content: answer });
+            remember();
             busy = false;
             return;
           }
@@ -180,7 +195,15 @@ const WIDGET = String.raw`
       input.focus();
       if (!mounted) {
         mounted = true;
-        bubble('bot', 'Hi — ask me anything about this site.');
+        // Replay what was said before the visitor changed page. Skipping this
+        // would leave the panel blank while the model still had the context.
+        if (history.length) {
+          history.forEach(function (turn) {
+            bubble(turn.role === 'user' ? 'you' : 'bot', turn.content);
+          });
+        } else {
+          bubble('bot', 'Hi — ask me anything about this site.');
+        }
       }
     }
   });

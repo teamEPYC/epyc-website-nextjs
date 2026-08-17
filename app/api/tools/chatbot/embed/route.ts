@@ -5,6 +5,8 @@ import {
   createEmbed,
   embedSnippet,
   findEmbedBySession,
+  manageToken,
+  manageUrl,
   mintKey,
 } from '@/lib/tools/chatbot/embed'
 import { isVerified } from '@/lib/tools/chatbot/verification'
@@ -58,6 +60,13 @@ export async function POST(req: Request) {
   }
 
   const origin = new URL(req.url).origin
+  const salt = env.TOOLS_IP_SALT ?? 'dev-salt-not-for-production'
+
+  // The manage link is returned with the snippet, and shown on screen rather
+  // than emailed: there is no email provider configured yet, so a link we only
+  // sent by email would reach nobody. It is derived from the key, so it can be
+  // handed out again on a re-claim without storing anything.
+  const manage = async (key: string) => manageUrl(key, await manageToken(key, salt), origin)
 
   // Claiming twice returns the same key rather than minting a second one —
   // otherwise a refresh silently orphans the snippet they already pasted.
@@ -68,6 +77,7 @@ export async function POST(req: Request) {
       key: existing.key,
       host: existing.bound_host,
       snippet: embedSnippet(existing.key, origin),
+      manageUrl: await manage(existing.key),
       alreadyClaimed: true,
     })
   }
@@ -92,6 +102,7 @@ export async function POST(req: Request) {
     key,
     host: session.host,
     snippet: embedSnippet(key, origin),
+    manageUrl: await manage(key),
     alreadyClaimed: false,
   })
 }

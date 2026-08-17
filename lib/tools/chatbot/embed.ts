@@ -6,13 +6,14 @@
  *
  *   1. A key minted for acme.com only answers requests whose Origin is
  *      acme.com or www.acme.com. CORS is set to that host, never `*`.
- *   2. Each key carries its own daily message counter. Origin can be forged by
+ *   2. The bound host carries a daily message counter. Origin can be forged by
  *      a non-browser client, so the cap is what bounds the worst case — a
  *      bounded amount of free inference, not an open tap.
  *   3. Keys can be revoked with one row update.
  */
 
 import { bumpCounter } from '../counters'
+import { hmacHex } from '../session'
 
 export type EmbedRow = {
   key: string
@@ -23,8 +24,26 @@ export type EmbedRow = {
   crawled_at: string
 }
 
-/** Messages per embed per day. A runaway backstop, not a product limit. */
+/**
+ * Messages per bound host per day. A runaway backstop, not a product limit.
+ *
+ * Keyed on the host rather than the key: one domain can crawl three times in a
+ * day and claim three sessions, which would otherwise be 150 messages.
+ */
 export const EMBED_DAILY_MESSAGES = 50
+
+/**
+ * Messages from the customer's own machine per day.
+ *
+ * A separate bucket, so a laptop can never drain the live site's allowance.
+ * Any localhost origin is accepted for any key — the key is public and sits in
+ * their page source, and forging `Origin` from curl was always possible anyway,
+ * so refusing localhost bought nothing and blocked every developer.
+ */
+export const EMBED_DEV_DAILY_MESSAGES = 20
+
+/** Recrawls per bound host per day, from the signed manage link. */
+export const EMBED_RECRAWLS_PER_DAY = 3
 
 const KEY_PREFIX = 'ek_live_'
 
@@ -38,36 +57,59 @@ export function isEmbedKey(value: string): boolean {
   return /^ek_live_[0-9a-f]{32}$/.test(value)
 }
 
+/** The hostname of an Origin header, lowercased, without the port. */
+function hostnameOf(origin: string | null): string | null {
+  if (!origin) return null
+  try {
+    const url = new URL(origin)
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') return null
+    return url.hostname.toLowerCase()
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Is this request coming from the customer's own machine?
+ *
+ * One definition, used by both the origin check and the daily cap, so the two
+ * can never disagree about what counts as local. Any port matches — `hostname`
+ * drops it.
+ */
+export function isLocalOrigin(origin: string | null): boolean {
+  const host = hostnameOf(origin)
+  return host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host === '::1'
+}
+
 /**
  * Does this Origin belong to the host the key was minted for?
  *
- * Apex and `www` only. Subdomains are deliberately not accepted: a key issued
- * for acme.com should not answer for anything.acme.com, because we never
- * crawled those and the bot would confidently answer from the wrong corpus.
+ * Exactly the crawled host, plus `www`, plus localhost. Three rules, and the
+ * important one is what is missing: **no label stripping, ever.**
+ *
+ * Deriving an apex from a hostname needs the Public Suffix List. Without it,
+ * `random.vercel.app` strips to `vercel.app` and a single key would answer for
+ * every site Vercel hosts. The same holds for `*.myshopify.com`,
+ * `*.github.io`, `*.framer.website`. So `bound_host` is stored as crawled and
+ * compared as stored.
+ *
+ * A wildcard for subdomains was considered and rejected for the same reason:
+ * crawling a bare public suffix would hand out a key covering everyone on it.
+ *
+ * ponytail: no per-key origin allowlist. A customer who needs the widget on
+ * `staging.acme.com` gets a 403 naming the bound host and installs on
+ * production instead; testing happens on localhost, which is allowed. Upgrade
+ * path is an `extra_origins` column on tool_embeds, set explicitly from the
+ * manage page — never inferred from the string.
  */
-export function originAllowed(
-  origin: string | null,
-  boundHost: string,
-  opts: { allowAny?: boolean } = {},
-): boolean {
-  if (!origin) return false
+export function originAllowed(origin: string | null, boundHost: string): boolean {
+  if (isLocalOrigin(origin)) return true
 
-  // Local development only. A key is bound to the crawled site, so a widget
-  // can never be previewed from localhost without this. Gated on an env var
-  // that is unset in staging and production — see cloudflare-env.secrets.d.ts.
-  if (opts.allowAny) return true
+  const host = hostnameOf(origin)
+  if (!host) return false
 
-  let host: string
-  try {
-    const url = new URL(origin)
-    if (url.protocol !== 'https:' && url.protocol !== 'http:') return false
-    host = url.host.toLowerCase()
-  } catch {
-    return false
-  }
-
-  const apex = boundHost.toLowerCase().replace(/^www\./, '')
-  return host === apex || host === `www.${apex}`
+  const bound = boundHost.toLowerCase().replace(/^www\./, '')
+  return host === bound || host === `www.${bound}`
 }
 
 /** CORS headers for a bound embed. Never `*` — the allowlist is one host. */
@@ -118,9 +160,26 @@ export async function findEmbedByKey(db: D1Database, key: string): Promise<Embed
     .first<EmbedRow>()
 }
 
-/** Consume one of this key's daily messages. False means the cap is reached. */
-export async function consumeEmbedMessage(db: D1Database, key: string): Promise<boolean> {
-  return bumpCounter(db, `embed:${key}`, EMBED_DAILY_MESSAGES)
+/**
+ * Consume one daily message. False means the cap is reached.
+ *
+ * Two buckets. Production traffic is capped per bound host; the customer's own
+ * machine gets a smaller separate allowance, so testing can never take the live
+ * site's messages away from its real visitors.
+ */
+export async function consumeEmbedMessage(
+  db: D1Database,
+  embed: EmbedRow,
+  origin: string | null,
+): Promise<boolean> {
+  return isLocalOrigin(origin)
+    ? bumpCounter(db, `embed-dev:${embed.key}`, EMBED_DEV_DAILY_MESSAGES)
+    : bumpCounter(db, `embed:${embed.bound_host}`, EMBED_DAILY_MESSAGES)
+}
+
+/** Consume one of this host's daily recrawls. False means the cap is reached. */
+export async function consumeRecrawl(db: D1Database, boundHost: string): Promise<boolean> {
+  return bumpCounter(db, `recrawl:${boundHost}`, EMBED_RECRAWLS_PER_DAY)
 }
 
 export async function touchEmbed(db: D1Database, key: string): Promise<void> {
@@ -133,4 +192,24 @@ export async function touchEmbed(db: D1Database, key: string): Promise<void> {
 /** The snippet a customer pastes. Kept in one place so the docs cannot drift. */
 export function embedSnippet(key: string, origin: string): string {
   return `<script src="${origin}/api/embed/chatbot.js" data-key="${key}" defer></script>`
+}
+
+/**
+ * The token that proves someone holds the manage link for this embed.
+ *
+ * Derived, not stored: the same key always produces the same token, so there
+ * is no table, no expiry to sweep, and no second thing to keep in sync. The
+ * salt is a Worker secret, so a token cannot be produced from the public key
+ * alone. Revoking the embed is what kills the link — the row is checked first.
+ *
+ * ponytail: no login, no account. One button behind an unguessable URL is the
+ * whole feature. Upgrade path is the OTP flow that already exists, if the
+ * manage page ever does something worth stealing.
+ */
+export async function manageToken(key: string, salt: string): Promise<string> {
+  return (await hmacHex(`manage:${key}`, salt)).slice(0, 32)
+}
+
+export function manageUrl(key: string, token: string, origin: string): string {
+  return `${origin}/tools/ai-chatbot/manage?key=${key}&t=${token}`
 }

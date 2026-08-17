@@ -21,8 +21,9 @@ import { loadPages } from '@/lib/tools/session'
  * means something. An iframe we host would report our own origin instead.
  *
  * Binding is not airtight — a non-browser client can send any Origin it likes.
- * The per-key daily cap is what bounds that: the worst case is a fixed amount
- * of free-tier inference, not an open tap.
+ * The per-host daily cap is what bounds that: the worst case is a fixed amount
+ * of free-tier inference, not an open tap. Localhost is allowed for any key and
+ * counted separately, so testing cannot spend a live site's allowance.
  */
 
 export async function OPTIONS(req: Request) {
@@ -51,12 +52,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'This assistant is not available.' }, { status: 404 })
   }
 
-  // The binding. A key minted for acme.com answers only for acme.com.
-  if (!originAllowed(origin, embed.bound_host, {
-    allowAny: env.TOOLS_EMBED_ALLOW_ANY_ORIGIN === 'true',
-  })) {
+  // The binding. A key minted for acme.com answers only for acme.com — plus
+  // localhost, so the customer's developer can test before installing.
+  if (!originAllowed(origin, embed.bound_host)) {
+    // Name the host. A developer seeing this on staging.acme.com needs to know
+    // why, not guess — "not available" reads as broken.
     return NextResponse.json(
-      { ok: false, error: 'This assistant is not available on this domain.' },
+      { ok: false, error: `This assistant only runs on ${embed.bound_host}.` },
       { status: 403 },
     )
   }
@@ -72,7 +74,7 @@ export async function POST(req: Request) {
     )
   }
 
-  if (!(await consumeEmbedMessage(db, embed.key))) {
+  if (!(await consumeEmbedMessage(db, embed, origin))) {
     return NextResponse.json(
       { ok: false, error: 'This assistant has reached its limit for today.' },
       { status: 429, headers: cors },

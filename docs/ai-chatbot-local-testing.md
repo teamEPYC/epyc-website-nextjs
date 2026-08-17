@@ -13,18 +13,20 @@ Create `.dev.vars` in the repo root. It is gitignored — never commit it.
 OPENROUTER_API_KEY=sk-or-v1-…
 TOOLS_IP_SALT=any-random-string-for-local
 TOOLS_SESSIONS_PER_IP=100
-TOOLS_EMBED_ALLOW_ANY_ORIGIN=true
 ```
 
 | Key | Why |
 |---|---|
 | `OPENROUTER_API_KEY` | The only one you cannot invent. Get it from openrouter.ai |
-| `TOOLS_IP_SALT` | Hashes visitor IPs and verification codes. Any string locally |
+| `TOOLS_IP_SALT` | Hashes visitor IPs, verification codes, and embed manage links. Any string locally |
 | `TOOLS_SESSIONS_PER_IP` | Local only. Without it you get 3 crawls a day, because localhost has no per-visitor IP and everything shares one counter |
-| `TOOLS_EMBED_ALLOW_ANY_ORIGIN` | Local only. An embed key is bound to the site it was minted for, so a widget can never be previewed on localhost without it |
 
-**The last two must stay unset in staging and production.** They switch off real
-limits.
+**`TOOLS_SESSIONS_PER_IP` must stay unset in staging and production.** It
+switches off a real limit.
+
+Nothing is needed to preview the widget. An embed key answers any `localhost`
+origin by design, on a separate 20-a-day allowance that cannot touch the live
+site's 50.
 
 > **⚠️ OpenRouter needs $10 of credits.** Without them the account allows about
 > 50 free requests a day *across all models* — the free tiers share one quota,
@@ -93,7 +95,10 @@ At the bottom of the report:
    No email is actually sent — there is no provider yet. The UI says so.
 
 3. Type the 6 digits → **Verify**
-4. The embed snippet appears with a copy button
+4. The embed snippet appears with a copy button, and under it a **manage link**.
+   That link is the only way to refresh the bot later — there is no button for
+   it in the widget, because the widget is shown to the customer's visitors.
+   Copy it somewhere; nothing emails it to you.
 
 Limits while testing: 3 codes per email per day, 3 per session, 10 minute
 expiry, 5 wrong attempts and the code dies.
@@ -122,9 +127,26 @@ site you crawled — it answers from those pages only.
 **The `src` must point at `http://localhost:3000`.** If the snippet says
 `https://epyc.in`, change it — the live site does not have this code yet.
 
-This only works locally because of `TOOLS_EMBED_ALLOW_ANY_ORIGIN`. In
-production the key is bound to the crawled domain and this page would get a
-`403`, which is the binding working correctly.
+Localhost is allowed for any key on purpose, so a customer's developer can test
+before installing. Those messages come out of a separate 20-a-day bucket
+(`embed-dev:<key>`), so testing can never spend the live site's 50. Any other
+domain gets a `403` naming the bound host, which is the binding working.
+
+The conversation survives page navigation — it is held in `sessionStorage` per
+key, so add a second page to `embed-test.html` and the thread continues.
+
+---
+
+## 7. Refreshing a bot
+
+Open the manage link from step 5. One button: **Read my site again**. It
+re-reads the site, swaps the pages under the same key, and leaves the snippet on
+the customer's site untouched.
+
+Capped at 3 a day per domain. Clear `tool_counters` to reset while testing.
+
+A recrawl that comes back empty is rejected and the old pages are kept — a site
+that is down for twenty seconds must not blank a live bot.
 
 ---
 
@@ -156,6 +178,7 @@ SELECT key, bound_host, email FROM tool_embeds ORDER BY created_at DESC;
 | "The assistant is unavailable" | `OPENROUTER_API_KEY` missing, or dev server not restarted after adding it |
 | `429` from the model | OpenRouter free quota. Add $10 of credits |
 | "You've used your 3 checks" | `TOOLS_SESSIONS_PER_IP` not set, or not restarted. Or clear `tool_counters` |
-| Widget does not appear | Snippet points at the wrong origin, or dev server predates `TOOLS_EMBED_ALLOW_ANY_ORIGIN`. Check the browser console for a `403` |
+| Widget does not appear | Snippet points at the wrong origin. Check the browser console for a `403` — the message names the host the key is bound to |
+| "That link is no longer valid" on manage | `TOOLS_IP_SALT` changed since the key was claimed. The token is derived from it. Claim again |
 | Same site returns instantly | Working as intended — crawls are reused for 24h. Use **Read my site again** to force a fresh one |
 | Report says it could not be built | Old session from before a fix. Crawl again |

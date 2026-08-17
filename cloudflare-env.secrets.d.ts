@@ -28,13 +28,6 @@ declare namespace Cloudflare {
      */
     TOOLS_SESSIONS_PER_IP?: string
     /**
-     * Lets an embed answer from any Origin. Local development only — a key is
-     * bound to the site it was minted for, so a widget cannot otherwise be
-     * previewed from localhost. Leave unset in staging and production: without
-     * the binding, a public key works from anywhere.
-     */
-    TOOLS_EMBED_ALLOW_ANY_ORIGIN?: string
-    /**
      * Transactional email provider key. Unset today, which makes
      * lib/tools/email.ts log verification codes instead of sending them.
      * Setting it also requires SPF and DKIM records on epyc.in.

@@ -13,13 +13,13 @@ export const REUSE_WINDOW_MS = 24 * 60 * 60 * 1000
 export type SessionStatus = 'crawling' | 'ready' | 'empty' | 'failed'
 
 /**
- * HMAC the visitor's IP before it touches storage.
+ * HMAC-SHA256 of `value` under `salt`, hex encoded.
  *
- * A bare hash is not anonymisation — IPv4 is 2^32 addresses, which is a
- * rainbow table someone can build in an afternoon. The salt is a Worker secret
- * (`TOOLS_IP_SALT`), so the stored value is only linkable back by us.
+ * The one keyed-hash primitive for the tools. Also used for verification codes
+ * and embed manage tokens, so there is a single place to change if the hash
+ * ever moves.
  */
-export async function hashIp(ip: string, salt: string): Promise<string> {
+export async function hmacHex(value: string, salt: string): Promise<string> {
   const enc = new TextEncoder()
   const key = await crypto.subtle.importKey(
     'raw',
@@ -28,8 +28,19 @@ export async function hashIp(ip: string, salt: string): Promise<string> {
     false,
     ['sign'],
   )
-  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(ip))
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(value))
   return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * HMAC the visitor's IP before it touches storage.
+ *
+ * A bare hash is not anonymisation — IPv4 is 2^32 addresses, which is a
+ * rainbow table someone can build in an afternoon. The salt is a Worker secret
+ * (`TOOLS_IP_SALT`), so the stored value is only linkable back by us.
+ */
+export async function hashIp(ip: string, salt: string): Promise<string> {
+  return hmacHex(ip, salt)
 }
 
 /**
@@ -99,6 +110,17 @@ export async function savePages(
 }
 
 /**
+ * Drop a session's corpus, ahead of a recrawl writing the new one.
+ *
+ * Delete then insert, not `INSERT OR REPLACE`: a page the owner has since
+ * removed from their site would otherwise stay in the corpus forever and the
+ * live bot would keep answering from it.
+ */
+export async function clearPages(db: D1Database, sessionId: string): Promise<void> {
+  await db.prepare('DELETE FROM tool_pages WHERE session_id = ?').bind(sessionId).run()
+}
+
+/**
  * The most recent usable crawl of this host, if there is one.
  *
  * Cuts repeat cost, is politer to the prospect's server, and makes a live
@@ -140,6 +162,8 @@ export async function copyPages(db: D1Database, fromId: string, toId: string): P
 export type SessionRow = {
   id: string
   host: string
+  /** The address as submitted, re-validated before any recrawl reuses it. */
+  target_url: string
   status: SessionStatus
   messages_used: number
   transcript_json: string | null
@@ -149,7 +173,7 @@ export type SessionRow = {
 export async function getSession(db: D1Database, id: string): Promise<SessionRow | null> {
   return db
     .prepare(
-      `SELECT id, host, status, messages_used, transcript_json, diagnosis_json
+      `SELECT id, host, target_url, status, messages_used, transcript_json, diagnosis_json
        FROM tool_sessions WHERE id = ?`,
     )
     .bind(id)

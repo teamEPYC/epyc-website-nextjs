@@ -755,6 +755,7 @@ function ClaimEmbed({ sessionId, host }: { sessionId: string; host: string }) {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const [snippet, setSnippet] = useState<string | null>(null)
+  const [manageUrl, setManageUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
@@ -814,9 +815,15 @@ function ClaimEmbed({ sessionId, host }: { sessionId: string; host: string }) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ sessionId, email: email.trim() }),
       })
-      const body = (await res.json()) as { ok: boolean; snippet?: string; error?: string }
+      const body = (await res.json()) as {
+        ok: boolean
+        snippet?: string
+        manageUrl?: string
+        error?: string
+      }
       if (body.ok && body.snippet) {
         setSnippet(body.snippet)
+        setManageUrl(body.manageUrl ?? null)
         setStep('done')
         setNotice(null)
       } else {
@@ -868,6 +875,21 @@ function ClaimEmbed({ sessionId, host }: { sessionId: string; host: string }) {
                   Works on {host} only. Free, and it answers from the pages we just read.
                 </span>
               </div>
+
+              {manageUrl && (
+                <div className="flex flex-col gap-2 border-t border-cream/20 pt-6">
+                  <p className="text-body-sm text-cream/80">
+                    Keep this link. It is how you refresh the bot when your site changes, and it is
+                    the only copy — we cannot send it to you yet.
+                  </p>
+                  <a
+                    href={manageUrl}
+                    className="text-code break-all text-cream/60 underline underline-offset-4"
+                  >
+                    {manageUrl}
+                  </a>
+                </div>
+              )}
             </>
           ) : step === 'code' ? (
             <>

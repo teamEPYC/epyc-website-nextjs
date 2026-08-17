@@ -37,6 +37,12 @@ export const embedMessageSchema = z.object({
     .default([]),
 })
 
+/** Refreshing a live embed's corpus, from the signed manage link. */
+export const recrawlSchema = z.object({
+  key: z.string().max(64),
+  t: z.string().max(64),
+})
+
 /** Asking for a verification code. */
 export const verifySendSchema = z.object({
   sessionId: z.string().uuid(),
