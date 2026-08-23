@@ -124,6 +124,22 @@ describe('PayloadProvider field shapes', () => {
     expect(project.platform).toEqual({ title: 'App', slug: 'app' })
   })
 
+  it('flattens the plugin-seo meta group the way the pages consume it', async () => {
+    stubFetch([
+      {
+        id: 1, title: 'Post', slug: 'post', updatedAt: '2026-01-01',
+        meta: { title: 'SEO title', description: 'SEO description' },
+      },
+      { id: 2, title: 'No meta', slug: 'no-meta', updatedAt: '2026-01-01' },
+    ])
+    const [withMeta, without] = await provider().listBlogs()
+    expect(withMeta.metaTitle).toBe('SEO title')
+    expect(withMeta.metaDescription).toBe('SEO description')
+    // generateMetadata falls back to the post title, so absent must be null
+    // rather than undefined-shaped noise.
+    expect(without.metaTitle).toBeNull()
+  })
+
   it('treats a blank alt as absent so consumers fall back to the title', async () => {
     stubFetch([{ id: 1, title: 'Post', slug: 'post', updatedAt: '2026-01-01', coverImage: { ...mediaDoc, alt: '   ', alternativeText: null } }])
     const [blog] = await provider().listBlogs()

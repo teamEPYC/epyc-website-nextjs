@@ -10,8 +10,11 @@ type PayloadMedia = Omit<Media, 'id' | 'url' | 'formats'> & {
   sizes?: Record<string, PayloadSize | undefined>
 }
 type PayloadAuthor = Omit<Author, 'id' | 'authorImage'> & { id: string | number; authorImage?: PayloadRelation<PayloadMedia> }
-type PayloadBlog = Omit<Blog, 'id' | 'coverImage' | 'author' | 'publishedAt'> & {
+type PayloadBlog = Omit<Blog, 'id' | 'coverImage' | 'author' | 'publishedAt' | 'metaTitle' | 'metaDescription'> & {
   id: string | number
+  // plugin-seo groups the SEO fields; Strapi had them flat, and the website
+  // still consumes them flat.
+  meta?: { title?: string | null; description?: string | null; image?: PayloadRelation<PayloadMedia> } | null
   coverImage?: PayloadRelation<PayloadMedia>
   author?: PayloadRelation<PayloadAuthor>
   _status?: 'draft' | 'published'
@@ -75,6 +78,8 @@ function mapBlog(item: PayloadBlog): Blog {
     ...item,
     id: String(item.id),
     publishedAt: item.publishedAt ?? item.publishedDate ?? item.updatedAt,
+    metaTitle: item.meta?.title ?? null,
+    metaDescription: item.meta?.description ?? null,
     coverImage: mapMedia(item.coverImage),
     author: populated<PayloadAuthor>(item.author)
       ? { ...item.author, id: String(item.author.id), authorImage: mapMedia(item.author.authorImage) }
