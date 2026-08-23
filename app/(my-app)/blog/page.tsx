@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { fetchStrapi } from '@/lib/strapi/client'
-import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
+import { getCMS } from '@/lib/cms'
 import { BlogIndex } from '@/components/sections/blog-index'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { normalise } from '@/lib/blogs/normalise'
@@ -19,13 +18,8 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function BlogsPage() {
-  const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
-    'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
-    'populate[author][fields]': 'name,slug',
-    'sort': 'publishedDate:desc',
-    'pagination[limit]': '100',
-  })
-  const blogs = data.filter((b) => b.slug).map((b) => normalise(b))
+  const data = await getCMS().listBlogs({ limit: 100 })
+  const blogs = data.map((b) => normalise(b))
 
   const itemListJsonLd = {
     '@context': 'https://schema.org',

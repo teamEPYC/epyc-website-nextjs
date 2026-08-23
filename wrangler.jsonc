@@ -22,6 +22,19 @@
 	"observability": {
 		"enabled": true,
 	},
+	// CMS selection. These are plaintext, not secrets: the tokens they pair with
+	// arrive through `wrangler secret bulk` in CI. Named environments do NOT
+	// inherit `vars`, so each env below repeats the full set.
+	//
+	// Draft reads need CMS_MODE=draft AND DEPLOYMENT_ROLE=preview together, so a
+	// single mistyped variable cannot expose drafts on the public domain.
+	"vars": {
+		"CMS_PROVIDER": "strapi",
+		"CMS_MODE": "published",
+		"DEPLOYMENT_ROLE": "development",
+		"PAYLOAD_URL": "https://cms.epyc.in",
+	},
+
 	// Producer side of the contact-form webhook job. The consumer is a separate
 	// worker — see workers/contact-webhook/. Named environments do NOT inherit
 	// `queues`, so each env repeats its own producer binding below.
@@ -45,8 +58,16 @@
 		},
 	],
 	"env": {
+		// Staging doubles as the protected content-preview site: it reads the
+		// latest drafts, serves noindex, and publishes no sitemap.
 		"staging": {
 			"name": "epyc-website-staging",
+			"vars": {
+				"CMS_PROVIDER": "strapi",
+				"CMS_MODE": "draft",
+				"DEPLOYMENT_ROLE": "preview",
+				"PAYLOAD_URL": "https://cms.epyc.in",
+			},
 			"d1_databases": [
 				{
 					"binding": "DB",
@@ -65,6 +86,12 @@
 		},
 		"production": {
 			"name": "epyc-website-production",
+			"vars": {
+				"CMS_PROVIDER": "strapi",
+				"CMS_MODE": "published",
+				"DEPLOYMENT_ROLE": "production",
+				"PAYLOAD_URL": "https://cms.epyc.in",
+			},
 			"d1_databases": [
 				{
 					"binding": "DB",

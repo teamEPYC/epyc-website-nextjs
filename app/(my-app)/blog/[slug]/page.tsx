@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { fetchStrapi } from '@/lib/strapi/client'
-import type { StrapiList, StrapiBlog } from '@/lib/strapi/types'
+import { getCMS } from '@/lib/cms'
 import { BlogPost } from '@/components/sections/blog-post'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { normalise } from '@/lib/blogs/normalise'
@@ -40,17 +39,7 @@ function rewriteMediaUrls(html: string): string {
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
-    'filters[slug][$eq]': slug,
-    'fields[0]': 'title',
-    'fields[1]': 'metaTitle',
-    'fields[2]': 'metaDescription',
-    'fields[3]': 'content',
-    'fields[4]': 'coverImageAlt',
-    'populate[coverImage][fields]': 'url,width,height,alternativeText',
-    'pagination[limit]': '1',
-  })
-  const blog = data[0]
+  const blog = await getCMS().getBlogBySlug(slug)
   if (!blog) return {}
 
   const ogImage = blog.coverImage
@@ -73,26 +62,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function BlogDetailPage({ params }: { params: Params }) {
   const { slug } = await params
 
-  const [{ data }, { data: relatedData }] = await Promise.all([
-    fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
-      'filters[slug][$eq]': slug,
-      'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
-      'populate[author][fields]': 'name,slug',
-      'pagination[limit]': '1',
-    }),
-    fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
-      'filters[slug][$ne]': slug,
-      'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
-      'populate[author][fields]': 'name,slug',
-      'sort': 'publishedDate:desc',
-      'pagination[limit]': '3',
-    }),
+  const [blog, relatedData] = await Promise.all([
+    getCMS().getBlogBySlug(slug),
+    getCMS().listBlogs({ excludeSlug: slug, limit: 3 }),
   ])
-
-  const blog = data[0]
   if (!blog) notFound()
 
-  const relatedBlogs = relatedData.filter((b) => b.slug).map((b) => normalise(b))
+  const relatedBlogs = relatedData.map((b) => normalise(b))
 
   const jsonLd = {
     '@context': 'https://schema.org',

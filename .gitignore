@@ -64,3 +64,6 @@ graphify-out/
 
 # Local-only embed widget test page — never ship this
 public/embed-test.html
+
+# Parity and migration reports — generated, may contain CMS content
+artifacts/

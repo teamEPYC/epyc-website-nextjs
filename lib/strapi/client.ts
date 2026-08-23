@@ -2,7 +2,9 @@ const BASE = process.env.STRAPI_URL
 const TOKEN = process.env.STRAPI_API_TOKEN
 // When true, fetch Strapi Draft & Publish drafts (`?status=draft`) instead of
 // published content. Drafts are never edge-cached so editors see live edits.
-const PREVIEW = process.env.STRAPI_PREVIEW === 'true'
+const PREVIEW =
+  process.env.DEPLOYMENT_ROLE === 'preview' &&
+  (process.env.CMS_MODE === 'draft' || process.env.STRAPI_PREVIEW === 'true')
 
 const EMPTY = { data: [], meta: { pagination: { start: 0, limit: 0, total: 0 } } }
 

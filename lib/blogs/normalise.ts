@@ -1,4 +1,4 @@
-import type { StrapiBlog, StrapiMedia } from '../strapi/types'
+import type { Blog, Media } from '../cms'
 
 export type CoverSize = 'card' | 'banner'
 
@@ -30,13 +30,13 @@ const DATE_FMT: Intl.DateTimeFormatOptions = {
   year: 'numeric',
 }
 
-function pickImageUrl(media: StrapiMedia, size: CoverSize): { url: string; width: number; height: number } {
+function pickImageUrl(media: Media, size: CoverSize): { url: string; width: number; height: number } {
   const fmt = size === 'banner' ? media.formats?.large : media.formats?.large
   if (fmt?.url) return fmt
   return { url: media.url, width: media.width, height: media.height }
 }
 
-export function normalise(blog: StrapiBlog, size: CoverSize = 'card'): NormalisedBlog {
+export function normalise(blog: Blog, size: CoverSize = 'card'): NormalisedBlog {
   // Strapi returns `null` for an unset media relation even though the type
   // says otherwise — guard so a cover-less post doesn't crash the render.
   const picked = blog.coverImage ? pickImageUrl(blog.coverImage, size) : null
