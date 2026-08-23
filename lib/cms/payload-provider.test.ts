@@ -114,6 +114,33 @@ describe('PayloadProvider requests', () => {
 })
 
 describe('PayloadProvider field shapes', () => {
+  it('rebuilds industry and platform into the shape the normalisers read', async () => {
+    stubFetch([{ id: 1, title: 'P', slug: 'p', type: [], industry: 'community-initiative', platform: 'app', publishedAt: '2026-01-01' }])
+    const [project] = await provider().listProjects()
+
+    // Payload returns the bare slug where Strapi returned a relation. Passing it
+    // through unchanged makes every project read as industry "other".
+    expect(project.industry).toEqual({ title: 'Community Initiative', slug: 'community-initiative' })
+    expect(project.platform).toEqual({ title: 'App', slug: 'app' })
+  })
+
+  it('treats a blank alt as absent so consumers fall back to the title', async () => {
+    stubFetch([{ id: 1, title: 'Post', slug: 'post', updatedAt: '2026-01-01', coverImage: { ...mediaDoc, alt: '   ', alternativeText: null } }])
+    const [blog] = await provider().listBlogs()
+    expect(blog.coverImage?.alternativeText).toBeNull()
+  })
+
+  it('breaks ordering ties the way Strapi did', async () => {
+    const calls = stubFetch([])
+    await provider().listBlogs()
+    expect(calls[0].url.searchParams.get('sort')).toBe('-publishedDate,legacyStrapiId')
+
+    vi.unstubAllGlobals()
+    const projects = stubFetch([])
+    await provider().listProjects()
+    expect(projects[0].url.searchParams.get('sort')).toBe('-featured,-publishedAt,legacyStrapiId')
+  })
+
   it('keeps project type as an array and defaults gallery designers', async () => {
     stubFetch([{ id: 1, title: 'P', slug: 'p', type: ['WEBFLOW', 'SEO'], featured: true, publishedAt: '2026-01-01' }])
     const [project] = await provider().listProjects()

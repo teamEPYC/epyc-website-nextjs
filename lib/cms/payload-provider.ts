@@ -17,7 +17,14 @@ type PayloadBlog = Omit<Blog, 'id' | 'coverImage' | 'author' | 'publishedAt'> & 
   _status?: 'draft' | 'published'
   publishedAt?: string | null
 }
-type PayloadProject = Omit<Project, 'id' | 'thumbnail'> & { id: string | number; thumbnail?: PayloadRelation<PayloadMedia> }
+type PayloadProject = Omit<Project, 'id' | 'thumbnail' | 'industry' | 'platform'> & {
+  id: string | number
+  thumbnail?: PayloadRelation<PayloadMedia>
+  // Strapi modelled these as relations and returned objects; Payload stores
+  // selects and returns the bare value.
+  industry?: string | null
+  platform?: string | null
+}
 type PayloadGallery = Omit<GalleryItem, 'id' | 'image'> & { id: string | number; image?: PayloadRelation<PayloadMedia> }
 
 function populated<T>(value: PayloadRelation<T> | undefined): value is T {
@@ -27,6 +34,19 @@ function populated<T>(value: PayloadRelation<T> | undefined): value is T {
 function size(value?: PayloadSize): MediaFormat | undefined {
   if (!value?.url || !value.width || !value.height) return undefined
   return { url: value.url, width: value.width, height: value.height }
+}
+
+/** Strapi returned `{ title, slug }` for industry and platform, and the
+ * normalisers read `.slug`. Payload returns the slug alone, so handing it
+ * through unchanged silently collapses every project to industry "other" and
+ * platform "website". */
+function taxonomy(value?: string | null): { title: string; slug: string } | null {
+  if (!value) return null
+  const title = value
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+  return { title, slug: value }
 }
 
 function mapMedia(value?: PayloadRelation<PayloadMedia>): Media | null {
@@ -45,7 +65,7 @@ function mapMedia(value?: PayloadRelation<PayloadMedia>): Media | null {
     ...value,
     id: String(value.id),
     url: value.url,
-    alternativeText: value.alternativeText ?? value.alt ?? null,
+    alternativeText: value.alternativeText?.trim() || value.alt?.trim() || null,
     formats,
   }
 }
@@ -99,7 +119,9 @@ export class PayloadProvider implements CMSProvider {
 
   async listBlogs(options: ListOptions = {}): Promise<Blog[]> {
     const docs = await this.list<PayloadBlog>('blogs', {
-      sort: '-publishedDate',
+      // Several posts share a publishedDate; Strapi ordered those by ascending
+      // numeric id, preserved on import as legacyStrapiId.
+      sort: '-publishedDate,legacyStrapiId',
       limit: String(options.limit ?? 100),
       ...(options.excludeSlug ? { 'where[slug][not_equals]': options.excludeSlug } : {}),
     })
@@ -112,8 +134,20 @@ export class PayloadProvider implements CMSProvider {
   }
 
   async listProjects(options: ListOptions = {}): Promise<Project[]> {
-    const docs = await this.list<PayloadProject>('projects', { sort: '-featured,-publishedAt', limit: String(options.limit ?? 200) })
-    return docs.map((item) => ({ ...item, id: String(item.id), type: Array.isArray(item.type) ? item.type : [], thumbnail: mapMedia(item.thumbnail) }))
+    const docs = await this.list<PayloadProject>('projects', {
+      // legacyStrapiId breaks ties the way Strapi did — by ascending numeric id
+      // — which matters because most projects share a publishedAt.
+      sort: '-featured,-publishedAt,legacyStrapiId',
+      limit: String(options.limit ?? 200),
+    })
+    return docs.map((item) => ({
+      ...item,
+      id: String(item.id),
+      type: Array.isArray(item.type) ? item.type : [],
+      thumbnail: mapMedia(item.thumbnail),
+      industry: taxonomy(item.industry),
+      platform: taxonomy(item.platform),
+    }))
   }
 
   async listGalleryItems(options: ListOptions = {}): Promise<GalleryItem[]> {
