@@ -30,9 +30,18 @@ export default function imageLoader({ src, width, quality }: LoaderArgs): string
 
   // `next dev` isn't behind a Cloudflare zone — cdn-cgi doesn't work.
   // Bare Strapi paths need the media base prepended so they're fetchable.
+  //
+  // The `?w=` is carried purely so Next can see the width in the returned URL.
+  // Without it every <Image> logs "loader property that does not implement
+  // width" on every dev page load. Nothing serves a different file for it —
+  // static assets and the media host both ignore the unknown parameter — and
+  // this branch never runs in production.
   if (process.env.NODE_ENV === 'development') {
-    if (!src.startsWith('/images/') && !src.startsWith('http')) return `${mediaBase}${src}`
-    return src
+    const devWidth = `${src.includes('?') ? '&' : '?'}w=${width}`
+    if (!src.startsWith('/images/') && !src.startsWith('http')) {
+      return `${mediaBase}${src}${devWidth}`
+    }
+    return `${src}${devWidth}`
   }
 
   // Public folder assets (/images/site/...) — cdn-cgi on the main zone.

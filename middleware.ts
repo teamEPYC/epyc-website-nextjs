@@ -30,16 +30,16 @@ export function middleware(request: NextRequest) {
 
   // The markdown renderer fetches this app's own HTML to convert it. Negotiating
   // that request would rewrite it straight back to the renderer.
-  if (request.headers.has(RENDER_GUARD_HEADER)) return NextResponse.next()
+  if (request.headers.has(RENDER_GUARD_HEADER)) return protectPreview(NextResponse.next())
 
-  if (request.method !== 'GET' && request.method !== 'HEAD') return NextResponse.next()
-  if (!isNegotiablePath(pathname)) return NextResponse.next()
+  if (request.method !== 'GET' && request.method !== 'HEAD') return protectPreview(NextResponse.next())
+  if (!isNegotiablePath(pathname)) return protectPreview(NextResponse.next())
 
   if (!prefersMarkdown(request.headers.get('accept'))) {
     // Same URL, two representations — tell caches the Accept header matters.
     const response = NextResponse.next()
     response.headers.set('Vary', 'Accept')
-    return response
+    return protectPreview(response)
   }
 
   const target = request.nextUrl.clone()
@@ -50,6 +50,13 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.rewrite(target, { request: { headers: forwarded } })
   response.headers.set('Vary', 'Accept')
+  return protectPreview(response)
+}
+
+function protectPreview(response: NextResponse): NextResponse {
+  if (process.env.DEPLOYMENT_ROLE !== 'preview') return response
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow')
+  response.headers.set('Cache-Control', 'private, no-store, max-age=0')
   return response
 }
 

@@ -2,7 +2,10 @@ name: CI
 
 on:
   pull_request:
-    branches: [develop, master, production]
+    # `main` is the default branch and `production` is the release branch.
+    # These were previously [develop, master, production] — branch names this
+    # repo no longer uses — so CI never ran on a normal pull request.
+    branches: [main, production]
   workflow_dispatch:
 
 jobs:
@@ -19,13 +22,18 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # 22, not 20: lib/tools/counters.test.ts runs its SQL against the
+          # built-in `node:sqlite`, which does not exist before Node 22.
+          node-version: 22
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
 
       - name: Typecheck
         run: pnpm exec tsc --noEmit
+
+      - name: Test
+        run: pnpm test
 
       - name: Typecheck contact-webhook worker
         # The consumer Worker is excluded from the root tsconfig (different

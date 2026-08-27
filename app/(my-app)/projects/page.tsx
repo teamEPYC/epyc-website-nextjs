@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { fetchStrapi } from '@/lib/strapi/client'
-import type { StrapiList, StrapiProject } from '@/lib/strapi/types'
+import { getCMS } from '@/lib/cms'
 import { ProjectsIndex } from '@/components/sections/projects-index'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { normaliseProject } from '@/lib/projects/normalise'
@@ -18,14 +17,8 @@ export const metadata: Metadata = {
 export const revalidate = 60
 
 export default async function ProjectsPage() {
-  const { data } = await fetchStrapi<StrapiList<StrapiProject>>('/projects', {
-    'populate[thumbnail][fields]': 'url,width,height,alternativeText,formats',
-    'populate[industry][fields]': 'title,slug',
-    'populate[platform][fields]': 'title,slug',
-    'sort': 'featured:desc,publishedAt:desc',
-    'pagination[limit]': '200',
-  })
-  const projects = data.filter((p) => p.slug).map((p) => normaliseProject(p))
+  const data = await getCMS().listProjects({ limit: 200 })
+  const projects = data.map((p) => normaliseProject(p))
 
   return (
     <>

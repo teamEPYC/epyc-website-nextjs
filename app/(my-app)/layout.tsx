@@ -5,6 +5,7 @@ import Script from 'next/script'
 import './globals.css'
 import { FloatingMenuButton } from '@/components/ui/floating-menu'
 import { site } from '@/data/site'
+import { isPreviewDeployment } from '@/lib/cms/config'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -89,7 +90,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
-  robots: { index: true, follow: true, 'max-image-preview': 'large' },
+  robots: isPreviewDeployment()
+    ? { index: false, follow: false }
+    : { index: true, follow: true, 'max-image-preview': 'large' },
 }
 
 export default function RootLayout({
