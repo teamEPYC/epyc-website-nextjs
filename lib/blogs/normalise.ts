@@ -37,7 +37,7 @@ function pickImageUrl(media: Media, size: CoverSize): { url: string; width: numb
 }
 
 export function normalise(blog: Blog, size: CoverSize = 'card'): NormalisedBlog {
-  // Strapi returns `null` for an unset media relation even though the type
+  // The CMS returns `null` for an unset media relation even though the type
   // says otherwise — guard so a cover-less post doesn't crash the render.
   const picked = blog.coverImage ? pickImageUrl(blog.coverImage, size) : null
   const dateSource = blog.publishedDate ?? blog.publishedAt

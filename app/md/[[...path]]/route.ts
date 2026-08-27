@@ -6,7 +6,7 @@
 // same body — which gives agents a plain URL when they cannot set headers.
 //
 // Two content paths:
-//   1. CMS-driven routes are built from Strapi fields (`lib/markdown/sources.ts`).
+//   1. CMS-driven routes are built from CMS fields (`lib/markdown/sources.ts`).
 //   2. Everything else is served by fetching this app's own HTML for the route
 //      and converting it. New pages are therefore covered the day they ship,
 //      with no per-page work.

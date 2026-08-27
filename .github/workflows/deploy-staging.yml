@@ -42,13 +42,9 @@ jobs:
         env:
           NEXT_PUBLIC_DEPLOY_ENV: staging
           NEXT_PUBLIC_MEDIA_BASE_URL: ${{ secrets.STAGING_NEXT_PUBLIC_MEDIA_BASE_URL }}
-          STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
-          STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
-          STRAPI_PREVIEW: ${{ secrets.STAGING_STRAPI_PREVIEW }}
           # Staging is the content-preview site: draft reads, noindex, no sitemap.
           # robots.ts and the root layout's metadata are evaluated at build time,
           # so these must be present here as well as in the Worker's vars.
-          CMS_PROVIDER: payload
           CMS_MODE: draft
           DEPLOYMENT_ROLE: preview
           PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev
@@ -59,22 +55,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          STRAPI_URL: ${{ secrets.STAGING_STRAPI_URL }}
-          STRAPI_API_TOKEN: ${{ secrets.STAGING_STRAPI_API_TOKEN }}
-          STRAPI_PREVIEW: ${{ secrets.STAGING_STRAPI_PREVIEW }}
           PAYLOAD_PREVIEW_TOKEN: ${{ secrets.STAGING_PAYLOAD_PREVIEW_TOKEN }}
           CMS_REVALIDATION_SECRET: ${{ secrets.CMS_REVALIDATION_SECRET }}
         run: |
           jq -n \
-            --arg STRAPI_URL "$STRAPI_URL" \
-            --arg STRAPI_API_TOKEN "$STRAPI_API_TOKEN" \
-            --arg STRAPI_PREVIEW "$STRAPI_PREVIEW" \
             --arg PAYLOAD_PREVIEW_TOKEN "$PAYLOAD_PREVIEW_TOKEN" \
             --arg CMS_REVALIDATION_SECRET "$CMS_REVALIDATION_SECRET" \
             '{
-              STRAPI_URL: $STRAPI_URL,
-              STRAPI_API_TOKEN: $STRAPI_API_TOKEN,
-              STRAPI_PREVIEW: $STRAPI_PREVIEW,
               PAYLOAD_PREVIEW_TOKEN: $PAYLOAD_PREVIEW_TOKEN,
               CMS_REVALIDATION_SECRET: $CMS_REVALIDATION_SECRET
             }' \

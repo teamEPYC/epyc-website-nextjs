@@ -6,9 +6,6 @@ declare namespace Cloudflare {
 		DB: D1Database;
 		CONTACT_QUEUE: Queue;
 		ASSETS: Fetcher;
-		STRAPI_URL: string;
-		STRAPI_API_TOKEN: string;
-		STRAPI_PREVIEW: string;
 		NEXT_PUBLIC_MEDIA_BASE_URL: string;
 		NEON_DATABASE_URL: string;
 	}
@@ -16,9 +13,6 @@ declare namespace Cloudflare {
 		DB: D1Database;
 		CONTACT_QUEUE: Queue;
 		ASSETS: Fetcher;
-		STRAPI_URL: string;
-		STRAPI_API_TOKEN: string;
-		STRAPI_PREVIEW: string;
 		NEXT_PUBLIC_MEDIA_BASE_URL: string;
 		NEON_DATABASE_URL: string;
 	}
@@ -26,9 +20,6 @@ declare namespace Cloudflare {
 		DB: D1Database;
 		CONTACT_QUEUE: Queue;
 		ASSETS: Fetcher;
-		STRAPI_URL: string;
-		STRAPI_API_TOKEN: string;
-		STRAPI_PREVIEW: string;
 		NEXT_PUBLIC_MEDIA_BASE_URL: string;
 		NEON_DATABASE_URL: string;
 	}
