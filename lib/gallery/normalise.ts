@@ -1,13 +1,13 @@
-import type { StrapiGalleryItem } from '../strapi/types'
+import type { GalleryItem as CMSGalleryItem } from '../cms'
 import type { GalleryItem } from '../../data/gallery'
 
-function splitDesigners(raw: string | null | undefined): string[] | undefined {
-  if (!raw) return undefined
-  const list = raw.split(',').map((s) => s.trim()).filter(Boolean)
-  return list.length > 0 ? list : undefined
+// Providers hand over an array; `data/gallery.ts` wants the field absent rather
+// than empty when there are no designers.
+function designers(list: string[] | undefined): string[] | undefined {
+  return list && list.length > 0 ? list : undefined
 }
 
-export function normaliseGallery(item: StrapiGalleryItem): GalleryItem {
+export function normaliseGallery(item: CMSGalleryItem): GalleryItem {
   const slug = item.slug
   const videoUrl = item.videoUrl?.trim()
   const image = item.image ?? null
@@ -22,7 +22,7 @@ export function normaliseGallery(item: StrapiGalleryItem): GalleryItem {
       alt: item.imageAlt ?? image?.alternativeText ?? item.title,
       title: item.title,
       description: item.content ?? undefined,
-      designers: splitDesigners(item.designer),
+      designers: designers(item.designers),
       previewLink: item.externalUrl ?? undefined,
     }
   }
@@ -39,7 +39,7 @@ export function normaliseGallery(item: StrapiGalleryItem): GalleryItem {
     height: image?.height ?? 1350,
     title: item.title,
     description: item.content ?? undefined,
-    designers: splitDesigners(item.designer),
+    designers: designers(item.designers),
     previewLink: item.externalUrl ?? undefined,
   }
 }

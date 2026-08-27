@@ -1,12 +1,11 @@
 // Hand-built markdown for the CMS-driven routes.
 //
-// These pages have structured Strapi fields behind them, so building markdown
+// These pages have structured CMS fields behind them, so building markdown
 // from the fields beats converting the rendered HTML — the output carries the
 // author, date, and tags as data instead of as layout. Every other route falls
 // back to converting its own rendered HTML (see `app/md/[[...path]]/route.ts`).
 
-import { fetchStrapi } from '@/lib/strapi/client'
-import type { StrapiBlog, StrapiGalleryItem, StrapiList, StrapiProject } from '@/lib/strapi/types'
+import { getCMS } from '@/lib/cms'
 import { normalise } from '@/lib/blogs/normalise'
 import { normaliseGallery } from '@/lib/gallery/normalise'
 import { normaliseProject } from '@/lib/projects/normalise'
@@ -25,18 +24,8 @@ export function frontMatter(fields: Record<string, string | undefined>): string 
   return lines.length > 0 ? `---\n${lines.join('\n')}\n---\n\n` : ''
 }
 
-const BLOG_FIELDS = {
-  'populate[coverImage][fields]': 'url,width,height,alternativeText,formats',
-  'populate[author][fields]': 'name,slug',
-}
-
 const blogPost: Builder = async ({ slug, origin }) => {
-  const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
-    'filters[slug][$eq]': slug,
-    ...BLOG_FIELDS,
-    'pagination[limit]': '1',
-  })
-  const raw = data[0]
+  const raw = await getCMS().getBlogBySlug(slug)
   if (!raw) return null
 
   const blog = normalise(raw, 'banner')
@@ -67,12 +56,8 @@ const blogPost: Builder = async ({ slug, origin }) => {
 }
 
 const blogIndex: Builder = async ({ origin }) => {
-  const { data } = await fetchStrapi<StrapiList<StrapiBlog>>('/blogs', {
-    ...BLOG_FIELDS,
-    sort: 'publishedDate:desc',
-    'pagination[limit]': '100',
-  })
-  const blogs = data.filter((b) => b.slug).map((b) => normalise(b))
+  const data = await getCMS().listBlogs({ limit: 100 })
+  const blogs = data.map((b) => normalise(b))
 
   const items = blogs.map((blog) => {
     const meta = [blog.author, blog.date, blog.readTime].filter(Boolean).join(' · ')
@@ -101,14 +86,8 @@ const blogIndex: Builder = async ({ origin }) => {
 }
 
 const projectsIndex: Builder = async ({ origin }) => {
-  const { data } = await fetchStrapi<StrapiList<StrapiProject>>('/projects', {
-    'populate[thumbnail][fields]': 'url,width,height,alternativeText,formats',
-    'populate[industry][fields]': 'title,slug',
-    'populate[platform][fields]': 'title,slug',
-    sort: 'featured:desc,publishedAt:desc',
-    'pagination[limit]': '200',
-  })
-  const projects = data.filter((p) => p.slug).map((p) => normaliseProject(p))
+  const data = await getCMS().listProjects({ limit: 200 })
+  const projects = data.map((p) => normaliseProject(p))
 
   const rows = projects.map((project) => {
     const link = project.caseStudyPath ? `${origin}${project.caseStudyPath}` : project.redirectLink
@@ -139,14 +118,9 @@ const projectsIndex: Builder = async ({ origin }) => {
   }
 }
 
-const GALLERY_FIELDS = { 'populate[image][fields]': 'url,width,height,alternativeText' }
-
 const galleryIndex: Builder = async ({ origin }) => {
-  const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
-    ...GALLERY_FIELDS,
-    'pagination[limit]': '500',
-  })
-  const items = data.filter((item) => item.slug).map((item) => normaliseGallery(item))
+  const data = await getCMS().listGalleryItems({ limit: 500 })
+  const items = data.map((item) => normaliseGallery(item))
 
   const list = items.map((item) => {
     const meta = [item.kind, item.designers?.join(', ')].filter(Boolean).join(' · ')
@@ -171,12 +145,7 @@ const galleryIndex: Builder = async ({ origin }) => {
 }
 
 const galleryItem: Builder = async ({ slug, origin }) => {
-  const { data } = await fetchStrapi<StrapiList<StrapiGalleryItem>>('/gallery-items', {
-    'filters[slug][$eq]': slug,
-    ...GALLERY_FIELDS,
-    'pagination[limit]': '1',
-  })
-  const raw = data[0]
+  const raw = await getCMS().getGalleryItemBySlug(slug)
   if (!raw) return null
 
   const item = normaliseGallery(raw)
