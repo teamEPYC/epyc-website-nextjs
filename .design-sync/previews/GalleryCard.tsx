@@ -1,7 +1,7 @@
 import { GalleryCard, Section } from 'epyc-website'
 
 // GalleryCard takes a single `item` matching the GalleryItem shape. Real
-// gallery items come from Strapi at runtime, so these are literals in that
+// gallery items come from the CMS at runtime, so these are literals in that
 // shape pointing at production imagery. The card sizes itself from
 // width/height, which is what makes the masonry layout stable.
 const items = [

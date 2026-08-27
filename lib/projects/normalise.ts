@@ -43,7 +43,7 @@ function pickImageUrl(media: Media): { url: string; width: number; height: numbe
 }
 
 export function normaliseProject(project: Project): NormalisedProject {
-  // Strapi returns null for unset media/relations in draft mode even though
+  // The CMS returns null for unset media/relations in draft mode even though
   // the types say required — guard every dereference so an incomplete draft
   // renders with placeholders/fallbacks instead of crashing the page.
   const picked = project.thumbnail ? pickImageUrl(project.thumbnail) : null

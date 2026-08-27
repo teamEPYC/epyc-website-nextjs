@@ -29,7 +29,7 @@ export default function imageLoader({ src, width, quality }: LoaderArgs): string
   const options = `width=${width},quality=${quality ?? 75},format=auto`
 
   // `next dev` isn't behind a Cloudflare zone — cdn-cgi doesn't work.
-  // Bare Strapi paths need the media base prepended so they're fetchable.
+  // Bare CMS media paths need the media base prepended so they're fetchable.
   //
   // The `?w=` is carried purely so Next can see the width in the returned URL.
   // Without it every <Image> logs "loader property that does not implement
@@ -47,10 +47,10 @@ export default function imageLoader({ src, width, quality }: LoaderArgs): string
   // Public folder assets (/images/site/...) — cdn-cgi on the main zone.
   if (src.startsWith('/images/')) return `/cdn-cgi/image/${options}${src}`
 
-  // Absolute URL fallback — shouldn't happen with Strapi bare paths but handle gracefully.
+  // Absolute URL fallback — shouldn't happen with bare CMS media paths but handle gracefully.
   if (src.startsWith('http')) return `/cdn-cgi/image/${options}/${src}`
 
-  // Strapi bare path (/hash.webp) — route through media.epyc.in cdn-cgi.
+  // Bare CMS media path (/hash.webp) — route through media.epyc.in cdn-cgi.
   // Source and cdn-cgi are on the same Cloudflare zone so "this zone only" is satisfied.
   return `${mediaBase}/cdn-cgi/image/${options}${src}`
 }

@@ -1,6 +1,6 @@
 // Dependency-free HTML → Markdown converter.
 //
-// Used for two inputs: Strapi rich-text `content` (a small, predictable tag set)
+// Used for two inputs: CMS rich-text `content` (a small, predictable tag set)
 // and full rendered pages fetched from this app (see `app/md/[[...path]]/route.ts`).
 // A DOM-based converter (turndown et al.) needs a DOM shim that does not exist in
 // the Workers runtime, so this walks the tag stream positionally instead: opening
