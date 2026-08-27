@@ -48,10 +48,10 @@ jobs:
           # Staging is the content-preview site: draft reads, noindex, no sitemap.
           # robots.ts and the root layout's metadata are evaluated at build time,
           # so these must be present here as well as in the Worker's vars.
-          CMS_PROVIDER: strapi
+          CMS_PROVIDER: payload
           CMS_MODE: draft
           DEPLOYMENT_ROLE: preview
-          PAYLOAD_URL: https://cms.epyc.in
+          PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev
           PAYLOAD_PREVIEW_TOKEN: ${{ secrets.STAGING_PAYLOAD_PREVIEW_TOKEN }}
           CMS_REVALIDATION_SECRET: ${{ secrets.CMS_REVALIDATION_SECRET }}
 

@@ -63,10 +63,10 @@
 		"staging": {
 			"name": "epyc-website-staging",
 			"vars": {
-				"CMS_PROVIDER": "strapi",
+				"CMS_PROVIDER": "payload",
 				"CMS_MODE": "draft",
 				"DEPLOYMENT_ROLE": "preview",
-				"PAYLOAD_URL": "https://cms.epyc.in",
+				"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev",
 			},
 			"d1_databases": [
 				{
