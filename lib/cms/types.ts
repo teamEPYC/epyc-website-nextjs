@@ -70,5 +70,5 @@ export interface CMSProvider {
   listProjects(options?: ListOptions): Promise<Project[]>
   listGalleryItems(options?: ListOptions): Promise<GalleryItem[]>
   getGalleryItemBySlug(slug: string): Promise<GalleryItem | null>
-  listBlogSlugsForSitemap(): Promise<Array<Pick<Blog, 'slug' | 'publishedAt'>>>
+  listBlogSlugsForSitemap(): Promise<Array<Pick<Blog, 'slug' | 'updatedAt'>>>
 }

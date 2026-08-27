@@ -18,7 +18,6 @@ type PayloadBlog = Omit<Blog, 'id' | 'coverImage' | 'author' | 'publishedAt' | '
   coverImage?: PayloadRelation<PayloadMedia>
   author?: PayloadRelation<PayloadAuthor>
   _status?: 'draft' | 'published'
-  publishedAt?: string | null
 }
 type PayloadProject = Omit<Project, 'id' | 'thumbnail' | 'industry' | 'platform'> & {
   id: string | number
@@ -77,7 +76,7 @@ function mapBlog(item: PayloadBlog): Blog {
   return {
     ...item,
     id: String(item.id),
-    publishedAt: item.publishedAt ?? item.publishedDate ?? item.updatedAt,
+    publishedAt: item.publishedDate ?? item.updatedAt,
     metaTitle: item.meta?.title ?? null,
     metaDescription: item.meta?.description ?? null,
     coverImage: mapMedia(item.coverImage),
@@ -174,6 +173,6 @@ export class PayloadProvider implements CMSProvider {
 
   async listBlogSlugsForSitemap() {
     const blogs = await this.listBlogs({ limit: 1000 })
-    return blogs.map(({ slug, publishedAt }) => ({ slug, publishedAt }))
+    return blogs.map(({ slug, updatedAt }) => ({ slug, updatedAt }))
   }
 }

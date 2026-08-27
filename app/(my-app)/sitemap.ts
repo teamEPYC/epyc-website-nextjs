@@ -11,9 +11,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogs = await getCMS().listBlogSlugsForSitemap();
 
-  const blogEntries = blogs.map(({ slug, publishedAt }) => ({
+  // lastModified is last *modification*, so it tracks updatedAt rather than
+  // the editorial publishedDate — a 2023 post edited yesterday would otherwise
+  // tell crawlers nothing has changed since 2023.
+  const blogEntries = blogs.map(({ slug, updatedAt }) => ({
     url: `${site.url}/blog/${slug}`,
-    lastModified: new Date(publishedAt),
+    lastModified: new Date(updatedAt),
   }));
 
   return [

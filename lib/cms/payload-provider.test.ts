@@ -157,6 +157,26 @@ describe('PayloadProvider field shapes', () => {
     expect(projects[0].url.searchParams.get('sort')).toBe('-featured,-publishedAt,legacyStrapiId')
   })
 
+  it('reports updatedAt for the sitemap, not the editorial date', async () => {
+    stubFetch([{ id: 1, title: 'Post', slug: 'post', publishedDate: '2023-09-15T00:00:00.000Z', updatedAt: '2026-08-01T10:00:00.000Z' }])
+    const [entry] = await provider().listBlogSlugsForSitemap()
+
+    // lastModified must track the edit, not the publication date, or a post
+    // revised today advertises a 2023 lastModified to crawlers.
+    expect(entry).toEqual({ slug: 'post', updatedAt: '2026-08-01T10:00:00.000Z' })
+  })
+
+  it('falls back to publishedDate now that blogs have no publishedAt column', async () => {
+    stubFetch([{ id: 1, title: 'Post', slug: 'post', publishedDate: '2023-09-15T00:00:00.000Z', updatedAt: '2026-08-01T10:00:00.000Z' }])
+    const [blog] = await provider().listBlogs()
+    expect(blog.publishedAt).toBe('2023-09-15T00:00:00.000Z')
+
+    vi.unstubAllGlobals()
+    stubFetch([{ id: 2, title: 'Undated', slug: 'undated', updatedAt: '2026-08-01T10:00:00.000Z' }])
+    const [undated] = await provider().listBlogs()
+    expect(undated.publishedAt).toBe('2026-08-01T10:00:00.000Z')
+  })
+
   it('keeps project type as an array and defaults gallery designers', async () => {
     stubFetch([{ id: 1, title: 'P', slug: 'p', type: ['WEBFLOW', 'SEO'], featured: true, publishedAt: '2026-01-01' }])
     const [project] = await provider().listProjects()
