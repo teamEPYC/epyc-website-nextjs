@@ -91,6 +91,6 @@ export class StrapiProvider implements CMSProvider {
 
   async listBlogSlugsForSitemap() {
     const blogs = await this.listBlogs({ limit: 1000 })
-    return blogs.map(({ slug, publishedAt }) => ({ slug, publishedAt }))
+    return blogs.map(({ slug, updatedAt }) => ({ slug, updatedAt }))
   }
 }
