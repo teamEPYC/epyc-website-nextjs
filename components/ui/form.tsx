@@ -49,10 +49,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <input
       ref={ref}
+      // `className` last, so a caller's override actually wins — DESIGN.md §10.
+      // It used to sit before these literals, which silently swallowed any
+      // height or font-size a consumer passed.
       className={cn(
         fieldClasses,
+        'px-3 py-3 h-16 tracking-tighter leading-[1.2em] font-normal text-base rounded-sm',
         className,
-        'px-3 py-3 h-16 tracking-tighter leading-[1.2em] font-normal  text-base rounded-sm',
       )}
       aria-invalid={invalid || undefined}
       {...rest}
