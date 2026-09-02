@@ -45,3 +45,11 @@ jobs:
 
       - name: OpenNext build
         run: pnpm exec opennextjs-cloudflare build
+        env:
+          # `/blog`, `/projects` and `/gallery` are prerendered at build time,
+          # and PayloadProvider throws when PAYLOAD_URL is unset — where the
+          # Strapi client it replaced returned an empty list so CI could build
+          # without credentials. Without this the build dies on every pull
+          # request. Not a secret: the deploy workflows carry the same literal,
+          # and published reads need no token.
+          PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev
