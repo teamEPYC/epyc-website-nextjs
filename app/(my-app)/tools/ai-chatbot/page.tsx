@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
-import { SiteNav } from '@/components/site-nav'
 import { ChatbotTool } from '@/components/sections/chatbot-tool'
 import { CTAFooter } from '@/components/sections/cta-footer'
 import { Button } from '@/components/ui/button'
-import { Container } from '@/components/ui/container'
-import { Section } from '@/components/ui/section'
 
 /**
- * WIREFRAME — not wired to anything yet.
+ * The tool is a single client section that owns its own chrome, including the
+ * nav — the screens alternate between ink and beige, so the nav's tone has to
+ * follow the phase.
  *
  * Plan: docs/ai-chatbot-plan.md · Architecture: docs/ai-chatbot-architecture.md
  * Build reference: docs/ai-chatbot-tech.md
@@ -27,12 +26,9 @@ export const metadata: Metadata = {
 export default function AiChatbotToolPage() {
   return (
     <>
-      <Section tone="beige" className="pb-0">
-        <Container>
-          <SiteNav className="self-stretch -mx-4 -mt-8 sm:-mx-6 sm:-mt-10 lg:-mx-15" />
-        </Container>
-      </Section>
-
+      {/* The nav lives inside `ChatbotTool`: the idle hero carries it inside its
+          paper frame like the homepage, and every later screen needs it in the
+          tone of the screen underneath it. */}
       <ChatbotTool />
 
       <CTAFooter

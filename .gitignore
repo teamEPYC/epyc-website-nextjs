@@ -62,6 +62,10 @@ graphify-out/
 /.design-sync/learnings/
 /.design-sync/node_modules
 
+# Claude Design canvas scratch — 5MB of generated artboards, a seeded payload,
+# and base64 copies of files already in public/. Regenerated on demand.
+/.design-work/
+
 # Local-only embed widget test page — never ship this
 public/embed-test.html
 
