@@ -77,6 +77,20 @@ const MAX_EVIDENCE_WORDS = 12
 const MIN_DESCRIPTION_WORDS = 5
 
 /**
+ * How many links the reserved `Optional` section may carry.
+ *
+ * A crawl of a content-heavy site comes back mostly blog posts, and twelve of
+ * them under `## Optional` turns a map of the company into a feed. The section
+ * exists so a reader under pressure can drop it, but it still costs context to
+ * skip past. The pages are already rank-ordered, so this keeps the best few.
+ *
+ * Only `Optional` is capped: the other sections are small by construction — a
+ * site does not have nine pricing pages — and trimming About or Services would
+ * be cutting the pages the file exists to point at.
+ */
+const MAX_OPTIONAL_PAGES = 5
+
+/**
  * Suggested, not enforced. A model given a closed list forces every page into
  * it; a model given none invents twenty sections for twenty pages. This is the
  * middle, and anything it returns outside the list is kept as long as it is
@@ -121,7 +135,10 @@ export type GenerateResult = {
   doc: LlmsTxtDoc
   /** Pages the model could not describe from their own text. The finding. */
   skipped: SkippedPage[]
-  /** Archive and duplicate URLs that were never candidates for the file. */
+  /**
+   * URLs left out on purpose: archive furniture, duplicates, and pages trimmed
+   * off the end of `Optional`. Never the finding — see `skipped`.
+   */
   excluded: number
 }
 
@@ -172,10 +189,11 @@ Write an llms.txt for this site. Its reader is an AI assistant that has never he
 
 - "name": what the company calls itself, taken from the pages. Not a slogan.
 - "summary": ONE line, under 25 words, saying what this company does and who for. Plain language, no marketing adjectives.
-- "overview": ${MAX_OVERVIEW_SENTENCES} short sentences at most, stating only facts the pages state — what the company sells, who its customers are, how it works with them, where it operates, what it is known for. This is the part an assistant reads before it opens any link, so make it the most useful ${MAX_OVERVIEW_SENTENCES} sentences on the whole site. No adjectives that cannot be checked ('leading', 'innovative', 'world-class'), no figure the pages do not state. Leave it empty if the site never says what it does.
-- For each page, write "description": one factual sentence, under 25 words, saying what a reader finds ON THAT PAGE — the specific offerings, audience, or facts it names. Not a summary of the company. Do not restate the page title, and never open with filler such as 'Learn more about', 'This page', 'Welcome to' or 'Discover'.
+- "overview": ${MAX_OVERVIEW_SENTENCES} short sentences at most, stating only facts the pages state — what the company sells, who its customers are, how it works with them, where it operates. This is the part an assistant reads before it opens any link, so make it the most useful ${MAX_OVERVIEW_SENTENCES} sentences on the whole site. Do not repeat the summary: it is printed directly above the overview. Prefer facts that will still be true in a year — what the company does, who for, how — over anything dated or promotional: awards, current campaigns, 'new' or 'now', follower and customer counts, funding rounds, seasonal offers. No adjectives that cannot be checked ('leading', 'innovative', 'world-class'), no figure the pages do not state. Leave it empty if the site never says what it does.
+- For each page, write "description": one factual sentence, under 25 words, saying what a reader finds ON THAT PAGE and why they would open it — the specific offerings, audience, or facts it names. Not a summary of the company. Do not restate the page title, and never open with filler such as 'Learn more about', 'This page', 'Welcome to' or 'Discover'. Prefer what is durable about the page over what is current on it.
+- Never write the same description twice. If two pages would get the same sentence, say what makes each one different; if only one of them really has its own subject, leave the other's description empty.
 - "evidence": the exact words from that page's text that your description is based on, copied verbatim — at most ${MAX_EVIDENCE_WORDS} words, just enough to find the sentence again. If the page does not plainly say what it is for, return an EMPTY description and an EMPTY evidence string. Leaving it blank is correct and expected — do not guess.
-- "section": group the page. Prefer one of ${SUGGESTED_SECTIONS.map((s) => `"${s}"`).join(', ')}. Use "${OPTIONAL_SECTION}" for blog posts, news, legal pages and anything a reader could skip.
+- "section": group the page by what it is for. Prefer one of ${SUGGESTED_SECTIONS.map((s) => `"${s}"`).join(', ')}. Use "${OPTIONAL_SECTION}" for blog posts, news, legal pages and anything a reader could skip — at most ${MAX_OPTIONAL_PAGES} of them, the most useful ones, since the rest will be dropped.
 - Use ONLY the URLs listed in the content below. Never write a URL that does not appear there. Do not list paginated archives, tag or category indexes, or search pages.
 - Numbers must be consistent with the pages and with each other: if the summary, the overview and a description all mention how many customers there are, they must all say the number the site says.
 
@@ -211,6 +229,7 @@ export function buildDoc(
   // and section order is a decision we would rather make than parse.
   const sections = new Map<string, LlmsSection>()
   const described = new Set<string>()
+  const seenDescriptions = new Set<string>()
 
   for (const entry of output.pages ?? []) {
     const url = entry.url?.trim()
@@ -223,6 +242,19 @@ export function buildDoc(
 
     const description = describe(entry, source)
     if (!description) continue
+
+    // The same sentence twice is the file telling a reader nothing, twice. It
+    // also happens to be the finding: two pages that describe identically do
+    // not distinguish themselves, so the loser joins the skipped list rather
+    // than getting a bullet that repeats the one above it.
+    //
+    // ponytail: exact match after normalising, not a similarity score. It
+    // catches the copy-paste case, which is the one that actually happens.
+    // Upgrade path if paraphrase duplication shows up in real output is word
+    // overlap here — nothing else moves.
+    const fingerprint = normalise(description)
+    if (seenDescriptions.has(fingerprint)) continue
+    seenDescriptions.add(fingerprint)
 
     described.add(url)
 
@@ -240,27 +272,39 @@ export function buildDoc(
   // Most useful page first inside every section, by the same ranking that chose
   // what to crawl. Model output order is arbitrary, and so is the order D1
   // hands the rows back in.
+  let trimmed = 0
   for (const section of sections.values()) {
     section.pages.sort((a, b) => rankOf(a.url) - rankOf(b.url))
+
+    if (section.name === OPTIONAL_SECTION && section.pages.length > MAX_OPTIONAL_PAGES) {
+      trimmed += section.pages.length - MAX_OPTIONAL_PAGES
+      section.pages = section.pages.slice(0, MAX_OPTIONAL_PAGES)
+    }
   }
 
+  // A page cut for length stays in `described`, so it never reaches the
+  // finding: it was describable, we chose not to list it. `excluded` is the
+  // bucket for "left out on purpose", `skipped` stays "the site never said what
+  // this page was for", and the two must not blur — the finding is the number
+  // this whole tool exists to report.
   const skipped = candidates
     .filter((p) => !described.has(p.url))
     .map((p) => ({ url: p.url, title: p.title || '' }))
 
-  const summary = clean(output.summary)
+  const claimed = clean(output.summary)
+  // A summary quoting a figure the site never states is the one line of this
+  // file everybody reads. It goes or it is right.
+  const summary = numbersSupported(claimed, corpus) ? claimed : ''
 
   return {
     doc: {
       name: clean(output.name) || host,
-      // A summary quoting a figure the site never states is the one line of
-      // this file everybody reads. It goes or it is right.
-      summary: numbersSupported(summary, corpus) ? summary : '',
-      overview: overviewOf(output.overview, corpus),
+      summary,
+      overview: overviewOf(output.overview, corpus, summary),
       sections: [...sections.values()],
     },
     skipped,
-    excluded,
+    excluded: excluded + trimmed,
   }
 }
 
@@ -346,16 +390,38 @@ function describe(entry: ModelPage, source: StoredPage): string | null {
  * cost the file that sentence, not the whole overview — which is the half of
  * this file that makes it worth more than the sitemap.
  */
-function overviewOf(raw: string | undefined, corpus: string): string {
+function overviewOf(raw: string | undefined, corpus: string, summary: string): string {
   const text = clean(raw)
   if (!text) return ''
+
+  const said = normalise(summary)
 
   return text
     .split(/(?<=[.!?])\s+/)
     .map((sentence) => sentence.trim())
     .filter((sentence) => sentence && numbersSupported(sentence, corpus))
+    // The summary sits three lines above, in a blockquote. Saying it again in
+    // the first sentence of the overview spends the reader's attention on
+    // something they have already read — and a model handed "write a summary"
+    // and "write an overview" of the same site reliably opens with the summary.
+    .filter((sentence) => !restates(normalise(sentence), said))
     .slice(0, MAX_OVERVIEW_SENTENCES)
     .join(' ')
+}
+
+/**
+ * Does this sentence say only what the summary already said?
+ *
+ * Equality, or the summary swallowing the sentence whole. Deliberately not the
+ * other direction: a sentence that contains the summary and goes on — "Acme
+ * builds payment rails for marketplaces in India, from a team in Bengaluru" —
+ * is elaboration, which is the entire job of the overview. Catching the literal
+ * repeat is worth a guard; judging how much elaboration is enough is not, and
+ * the prompt asks for it directly.
+ */
+function restates(sentence: string, summary: string): boolean {
+  if (!sentence || !summary) return false
+  return sentence === summary || summary.includes(sentence)
 }
 
 /**

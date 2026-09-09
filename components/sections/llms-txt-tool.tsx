@@ -380,8 +380,9 @@ function ResultScreen({ result, onAgain }: { result: Result; onAgain: () => void
                     {' '}
                     {/* Named here so the counts on the file add up in the open. */}
                     Another {stats.excluded} {stats.excluded === 1 ? 'address' : 'addresses'} —
-                    tag pages, paginated archives and duplicates — were left out on purpose; they
-                    are not pages a reader needs.
+                    tag pages, paginated archives, duplicates, and the tail of a long blog — were
+                    left out on purpose. A map of your company is more useful than a list of
+                    everything on it.
                   </>
                 )}
               </p>

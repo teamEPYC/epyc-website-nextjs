@@ -151,6 +151,44 @@ to describe itself, so counting it in the finding would inflate the one number
 this tool exists to report. The route returns both, and read = described +
 skipped + excluded holds on screen.
 
+### 2.2.2 Curation, repetition and the shape of the markdown
+
+Four smaller rules, all in service of a file an LLM can read once and use.
+
+**`Optional` is capped at five links.** A crawl of a content-heavy site comes
+back mostly blog posts, and twelve of them under one heading turns a map of the
+company into a feed. The pages are already rank-ordered, so the cap keeps the
+best few and the remainder count as excluded — they were describable, we chose
+not to list them. No other section is capped: a site does not have nine pricing
+pages, and trimming About or Services would cut the pages the file exists to
+point at.
+
+**No sentence appears twice.** A description identical to one already used is
+dropped and its page joins the finding, which is the honest place for it: two
+pages that describe identically do not distinguish themselves. An overview
+sentence that only restates the blockquote three lines above it is dropped too —
+but only pure restatement, because a sentence that contains the summary *and
+goes on* is elaboration, which is the whole job of the overview.
+
+**Durable facts over current ones.** Prompt-only, deliberately. The model is
+asked to prefer what will still be true in a year — what the company does, who
+for, how — over awards, campaigns, funding rounds and follower counts. There is
+no guard behind it: marketing language is the site's own voice, not model
+invention, and a filter on superlatives would drop a customer's real copy and
+inflate the finding with it. Guards are for things the model made up; style is
+for the prompt.
+
+**Nothing inside a bullet may look like structure.** Every model-written string
+goes through `plain()` before rendering: leading list and heading markers,
+`[text](url)` pairs, emphasis and backticks are stripped. The file's value is
+that a machine can parse its hierarchy without guessing, and a description that
+opens `- ` reads as a nested list item.
+
+**Sections** are About, Products, Services, Pricing, Work, Documentation,
+Support, Contact — then anything the model named itself, then `Optional`. The
+list is exported once from `render.ts` and interpolated into the prompt, so the
+sections we ask for are exactly the ones the renderer knows how to order.
+
 ### 2.3 The generated file is never stored
 
 It lives in React state for the session, and download is a client-side `Blob`.

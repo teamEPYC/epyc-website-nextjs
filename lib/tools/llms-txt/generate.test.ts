@@ -120,6 +120,60 @@ describe('buildDoc', () => {
     )
   })
 
+  it('refuses the same description twice, and the loser becomes the finding', () => {
+    const { doc, skipped } = buildDoc('acme.com', pages, output({
+      pages: [
+        {
+          url: 'https://acme.com/',
+          section: 'Services',
+          description: 'Payment rails built for marketplaces operating in India.',
+          evidence: 'Acme builds payment rails for marketplaces in India.',
+        },
+        {
+          url: 'https://acme.com/pricing',
+          section: 'Pricing',
+          description: 'Payment rails built for marketplaces operating in India.',
+          evidence: 'Plans start at 4,999 per month',
+        },
+      ],
+    }))
+
+    expect(doc.sections).toHaveLength(1)
+    expect(skipped.map((p) => p.url)).toContain('https://acme.com/pricing')
+  })
+
+  it('drops an overview sentence that only restates the summary, and keeps one that adds to it', () => {
+    const { doc } = buildDoc('acme.com', pages, output({
+      summary: 'Payment rails for marketplaces',
+      overview: 'Payment rails for marketplaces. Payment rails for marketplaces in India, run from Bengaluru.',
+    }))
+
+    expect(doc.overview).toBe('Payment rails for marketplaces in India, run from Bengaluru.')
+  })
+
+  it('trims the Optional section to its cap and counts the rest as excluded, not skipped', () => {
+    const posts: StoredPage[] = Array.from({ length: 8 }, (_, i) => ({
+      url: `https://acme.com/blog/post-${i}`,
+      title: `Post ${i}`,
+      text: `Reconciliation notes number ${i} for marketplace finance teams.`,
+    }))
+
+    const { doc, skipped, excluded } = buildDoc('acme.com', posts, {
+      name: 'Acme',
+      summary: 'Payment rails for marketplaces',
+      pages: posts.map((p, i) => ({
+        url: p.url,
+        section: 'Optional',
+        description: `Reconciliation notes number ${i} written for marketplace finance teams.`,
+        evidence: `Reconciliation notes number ${i} for marketplace finance`,
+      })),
+    })
+
+    expect(doc.sections[0].pages).toHaveLength(5)
+    expect(skipped).toHaveLength(0)
+    expect(excluded).toBe(3)
+  })
+
   it('lists the most important page first inside a section', () => {
     const { doc } = buildDoc('acme.com', pages, output({
       pages: [

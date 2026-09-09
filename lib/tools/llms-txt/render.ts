@@ -55,10 +55,12 @@ export const OPTIONAL_SECTION = 'Optional'
  */
 export const SECTION_ORDER: readonly string[] = [
   'About',
-  'Services',
   'Products',
+  'Services',
   'Pricing',
   'Work',
+  'Documentation',
+  'Support',
   'Contact',
 ]
 
@@ -115,14 +117,35 @@ function oneLine(text: string): string {
   return text.replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * Strip markdown out of text that is about to be embedded in markdown.
+ *
+ * The file's whole value is that a machine can parse its hierarchy without
+ * guessing, so nothing inside a bullet may look like structure. A description
+ * that opens `- ` or `# ` reads as a nested list item or a heading; a stray
+ * `[...](...)` inside a bullet that is already a link is ambiguous; `**` and
+ * backticks are noise a reader has to strip anyway.
+ *
+ * Applied to every model-written string — summary, overview and descriptions —
+ * because the model was asked for prose and sometimes answers in markdown.
+ */
+function plain(text: string): string {
+  return oneLine(
+    text
+      .replace(/^\s*(?:[-*+>]|#{1,6}|\d+[.)])\s+/, '')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/[[\]`*_]/g, ''),
+  )
+}
+
 export function renderLlmsTxt(doc: LlmsTxtDoc): string {
   const name = oneLine(doc.name)
   const out: string[] = [`# ${name || 'Untitled site'}`]
 
-  const summary = oneLine(doc.summary)
+  const summary = plain(doc.summary)
   if (summary) out.push(`> ${summary}`)
 
-  const overview = oneLine(doc.overview ?? '')
+  const overview = plain(doc.overview ?? '')
   if (overview) out.push(overview)
 
   // Empty sections are dropped rather than rendered as a bare heading — a
@@ -136,7 +159,7 @@ export function renderLlmsTxt(doc: LlmsTxtDoc): string {
   for (const section of sections) {
     const lines = section.pages.map((page) => {
       const title = trimBrand(linkText(page.title), name) || page.url
-      const description = oneLine(page.description)
+      const description = plain(page.description)
       return description
         ? `- [${title}](${page.url}): ${description}`
         : `- [${title}](${page.url})`
