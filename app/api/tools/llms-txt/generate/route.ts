@@ -102,14 +102,22 @@ export async function POST(req: Request) {
     )
   }
 
+  // `read = described + skipped + excluded`, always. The screen shows all four,
+  // so a page that fell out of the file for one reason must not be counted
+  // under another — "20 read, 14 described, 3 skipped" invites the reader to
+  // wonder about the other three.
+  const considered = pages.length - generated.excluded
+
   return NextResponse.json({
     ok: true,
     host: session.host,
     file: renderLlmsTxt(generated.doc),
     stats: {
-      pages: pages.length,
-      described: pages.length - generated.skipped.length,
+      read: pages.length,
+      pages: considered,
+      described: considered - generated.skipped.length,
       skipped: generated.skipped.length,
+      excluded: generated.excluded,
     },
     skipped: generated.skipped,
   })

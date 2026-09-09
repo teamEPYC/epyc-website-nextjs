@@ -39,6 +39,43 @@ describe('renderLlmsTxt', () => {
     expect(out.indexOf('## Optional')).toBeGreaterThan(out.indexOf('## About'))
   })
 
+  it('orders known sections by usefulness, not by the order the model emitted them', () => {
+    const out = renderLlmsTxt(doc)
+    expect(out.indexOf('## About')).toBeLessThan(out.indexOf('## Services'))
+  })
+
+  it('keeps an unrecognised section between the known ones and Optional', () => {
+    const out = renderLlmsTxt({
+      ...doc,
+      sections: [
+        ...doc.sections,
+        { name: 'Research', pages: [{ url: 'https://acme.com/r', title: 'R', description: 'd' }] },
+      ],
+    })
+
+    expect(out.indexOf('## Research')).toBeGreaterThan(out.indexOf('## Services'))
+    expect(out.indexOf('## Research')).toBeLessThan(out.indexOf('## Optional'))
+  })
+
+  it('puts the overview between the blockquote and the first heading', () => {
+    const out = renderLlmsTxt({
+      ...doc,
+      overview: 'Acme sells payment rails. Its customers are marketplaces in India.',
+    })
+
+    const expected = [
+      '> Payments infrastructure for marketplaces',
+      'Acme sells payment rails. Its customers are marketplaces in India.',
+      '## About',
+    ].join('\n\n')
+
+    expect(out).toContain(expected)
+  })
+
+  it('renders no overview block when there is nothing to say', () => {
+    expect(renderLlmsTxt({ ...doc, overview: '   ' })).toBe(renderLlmsTxt(doc))
+  })
+
   it('drops empty sections rather than leaving a bare heading', () => {
     const out = renderLlmsTxt({ ...doc, sections: [{ name: 'Ghost', pages: [] }] })
     expect(out).not.toContain('## Ghost')

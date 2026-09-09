@@ -11,12 +11,19 @@
  * that writes the missing sentence out of a URL slug — that would manufacture
  * the copy that disproves its own finding.
  *
+ * The file is meant to give an assistant useful context, not a list of URLs it
+ * could have got from the sitemap. Four things carry that, and each is a guard
+ * or an ordering rather than a longer prompt: an overview above the links, the
+ * pages that matter listed first, descriptions checked against the page's own
+ * words, and archive junk left out entirely.
+ *
  * See docs/llms-txt-architecture.md §2.2.
  */
 
+import { urlScore } from '../../crawl/sitemap'
 import { SCORING_CHAIN, completeJson } from '../models'
 import type { StoredPage } from '../session'
-import { OPTIONAL_SECTION, type LlmsTxtDoc, type LlmsSection } from './render'
+import { OPTIONAL_SECTION, SECTION_ORDER, type LlmsTxtDoc, type LlmsSection } from './render'
 
 /** Same ceiling as the chatbot's scoring call — well inside a 1M window. */
 const MAX_CORPUS_CHARS = 300_000
@@ -49,21 +56,39 @@ export const GLOBAL_GENERATIONS_PER_DAY = 100
 /** Long enough to be useful in a context-limited file, short enough to stay one line. */
 const MAX_DESCRIPTION_CHARS = 200
 
+/** The overview is context, not an essay — three sentences of it at most. */
+const MAX_OVERVIEW_SENTENCES = 3
+
+/**
+ * A description shorter than this says nothing a title did not.
+ * "Our services page" is four words and zero information.
+ */
+const MIN_DESCRIPTION_WORDS = 5
+
 /**
  * Suggested, not enforced. A model given a closed list forces every page into
  * it; a model given none invents twenty sections for twenty pages. This is the
  * middle, and anything it returns outside the list is kept as long as it is
  * short.
+ *
+ * The list is `SECTION_ORDER` itself, so the sections we ask for are exactly
+ * the ones the renderer knows how to order.
  */
-const SUGGESTED_SECTIONS = [
-  'Services',
-  'Products',
-  'Work',
-  'About',
-  'Pricing',
-  'Contact',
-  OPTIONAL_SECTION,
-] as const
+const SUGGESTED_SECTIONS = [...SECTION_ORDER, OPTIONAL_SECTION]
+
+/**
+ * URL shapes that never earn a line in an llms.txt.
+ *
+ * Paginated archives, tag and category indexes, author pages, on-site search
+ * and feeds are navigation furniture: they hold no content of their own, they
+ * churn, and `/blog/page/7` is stale the week after it is written. Listing them
+ * spends a reader's context on links that describe nothing — the "just a list
+ * of URLs" failure this tool exists to avoid.
+ *
+ * They are excluded, not skipped: they are not evidence that the site fails to
+ * describe itself, so counting them in the finding would inflate it.
+ */
+const ARCHIVE_PATH = /(^|\/)(page|tag|tags|category|categories|topic|topics|author|search|feed|rss|atom|amp)(\/|$)/i
 
 type ModelPage = {
   url?: string
@@ -75,6 +100,7 @@ type ModelPage = {
 type ModelOutput = {
   name?: string
   summary?: string
+  overview?: string
   pages?: ModelPage[]
 }
 
@@ -84,6 +110,8 @@ export type GenerateResult = {
   doc: LlmsTxtDoc
   /** Pages the model could not describe from their own text. The finding. */
   skipped: SkippedPage[]
+  /** Archive and duplicate URLs that were never candidates for the file. */
+  excluded: number
 }
 
 export async function generateLlmsTxt(
@@ -92,10 +120,10 @@ export async function generateLlmsTxt(
   pages: StoredPage[],
   opts: { allowPaid?: boolean } = {},
 ): Promise<GenerateResult> {
-  const byUrl = new Map(pages.map((p) => [p.url, p]))
+  const { candidates, excluded } = selectPages(pages)
 
   let corpus = ''
-  for (const page of pages) {
+  for (const page of candidates) {
     if (!page.text?.trim()) continue
     const block = `## ${page.title || 'Untitled'}\nURL: ${page.url}\n\n${page.text}`
     if (corpus.length + block.length > MAX_CORPUS_CHARS) break
@@ -110,23 +138,25 @@ export async function generateLlmsTxt(
     messages: [
       {
         role: 'system',
-        content: `You write llms.txt files: a short, factual map of a website for an AI assistant with limited context. You work ONLY from the supplied page text and never use outside knowledge about the company, even if you recognise it. You never invent a page, a service, a claim or a number. When a page's text does not say plainly what the page is for, you leave its description empty rather than guessing. Reply with JSON only. Never use a double-quote character inside a JSON string value — use a single quote if you need to quote something, so the JSON always parses.`,
+        content: `You write llms.txt files: a short, factual map of a website for an AI assistant with limited context. You work ONLY from the supplied page text and never use outside knowledge about the company, even if you recognise it. You never invent a page, a service, a claim or a number: every figure you write must appear in the supplied text, character for character. When a page's text does not say plainly what the page is for, you leave its description empty rather than guessing. Reply with JSON only. Never use a double-quote character inside a JSON string value — use a single quote if you need to quote something, so the JSON always parses.`,
       },
       {
         role: 'user',
         content: `Website: ${host}
 
-Write an llms.txt for this site.
+Write an llms.txt for this site. Its reader is an AI assistant that has never heard of this company and can only read what you write, so give it context, not a list of links.
 
 - "name": what the company calls itself, taken from the pages. Not a slogan.
 - "summary": ONE line, under 25 words, saying what this company does and who for. Plain language, no marketing adjectives.
-- For each page, write "description": one factual sentence, under 25 words, saying what a reader finds on that page. Not a summary of the company — a description of THAT page.
-- "evidence": the exact words from that page's text that your description is based on. If the page does not plainly say what it is for, return an EMPTY description and an EMPTY evidence string. Leaving it blank is correct and expected — do not guess.
+- "overview": ${MAX_OVERVIEW_SENTENCES} short sentences at most, stating only facts the pages state — what the company sells, who its customers are, how it works with them, where it operates, what it is known for. This is the part an assistant reads before it opens any link, so make it the most useful ${MAX_OVERVIEW_SENTENCES} sentences on the whole site. No adjectives that cannot be checked ('leading', 'innovative', 'world-class'), no figure the pages do not state. Leave it empty if the site never says what it does.
+- For each page, write "description": one factual sentence, under 25 words, saying what a reader finds ON THAT PAGE — the specific offerings, audience, or facts it names. Not a summary of the company. Do not restate the page title, and never open with filler such as 'Learn more about', 'This page', 'Welcome to' or 'Discover'.
+- "evidence": the exact words from that page's text that your description is based on, copied verbatim. If the page does not plainly say what it is for, return an EMPTY description and an EMPTY evidence string. Leaving it blank is correct and expected — do not guess.
 - "section": group the page. Prefer one of ${SUGGESTED_SECTIONS.map((s) => `"${s}"`).join(', ')}. Use "${OPTIONAL_SECTION}" for blog posts, news, legal pages and anything a reader could skip.
-- Use ONLY the URLs listed in the content below. Never write a URL that does not appear there.
+- Use ONLY the URLs listed in the content below. Never write a URL that does not appear there. Do not list paginated archives, tag or category indexes, or search pages.
+- Numbers must be consistent with the pages and with each other: if the summary, the overview and a description all mention how many customers there are, they must all say the number the site says.
 
 Reply with exactly this JSON shape and nothing else:
-{"name":"<name>","summary":"<one line>","pages":[{"url":"<exact url>","section":"<section>","description":"<one sentence or empty>","evidence":"<exact quote or empty>"}]}
+{"name":"<name>","summary":"<one line>","overview":"<up to ${MAX_OVERVIEW_SENTENCES} sentences>","pages":[{"url":"<exact url>","section":"<section>","description":"<one sentence or empty>","evidence":"<exact quote or empty>"}]}
 
 --- WEBSITE CONTENT ---
 ${corpus}`,
@@ -134,12 +164,31 @@ ${corpus}`,
     ],
   })
 
+  return buildDoc(host, candidates, result, excluded)
+}
+
+/**
+ * Model output + the pages we actually hold → the document, and the finding.
+ *
+ * Pure, so every guard below is testable without a network call — the same
+ * split as `render.ts`, for the same reason. `generateLlmsTxt` above is then
+ * only the prompt and the fetch.
+ */
+export function buildDoc(
+  host: string,
+  candidates: StoredPage[],
+  output: ModelOutput,
+  excluded = 0,
+): GenerateResult {
+  const byUrl = new Map(candidates.map((p) => [p.url, p]))
+  const corpus = candidates.map((p) => p.text ?? '').join(' ')
+
   // Grouping happens here, not in the model: a flat list cannot be malformed,
   // and section order is a decision we would rather make than parse.
   const sections = new Map<string, LlmsSection>()
   const described = new Set<string>()
 
-  for (const entry of result.pages ?? []) {
+  for (const entry of output.pages ?? []) {
     const url = entry.url?.trim()
     if (!url) continue
 
@@ -148,9 +197,8 @@ ${corpus}`,
     const source = byUrl.get(url)
     if (!source || described.has(url)) continue
 
-    const description = entry.description?.trim()
-    const evidence = entry.evidence?.trim()
-    if (!description || !evidence) continue
+    const description = describe(entry, source)
+    if (!description) continue
 
     described.add(url)
 
@@ -160,26 +208,178 @@ ${corpus}`,
       url,
       // Never the model's version — we already hold the real one.
       title: source.title || '',
-      description:
-        description.length > MAX_DESCRIPTION_CHARS
-          ? `${description.slice(0, MAX_DESCRIPTION_CHARS).trimEnd()}…`
-          : description,
+      description,
     })
     sections.set(name, section)
   }
 
-  const skipped = pages
+  // Most useful page first inside every section, by the same ranking that chose
+  // what to crawl. Model output order is arbitrary, and so is the order D1
+  // hands the rows back in.
+  for (const section of sections.values()) {
+    section.pages.sort((a, b) => rankOf(a.url) - rankOf(b.url))
+  }
+
+  const skipped = candidates
     .filter((p) => !described.has(p.url))
     .map((p) => ({ url: p.url, title: p.title || '' }))
 
+  const summary = clean(output.summary)
+
   return {
     doc: {
-      name: clean(result.name) || host,
-      summary: clean(result.summary),
+      name: clean(output.name) || host,
+      // A summary quoting a figure the site never states is the one line of
+      // this file everybody reads. It goes or it is right.
+      summary: numbersSupported(summary, corpus) ? summary : '',
+      overview: overviewOf(output.overview, corpus),
       sections: [...sections.values()],
     },
     skipped,
+    excluded,
   }
+}
+
+/**
+ * Which crawled pages are candidates for the file at all.
+ *
+ * Two removals, both deterministic. Archive furniture (above) carries no
+ * content of its own. And `/about` and `/about/` are one page that the crawl
+ * fetched twice — listing both wastes a bullet and tells a reader the site has
+ * a duplicate it does not have; the better-ranked copy wins.
+ *
+ * Returned in rank order so the corpus itself leads with the pages that matter,
+ * which is also the order the model reads them in.
+ */
+export function selectPages(pages: StoredPage[]): { candidates: StoredPage[]; excluded: number } {
+  const ranked = [...pages].sort((a, b) => rankOf(a.url) - rankOf(b.url))
+  const seen = new Set<string>()
+  const candidates: StoredPage[] = []
+
+  for (const page of ranked) {
+    let path: string
+    try {
+      path = new URL(page.url).pathname
+    } catch {
+      continue
+    }
+
+    if (ARCHIVE_PATH.test(path)) continue
+
+    const key = path.replace(/\/+$/, '').toLowerCase() || '/'
+    if (seen.has(key)) continue
+    seen.add(key)
+
+    candidates.push(page)
+  }
+
+  return { candidates, excluded: pages.length - candidates.length }
+}
+
+function rankOf(url: string): number {
+  try {
+    return urlScore(new URL(url).pathname)
+  } catch {
+    return Number.MAX_SAFE_INTEGER
+  }
+}
+
+/**
+ * The description, if it survives every check; otherwise nothing, and the page
+ * becomes part of the finding.
+ *
+ * Each rejection is a specific thing this kind of call does when the page it
+ * was handed is thin, and each one puts text on someone's real website if it
+ * gets through.
+ */
+function describe(entry: ModelPage, source: StoredPage): string | null {
+  const description = clean(entry.description)
+  const evidence = clean(entry.evidence)
+  if (!description || !evidence) return null
+
+  // The quote has to be in the page. Checking only that the field is non-empty
+  // makes `evidence` a formality a model satisfies by writing a sentence it
+  // likes the sound of — which is exactly the guess the empty description was
+  // meant to prevent.
+  if (!quoted(evidence, source.text ?? '')) return null
+
+  // A figure the page does not state is invented, whatever the quote said.
+  if (!numbersSupported(description, source.text ?? '')) return null
+
+  const words = normalise(description)
+  if (!words || words === normalise(source.title)) return null
+  if (words.split(' ').length < MIN_DESCRIPTION_WORDS) return null
+
+  return description.length > MAX_DESCRIPTION_CHARS
+    ? `${description.slice(0, MAX_DESCRIPTION_CHARS).trimEnd()}…`
+    : description
+}
+
+/**
+ * The overview, minus any sentence quoting a figure the site never states.
+ *
+ * Sentence by sentence rather than all-or-nothing: one invented number should
+ * cost the file that sentence, not the whole overview — which is the half of
+ * this file that makes it worth more than the sitemap.
+ */
+function overviewOf(raw: string | undefined, corpus: string): string {
+  const text = clean(raw)
+  if (!text) return ''
+
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter((sentence) => sentence && numbersSupported(sentence, corpus))
+    .slice(0, MAX_OVERVIEW_SENTENCES)
+    .join(' ')
+}
+
+/**
+ * Is this quote really in that page?
+ *
+ * Verbatim after normalising case, punctuation and whitespace — a model that
+ * copied a sentence and changed a comma still copied it. Failing that, most of
+ * the quote's words have to be there, because models routinely join two halves
+ * of a real sentence or drop a stray word from the middle. Below that bar it is
+ * not a quote, it is a paraphrase, and a paraphrase is a guess.
+ */
+function quoted(evidence: string, text: string): boolean {
+  const needle = normalise(evidence)
+  const haystack = normalise(text)
+  if (!needle || !haystack) return false
+  if (haystack.includes(needle)) return true
+
+  const words = needle.split(' ').filter((w) => w.length > 2)
+  if (words.length < 3) return false
+  const found = words.filter((w) => haystack.includes(w)).length
+  return found / words.length >= 0.8
+}
+
+/**
+ * Every figure in `claim` appears in `source`.
+ *
+ * The cheapest possible consistency check and the one that matters: a number is
+ * either on the page or it is not, and a hallucinated "300+ clients" in a file
+ * a customer publishes is the failure with the longest tail. Commas are
+ * stripped from both sides so "10,000" matches "10000".
+ *
+ * ponytail: a substring test, so a figure that appears somewhere else on the
+ * page passes. That is the right way to be wrong — this is a floor under
+ * invention, not a proof of relevance.
+ */
+function numbersSupported(claim: string, source: string): boolean {
+  const haystack = source.replace(/,/g, '')
+  return (claim.match(/\d[\d,.]*/g) ?? []).every((figure) =>
+    haystack.includes(figure.replace(/,/g, '').replace(/\.$/, '')),
+  )
+}
+
+function normalise(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
 /** Free-form, but bounded — a section heading is two or three words. */
