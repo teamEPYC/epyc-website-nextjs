@@ -39,9 +39,12 @@ type Phase = 'idle' | 'crawling' | 'generating' | 'result' | 'empty' | 'blocked'
 type Result = {
   host: string
   file: string
-  stats: { pages: number; described: number; skipped: number }
+  /** `read` = `described` + `skipped` + `excluded`. Every screen below shows all four. */
+  stats: { read: number; pages: number; described: number; skipped: number; excluded: number }
   skipped: { url: string; title: string }[]
 }
+
+const NO_STATS = { read: 0, pages: 0, described: 0, skipped: 0, excluded: 0 }
 
 export function LlmsTxtTool() {
   const [phase, setPhase] = useState<Phase>('idle')
@@ -93,7 +96,7 @@ export function LlmsTxtTool() {
       setResult({
         host: body.host ?? hostOf(url),
         file: body.file,
-        stats: body.stats ?? { pages: 0, described: 0, skipped: 0 },
+        stats: body.stats ?? NO_STATS,
         skipped: body.skipped ?? [],
       })
       setPhase('result')
@@ -165,7 +168,7 @@ function pathOnly(url: string): string {
 
 const HOW_IT_WORKS: ToolStep[] = [
   ['01', 'We read it', 'Up to 20 pages of your site, the way an AI assistant would — text only, no rendering.'],
-  ['02', 'We write the file', 'A name, a one-line summary, and one honest sentence per page — quoted from your own copy.'],
+  ['02', 'We write the file', 'An overview of what you do, your pages in the order that matters, and one honest sentence each — quoted from your own copy.'],
   ['03', 'You see the gaps', 'Every page we could not describe, because your own text never says what it is for.'],
 ]
 
@@ -333,9 +336,10 @@ function ResultScreen({ result, onAgain }: { result: Result; onAgain: () => void
               <ToolWindow
                 filename="llms.txt"
                 status={[
-                  `${stats.pages} ${stats.pages === 1 ? 'page' : 'pages'} read`,
+                  `${stats.read} ${stats.read === 1 ? 'page' : 'pages'} read`,
                   `${stats.described} described`,
                   stats.skipped > 0 ? `${stats.skipped} skipped` : null,
+                  stats.excluded > 0 ? `${stats.excluded} not listed` : null,
                 ]}
               >
                 {/* The file, verbatim. Horizontal scroll rather than wrapping:
@@ -371,6 +375,16 @@ function ResultScreen({ result, onAgain }: { result: Result; onAgain: () => void
                 A page earns a line in this file when its own words say what it is for. These ones
                 did not, so we left them out rather than guess. That is the same thing an assistant
                 does when a buyer asks it about you.
+                {stats.excluded > 0 && (
+                  <>
+                    {' '}
+                    {/* Named here so the counts on the file add up in the open. */}
+                    Another {stats.excluded} {stats.excluded === 1 ? 'address' : 'addresses'} —
+                    tag pages, paginated archives, duplicates, and the tail of a long blog — were
+                    left out on purpose. A map of your company is more useful than a list of
+                    everything on it.
+                  </>
+                )}
               </p>
 
               <ul className="flex flex-col">

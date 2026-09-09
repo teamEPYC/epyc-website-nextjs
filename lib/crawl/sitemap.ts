@@ -122,6 +122,21 @@ function decodeXmlEntities(s: string): string {
 const PRIORITY = /(about|service|product|pricing|price|plans|contact|work|case|solution|team)/i
 
 /**
+ * How much a path is worth, lowest first: homepage, then buyer-relevant slugs,
+ * then shallow paths, then everything deep.
+ *
+ * Exported because two things need the same answer — which pages to *read*
+ * (`rankUrls`, below) and which order to *list* them in a generated llms.txt
+ * (`lib/tools/llms-txt/generate.ts`). A file whose first bullet is a blog post
+ * from 2019 buries the pages that say what the company is, and an LLM reading
+ * it top-down under a context limit sees the least useful pages first.
+ */
+export function urlScore(pathname: string): number {
+  const depth = pathname.split('/').filter(Boolean).length
+  return (pathname === '/' ? -100 : 0) + (PRIORITY.test(pathname) ? -10 : 0) + depth
+}
+
+/**
  * Choose which pages to read, best first.
  *
  * Same-host only, shallow paths before deep ones, buyer-relevant slugs before
@@ -156,11 +171,7 @@ export function rankUrls(urls: string[], origin: string, limit: number): string[
     if (seen.has(key)) continue
     seen.add(key)
 
-    const depth = u.pathname.split('/').filter(Boolean).length
-    // Lower is better: homepage 0, priority slugs beat depth, deep pages last.
-    const score = (u.pathname === '/' ? -100 : 0) + (PRIORITY.test(u.pathname) ? -10 : 0) + depth
-
-    candidates.push({ url: key, score })
+    candidates.push({ url: key, score: urlScore(u.pathname) })
   }
 
   return candidates

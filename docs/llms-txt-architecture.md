@@ -62,7 +62,7 @@ One `completeJson` call on `SCORING_CHAIN` (Nemotron 3 Super free, falling back
 to Lightning free). It returns a flat list, not a nested document:
 
 ```json
-{ "name": "…", "summary": "…",
+{ "name": "…", "summary": "…", "overview": "…",
   "pages": [{ "url": "…", "section": "Services", "description": "…", "evidence": "…" }] }
 ```
 
@@ -70,8 +70,25 @@ Flat because grouping is deterministic and a model that has to close nested
 structures correctly under a token limit fails in ways that cost a retry.
 Grouping into sections happens in our code, where it cannot be malformed.
 
-Three guards on the output, and each exists because of a specific failure this
-kind of call has:
+**The token ceiling is load-bearing and its failure is silent.** The reply is
+one JSON document covering every page, so it grows with the site; when it is cut
+off, `JSON.parse` fails on a truncated `pages` array and the error is
+indistinguishable from a model that cannot write JSON. The fallback chain does
+not help, because every tier is cut at the same ceiling. Adding the overview and
+a per-page quote pushed a real 20-page site past the original 3000-token budget,
+so it is 6000 now, and `evidence` — which is verification-only and never
+rendered — is capped at a dozen words rather than a full sentence. If a site
+truncates again, the fix is salvaging the complete elements out of the cut reply,
+not a larger number: a partial file beats a 503.
+
+`overview` is the part that makes this a document rather than a link dump: two
+or three factual sentences that render between the blockquote and the first
+heading, where the convention reserves free-form context. An assistant reads it
+before it opens a single link, and a file without it tells the assistant only
+which pages exist — which is what the sitemap already said.
+
+Five guards on the output, in `buildDoc`, and each exists because of a specific
+failure this kind of call has:
 
 1. **URLs are matched against the corpus.** A page the model invented is
    dropped. The file goes on someone's real website; a 404 in it is worse than a
@@ -83,9 +100,94 @@ kind of call has:
    sentence on. Without it, a model handed a thin page writes a confident
    sentence out of the URL slug, and a tool whose entire pitch is "your pages do
    not say what they are" would be inventing the copy that proves the opposite.
+4. **The quote has to actually be in the page.** Guard 3 originally checked only
+   that the field was non-empty, which makes `evidence` a formality a model
+   satisfies by writing a sentence it likes the sound of — the same guess the
+   empty description was meant to prevent. The check is verbatim containment
+   after normalising case, punctuation and whitespace, falling back to 80% of the
+   quote's words being present, because models routinely join two halves of a
+   real sentence or drop a word from the middle. Below that bar it is a
+   paraphrase, and a paraphrase is a guess.
+5. **Every figure has to appear in the source text.** Each description, the
+   summary and every overview sentence are checked for digits the site never
+   wrote; whatever fails is dropped, sentence by sentence for the overview so one
+   bad number does not cost the whole thing. `10,000` matches `10000` — commas
+   are stripped from both sides. It is a substring test, so a figure that appears
+   elsewhere on the page passes: this is a floor under invention, not a proof of
+   relevance, and a hallucinated "300+ clients" in a file a customer publishes is
+   the failure with the longest tail.
 
-Guard 3 is what makes the headline number real. **The pages we drop are the
-finding.** Everything else in this tool is a giveaway wrapped around it.
+Two smaller rejections ride along: a description that only restates the page
+title, and one under five words. Both are bullets that say nothing the link text
+did not.
+
+Guards 3 to 5 are what make the headline number real. **The pages we drop are
+the finding.** Everything else in this tool is a giveaway wrapped around it.
+
+### 2.2.1 Order is ours, and archive furniture never reaches the file
+
+Two deterministic passes bracket the model call, and neither asks it anything.
+
+`selectPages` runs first. It drops paginated archives, tag and category indexes,
+author pages, on-site search and feeds — navigation furniture that holds no
+content of its own and churns, so `/blog/page/7` is stale the week after it is
+written — and collapses `/about` against `/about/`, which the crawl fetched as
+two pages. What survives is sorted by `urlScore`, the same ranking that chose
+what to crawl, so the corpus the model reads also leads with the pages that
+matter.
+
+`urlScore` was lifted out of `rankUrls` in `lib/crawl/sitemap.ts` for this —
+exported, one function, both callers. Which page is worth reading first and
+which is worth listing first are the same question.
+
+The renderer then orders sections — About, Services, Products, Pricing, Work,
+Contact, anything unrecognised, `Optional` last — rather than printing them in
+whatever order the model emitted. A reader under a context limit reads top-down
+and may stop early, so the sections that answer "who is this and what do they
+sell" go above the ones that answer "what else is on the site".
+
+**Excluded is not skipped.** An archive URL is not evidence that the site fails
+to describe itself, so counting it in the finding would inflate the one number
+this tool exists to report. The route returns both, and read = described +
+skipped + excluded holds on screen.
+
+### 2.2.2 Curation, repetition and the shape of the markdown
+
+Four smaller rules, all in service of a file an LLM can read once and use.
+
+**`Optional` is capped at five links.** A crawl of a content-heavy site comes
+back mostly blog posts, and twelve of them under one heading turns a map of the
+company into a feed. The pages are already rank-ordered, so the cap keeps the
+best few and the remainder count as excluded — they were describable, we chose
+not to list them. No other section is capped: a site does not have nine pricing
+pages, and trimming About or Services would cut the pages the file exists to
+point at.
+
+**No sentence appears twice.** A description identical to one already used is
+dropped and its page joins the finding, which is the honest place for it: two
+pages that describe identically do not distinguish themselves. An overview
+sentence that only restates the blockquote three lines above it is dropped too —
+but only pure restatement, because a sentence that contains the summary *and
+goes on* is elaboration, which is the whole job of the overview.
+
+**Durable facts over current ones.** Prompt-only, deliberately. The model is
+asked to prefer what will still be true in a year — what the company does, who
+for, how — over awards, campaigns, funding rounds and follower counts. There is
+no guard behind it: marketing language is the site's own voice, not model
+invention, and a filter on superlatives would drop a customer's real copy and
+inflate the finding with it. Guards are for things the model made up; style is
+for the prompt.
+
+**Nothing inside a bullet may look like structure.** Every model-written string
+goes through `plain()` before rendering: leading list and heading markers,
+`[text](url)` pairs, emphasis and backticks are stripped. The file's value is
+that a machine can parse its hierarchy without guessing, and a description that
+opens `- ` reads as a nested list item.
+
+**Sections** are About, Products, Services, Pricing, Work, Documentation,
+Support, Contact — then anything the model named itself, then `Optional`. The
+list is exported once from `render.ts` and interpolated into the prompt, so the
+sections we ask for are exactly the ones the renderer knows how to order.
 
 ### 2.3 The generated file is never stored
 
@@ -175,7 +277,8 @@ before reading.
   "ok": true,
   "host": "acme.com",
   "file": "# Acme\n\n> …",              // the rendered llms.txt, ready to paste
-  "stats": { "pages": 20, "described": 14, "skipped": 6 },
+  // read = described + skipped + excluded; `pages` is what was considered
+  "stats": { "read": 20, "pages": 17, "described": 12, "skipped": 5, "excluded": 3 },
   "skipped": [{ "url": "/platform", "title": "Platform" }]
 }
 ```

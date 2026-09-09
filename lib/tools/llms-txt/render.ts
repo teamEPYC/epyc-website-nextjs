@@ -27,11 +27,48 @@ export type LlmsTxtDoc = {
   name: string
   /** One line, no full stop needed. The blockquote under the H1. */
   summary: string
+  /**
+   * The company overview: a few factual sentences, as one paragraph between the
+   * blockquote and the first `## `.
+   *
+   * The convention reserves exactly this slot for free-form context — any
+   * markdown except a heading — and it is the half of the file that makes it
+   * worth reading. A bare list of links tells an assistant which pages exist;
+   * this tells it who it is talking about before it opens any of them.
+   */
+  overview?: string
   sections: LlmsSection[]
 }
 
 /** Reserved section name from the convention. Always rendered last. */
 export const OPTIONAL_SECTION = 'Optional'
+
+/**
+ * Section order, most useful context first.
+ *
+ * The order a model happens to emit its sections in is not an editorial
+ * decision, but the file reads as though it were. An assistant working under a
+ * context limit reads top-down and may stop early, so the sections that answer
+ * "who is this and what do they sell" go above the ones that answer "what else
+ * is on the site". Anything the model names outside this list keeps its own
+ * order, below these and above `Optional`.
+ */
+export const SECTION_ORDER: readonly string[] = [
+  'About',
+  'Products',
+  'Services',
+  'Pricing',
+  'Work',
+  'Documentation',
+  'Support',
+  'Contact',
+]
+
+function sectionRank(name: string): number {
+  if (name === OPTIONAL_SECTION) return SECTION_ORDER.length + 1
+  const known = SECTION_ORDER.indexOf(name)
+  return known === -1 ? SECTION_ORDER.length : known
+}
 
 /**
  * Link text cannot contain unescaped brackets, and a title that arrived with a
@@ -80,24 +117,49 @@ function oneLine(text: string): string {
   return text.replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * Strip markdown out of text that is about to be embedded in markdown.
+ *
+ * The file's whole value is that a machine can parse its hierarchy without
+ * guessing, so nothing inside a bullet may look like structure. A description
+ * that opens `- ` or `# ` reads as a nested list item or a heading; a stray
+ * `[...](...)` inside a bullet that is already a link is ambiguous; `**` and
+ * backticks are noise a reader has to strip anyway.
+ *
+ * Applied to every model-written string — summary, overview and descriptions —
+ * because the model was asked for prose and sometimes answers in markdown.
+ */
+function plain(text: string): string {
+  return oneLine(
+    text
+      .replace(/^\s*(?:[-*+>]|#{1,6}|\d+[.)])\s+/, '')
+      .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/[[\]`*_]/g, ''),
+  )
+}
+
 export function renderLlmsTxt(doc: LlmsTxtDoc): string {
   const name = oneLine(doc.name)
   const out: string[] = [`# ${name || 'Untitled site'}`]
 
-  const summary = oneLine(doc.summary)
+  const summary = plain(doc.summary)
   if (summary) out.push(`> ${summary}`)
+
+  const overview = plain(doc.overview ?? '')
+  if (overview) out.push(overview)
 
   // Empty sections are dropped rather than rendered as a bare heading — a
   // heading with nothing under it reads as a missing page, not an empty one.
-  const sections = doc.sections.filter((s) => s.pages.length > 0)
+  // `sort` is stable, so sections outside SECTION_ORDER keep the order they
+  // arrived in.
+  const sections = doc.sections
+    .filter((s) => s.pages.length > 0)
+    .sort((a, b) => sectionRank(a.name) - sectionRank(b.name))
 
-  const optional = sections.filter((s) => s.name === OPTIONAL_SECTION)
-  const rest = sections.filter((s) => s.name !== OPTIONAL_SECTION)
-
-  for (const section of [...rest, ...optional]) {
+  for (const section of sections) {
     const lines = section.pages.map((page) => {
       const title = trimBrand(linkText(page.title), name) || page.url
-      const description = oneLine(page.description)
+      const description = plain(page.description)
       return description
         ? `- [${title}](${page.url}): ${description}`
         : `- [${title}](${page.url})`
