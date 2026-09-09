@@ -22,12 +22,6 @@ declare namespace Cloudflare {
     /** Set to 'true' to allow the paid model tier as a last-resort fallback. */
     OPENROUTER_ALLOW_PAID?: string
     /**
-     * Raises the per-visitor daily crawl limit. Local development only —
-     * localhost has no CF-Connecting-IP, so every request shares one counter
-     * and three crawls exhausts the day. Leave unset in staging and production.
-     */
-    TOOLS_SESSIONS_PER_IP?: string
-    /**
      * Transactional email provider key. Unset today, which makes
      * lib/tools/email.ts log verification codes instead of sending them.
      * Setting it also requires SPF and DKIM records on epyc.in.

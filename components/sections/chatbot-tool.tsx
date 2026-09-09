@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/cn'
 import { SiteNav } from '@/components/site-nav'
-import { Badge } from '@/components/ui/badge'
+import { CrawlLog, hostOf } from '@/components/tools/crawl-log'
+import { ScoreRow } from '@/components/tools/score-row'
+import { ToolNav } from '@/components/tools/tool-nav'
+import { ToolSteps, type ToolStep } from '@/components/tools/tool-steps'
 import { Button } from '@/components/ui/button'
 import { Container } from '@/components/ui/container'
 import { Disc } from '@/components/ui/disc'
@@ -17,11 +20,13 @@ import { StatRow, type Stat } from '@/components/ui/stat-row'
 import { FourPointStar, Plus, Sparkle } from '@/components/icons'
 import { buyerQuestions, suggestedQuestions } from '@/data/buyer-questions'
 import { readSSE } from '@/lib/tools/sse-client'
+import { useCrawl } from '@/lib/tools/use-crawl'
+import type { Verdict } from '@/lib/tools/site-checks'
 
 /**
  * The AI chatbot tool: paste a URL, we read the site, you get the report.
  *
- * Wired to POST /api/tools/chatbot/crawl and /message (both stream Server-Sent
+ * Wired to POST /api/tools/crawl and /api/tools/chatbot/message (both stream Server-Sent
  * Events), GET /api/tools/chatbot/diagnosis, and the verify + embed routes.
  *
  * The report comes BEFORE the chat: a crawl that lands `ready` goes straight to
@@ -39,9 +44,8 @@ type Phase = 'idle' | 'crawling' | 'report' | 'full' | 'chat' | 'widget' | 'empt
 const MAX_MESSAGES = 8
 
 type Msg = { from: 'bot' | 'you'; text: string; miss?: boolean; pending?: boolean }
-type CrawledPage = { url: string; title: string }
 
-type Verdict = 'pass' | 'weak' | 'fail'
+
 
 type Diagnosis = {
   answerability: { answered: number; total: number; unanswered: { id: string; question: string }[] } | null
@@ -61,9 +65,7 @@ export function ChatbotTool() {
   const [url, setUrl] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  const [status, setStatus] = useState('')
-  const [pages, setPages] = useState<CrawledPage[]>([])
-  const [total, setTotal] = useState(0)
+  const { status, pages, total, start: crawl } = useCrawl('chatbot')
 
   const [session, setSession] = useState<{ id: string; host: string; pages: number } | null>(null)
   const [signals, setSignals] = useState<Record<string, unknown> | null>(null)
@@ -80,73 +82,41 @@ export function ChatbotTool() {
   const { diagnosis, failed: diagnosisFailed } = useDiagnosis(session?.id ?? null)
 
   async function startCrawl(force = false) {
-    const target = url.trim()
-    if (!target) {
-      setError('Enter a website address.')
-      return
-    }
-
     setError(null)
-    setPages([])
-    setTotal(0)
-    setStatus('')
     setMessages([])
     setUsed(0)
     setSession(null)
     setPhase('crawling')
 
-    try {
-      const res = await fetch('/api/tools/chatbot/crawl', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ url: target, force }),
-      })
-
-      // Validation and cap failures come back as plain JSON, not a stream.
-      if (!res.ok && res.headers.get('content-type')?.includes('application/json')) {
-        const body = (await res.json()) as { error?: string }
-        setError(body.error ?? 'Something went wrong.')
+    await crawl(url, {
+      force,
+      onError: (message) => {
+        setError(message)
         setPhase('idle')
-        return
-      }
+      },
+      onDone: (data) => {
+        const host = hostOf(url)
+        const readable = Number(data.readablePages ?? data.pages ?? 0)
+        setSession({ id: String(data.sessionId), host, pages: Number(data.pages ?? 0) })
+        setSignals((data.signals as Record<string, unknown>) ?? null)
 
-      await readSSE(res, (event, data) => {
-        if (event === 'status') setStatus(String(data.message ?? ''))
-        if (event === 'page') {
-          setPages((p) => [...p, { url: String(data.url), title: String(data.title ?? '') }])
-          setTotal(Number(data.total ?? 0))
+        const st = String(data.status)
+        if (st === 'ready') {
+          // The report is the hook. The chat is one of the ways on from it.
+          setPhase('report')
+          setMessages([
+            {
+              from: 'bot',
+              text: `I've read ${readable} pages of ${host}. Ask me anything a customer might ask.`,
+            },
+          ])
+        } else if (st === 'empty') {
+          setPhase('empty')
+        } else {
+          setPhase('blocked')
         }
-        if (event === 'error') {
-          setError(String(data.message ?? 'We could not read that site.'))
-          setPhase('idle')
-        }
-        if (event === 'done') {
-          const host = hostOf(target)
-          const readable = Number(data.readablePages ?? data.pages ?? 0)
-          setSession({ id: String(data.sessionId), host, pages: Number(data.pages ?? 0) })
-          setSignals((data.signals as Record<string, unknown>) ?? null)
-
-          const st = String(data.status)
-          if (st === 'ready') {
-            // The report is the hook. The chat is one of the ways on from it.
-            setPhase('report')
-            setMessages([
-              {
-                from: 'bot',
-                text: `I've read ${readable} pages of ${host}. Ask me anything a customer might ask.`,
-              },
-            ])
-          } else if (st === 'empty') {
-            setPhase('empty')
-          } else {
-            setPhase('blocked')
-          }
-        }
-      })
-    } catch {
-      setError('We could not reach that site. Try another address.')
-      setPhase('idle')
-    }
+      },
+    })
   }
 
   async function send(text: string) {
@@ -223,7 +193,7 @@ export function ChatbotTool() {
       )}
 
       {phase === 'crawling' && (
-        <CrawlingScreen host={hostOf(url)} status={status} pages={pages} total={total} />
+        <CrawlLog host={hostOf(url)} status={status} pages={pages} total={total} />
       )}
 
       {phase === 'report' && session && (
@@ -292,21 +262,6 @@ export function ChatbotTool() {
 /* ------------------------------------------------------------------ helpers */
 
 /**
- * The nav bar on every screen but the hero, which carries its own inside the
- * paper frame. Tone follows the screen underneath it so the mark and links
- * inherit the right colour.
- */
-function ToolNav({ tone }: { tone: 'ink' | 'beige' }) {
-  return (
-    <Section tone={tone} className="pb-0">
-      <Container>
-        <SiteNav className="self-stretch -mx-4 -mt-8 sm:-mx-6 sm:-mt-10 lg:-mx-15" />
-      </Container>
-    </Section>
-  )
-}
-
-/**
  * The report for a session, polled until the judged half lands.
  *
  * Lifted out of the report screen so the short report and the full one share
@@ -367,14 +322,6 @@ function useDiagnosis(sessionId: string | null) {
   return { diagnosis: fresh?.diagnosis ?? null, failed: fresh?.failed ?? false }
 }
 
-function hostOf(input: string): string {
-  try {
-    return new URL(/^https?:\/\//i.test(input) ? input : `https://${input}`).host
-  } catch {
-    return input
-  }
-}
-
 function replaceLast(messages: Msg[], next: Msg): Msg[] {
   return [...messages.slice(0, -1), next]
 }
@@ -396,11 +343,11 @@ function pathOnly(url: string): string {
 
 /* --------------------------------------------------------------- 1. Idle */
 
-const HOW_IT_WORKS = [
+const HOW_IT_WORKS: ToolStep[] = [
   ['01', 'We read it', 'Up to 20 pages of your site, the way an AI assistant would — text only, no rendering.'],
   ['02', 'You get the report', 'What a buyer can and cannot learn from your pages, quoted back from them.'],
   ['03', 'You keep the bot', 'Talk to it, then put it on your own site if it earns its place.'],
-] as const
+]
 
 function IdleScreen({
   url,
@@ -472,21 +419,7 @@ function IdleScreen({
         </div>
       </PaperBackground>
 
-      <Section tone="beige">
-        <Container>
-          <Reveal>
-            <div className="grid gap-12 py-6 sm:grid-cols-3">
-              {HOW_IT_WORKS.map(([n, title, blurb]) => (
-                <div key={n} className="flex flex-col items-start gap-4">
-                  <Disc>{n}</Disc>
-                  <h3 className="text-h4-alt text-ink">{title}</h3>
-                  <p className="text-body text-ink/70">{blurb}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </Container>
-      </Section>
+      <ToolSteps steps={HOW_IT_WORKS} />
 
       <Section tone="cream">
         <Container>
@@ -508,91 +441,6 @@ function IdleScreen({
         </Container>
       </Section>
     </>
-  )
-}
-
-/* ----------------------------------------------------------- 2. Crawling */
-
-function CrawlingScreen({
-  host,
-  status,
-  pages,
-  total,
-}: {
-  host: string
-  status: string
-  pages: CrawledPage[]
-  total: number
-}) {
-  const pct = total ? Math.round((pages.length / total) * 100) : 8
-
-  return (
-    <Section tone="ink" className="min-h-[70vh]">
-      <Container>
-        <div className="flex flex-col gap-14 py-10">
-          <div className="flex flex-wrap items-start justify-between gap-6 sm:gap-8">
-            <SectionHeading tone="cream" size="h2" eyebrow={host}>
-              Reading your site
-            </SectionHeading>
-            <div className="flex items-baseline gap-2">
-              <span className="text-display text-crimson">
-                {String(pages.length).padStart(2, '0')}
-              </span>
-              <span className="text-h2 text-cream/35">/ {total || 20}</span>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <div className="h-0.5 w-full overflow-hidden rounded-pill bg-cream/15">
-              <div
-                className="h-full rounded-pill bg-crimson transition-[width] duration-500 ease-out"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <span className="flex items-center gap-2.5 text-body text-cream">
-                <Sparkle size={12} className="shrink-0 text-crimson" />
-                {status || 'Getting started'}
-              </span>
-              <span className="text-body-sm text-cream/60">
-                {total ? `${pages.length} of ${total} pages` : 'Looking for your sitemap'}
-              </span>
-            </div>
-          </div>
-
-          <ul className="flex flex-col" aria-live="polite">
-            {pages.map((p, i) => {
-              const latest = i === pages.length - 1
-              return (
-                <li
-                  key={`${p.url}-${i}`}
-                  className="flex flex-wrap items-center gap-x-5 gap-y-1 border-b border-cream/10 py-4"
-                >
-                  <Sparkle
-                    size={12}
-                    className={cn('shrink-0', latest ? 'text-crimson' : 'text-cream/35')}
-                  />
-                  <span
-                    className={cn(
-                      'text-code break-all sm:min-w-[200px]',
-                      latest ? 'text-cream' : 'text-cream/55',
-                    )}
-                  >
-                    {p.url}
-                  </span>
-                  <span className="text-body min-w-0 flex-1 truncate text-cream/60">{p.title}</span>
-                </li>
-              )
-            })}
-          </ul>
-
-          <p className="text-body-sm max-w-[560px] text-cream/45">
-            Only pages your robots.txt allows, up to 20, capped at 20 seconds. We stop early rather
-            than hammer your server.
-          </p>
-        </div>
-      </Container>
-    </Section>
   )
 }
 
@@ -792,15 +640,6 @@ function ReportScreen({
 }
 
 /* -------------------------------------------------------- 4. Full report */
-
-/**
- * A finding, with the evidence under it.
- *
- * `ok` is only set where a check genuinely passes or fails — crawlability. The
- * other three list evidence, not verdicts, so they get a quiet marker instead
- * of a tick that would imply a judgement per line.
- */
-type Line = { text: string; note?: string; ok?: boolean }
 
 function FullReportScreen({
   host,
@@ -1025,62 +864,6 @@ function FullReportScreen({
 }
 
 /** Verdict chip colours. `pass` stays ink — a good result should not shout. */
-const VERDICT = {
-  pass: { label: 'Passes', chip: 'border-teal-deep/40 text-teal-deep' },
-  weak: { label: 'Weak', chip: 'border-ink/25 text-ink/70' },
-  fail: { label: 'Needs work', chip: 'border-crimson/40 text-crimson' },
-} as const
-
-function ScoreRow({
-  name,
-  verdict,
-  headline,
-  lines,
-}: {
-  name: string
-  verdict: Verdict
-  headline: string
-  lines: Line[]
-}) {
-  const v = VERDICT[verdict]
-
-  return (
-    <div className="flex min-w-0 flex-col gap-5 rounded-sm border border-ink/12 bg-beige p-6 sm:p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h4 className="text-h4-alt text-ink">{name}</h4>
-        <Badge tone="ink-on-light" className={cn('px-4 py-2', v.chip)}>
-          {v.label}
-        </Badge>
-      </div>
-
-      <p className="text-h3 text-ink">{headline}</p>
-
-      {lines.length > 0 && (
-        <ul className="flex flex-col gap-3 border-t border-ink/12 pt-5">
-          {lines.map((line, i) => (
-            <li key={i} className="flex items-start gap-3">
-              {line.ok === undefined ? (
-                <span
-                  aria-hidden="true"
-                  className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-ink/40"
-                />
-              ) : line.ok ? (
-                <Sparkle size={12} className="mt-1.5 shrink-0 text-ink/45" />
-              ) : (
-                <Plus size={14} className="mt-1.5 shrink-0 rotate-45 text-crimson" />
-              )}
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="text-body break-words text-ink/80">{line.text}</span>
-                {line.note && <span className="text-body-sm text-ink/50">{line.note}</span>}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
-
 /* --------------------------------------------------------------- 5. Chat */
 
 /** How many of the eight are left, as a bar. Shown twice — beside the thread

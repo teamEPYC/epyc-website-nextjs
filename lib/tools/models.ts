@@ -131,9 +131,25 @@ export async function streamChat(opts: CallOptions): Promise<StreamResult> {
   throw new Error(`No model available (last status ${lastStatus})`)
 }
 
-/** One-shot JSON response, for the report's scoring call. */
+/**
+ * One-shot JSON response, for the report and llms.txt scoring calls.
+ *
+ * `response_format: json_object` asks for JSON; it does not guarantee it. These
+ * are free models without grammar-constrained decoding, and both callers ask
+ * for fields that quote a website's own words — an evidence quote in the
+ * chatbot report, a name or summary here — so the text routinely contains a
+ * `"` the model then fails to escape. Observed in production against a real
+ * site: `Expected ',' or '}' after property value ... line 2 column 50`.
+ *
+ * So a tier that returns unparseable JSON is treated as a broken tier, not a
+ * broken request: we fall through to the next model exactly as we do on a 429.
+ * A different model usually gets it right, and the cascade already exists.
+ * Only when every tier fails does the caller see an error — where the chatbot
+ * downgrades to a partial report and this tool asks the visitor to retry.
+ */
 export async function completeJson<T>(opts: CallOptions): Promise<T> {
   let lastStatus = 0
+  let lastError: unknown = null
 
   for (const model of tiers({ ...opts, chain: opts.chain ?? SCORING_CHAIN })) {
     // The report's JSON carries ten questions plus five page types — it needs
@@ -143,8 +159,19 @@ export async function completeJson<T>(opts: CallOptions): Promise<T> {
     if (res.ok) {
       const body = (await res.json()) as { choices?: { message?: { content?: string } }[] }
       const content = body.choices?.[0]?.message?.content
-      if (!content) throw new Error('Model returned no content')
-      return JSON.parse(stripFences(content)) as T
+
+      if (!content) {
+        lastError = new Error(`${model} returned no content`)
+        continue
+      }
+
+      try {
+        return parseModelJson<T>(content)
+      } catch (err) {
+        console.error(`${model} returned unparseable JSON`, err)
+        lastError = err
+        continue
+      }
     }
 
     lastStatus = res.status
@@ -152,7 +179,36 @@ export async function completeJson<T>(opts: CallOptions): Promise<T> {
     if (!shouldFallOver(res.status)) break
   }
 
+  if (lastError) {
+    throw new Error(`No usable JSON from any model: ${(lastError as Error).message}`)
+  }
   throw new Error(`No model available (last status ${lastStatus})`)
+}
+
+/**
+ * Parse a model's JSON reply, forgiving the two things models actually do.
+ *
+ * Exported for its test. It does NOT repair malformed JSON — a repairer for
+ * unescaped quotes has to guess where the string was meant to end, and guessing
+ * wrong puts invented text into a file a customer publishes. Recovering by
+ * asking a different model is honest; recovering by rewriting its output is not.
+ */
+export function parseModelJson<T>(raw: string): T {
+  const text = stripFences(raw)
+
+  try {
+    return JSON.parse(text) as T
+  } catch (err) {
+    // Prose either side of the object — "Here is the JSON:" — is common enough
+    // to be worth one retry on the outermost braces. This is extraction, not
+    // repair: what is between them is still parsed strictly.
+    const open = text.indexOf('{')
+    const close = text.lastIndexOf('}')
+    if (open !== -1 && close > open) {
+      return JSON.parse(text.slice(open, close + 1)) as T
+    }
+    throw err
+  }
 }
 
 /** Models sometimes wrap JSON in a markdown fence despite json_object mode. */

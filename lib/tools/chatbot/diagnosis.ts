@@ -115,7 +115,7 @@ export async function scoreWithModel(
     messages: [
       {
         role: 'system',
-        content: `You audit whether a company's website answers the questions a buyer asks before getting in touch. You judge ONLY from the supplied page text. You never use outside knowledge about the company. You are strict but fair: a question counts as answered when a buyer could act on what the site actually says, even if it is brief. It does not count when the site only gestures at the topic without specifics. Reply with JSON only.`,
+        content: `You audit whether a company's website answers the questions a buyer asks before getting in touch. You judge ONLY from the supplied page text. You never use outside knowledge about the company. You are strict but fair: a question counts as answered when a buyer could act on what the site actually says, even if it is brief. It does not count when the site only gestures at the topic without specifics. Reply with JSON only. Never use a double-quote character inside a JSON string value — use a single quote if you need to quote something, so the JSON always parses.`,
       },
       {
         role: 'user',

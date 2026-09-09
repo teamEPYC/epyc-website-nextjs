@@ -32,6 +32,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/case-study/accel-atoms-internal-review-application"),
     url("/blog"),
     url("/gallery"),
+    // No /tools/* routes: all three are held back from the sitemap until they
+    // have run against real sites from a deployed IP.
     url("/contact"),
     url("/privacy-policy"),
     url("/terms-and-conditions"),

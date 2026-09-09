@@ -17,6 +17,7 @@
  */
 
 import { bumpCounter, underLimit } from '../counters'
+import { hmacHex } from '../session'
 
 export const CODE_TTL_MINUTES = 10
 export const MAX_ATTEMPTS = 5
@@ -45,19 +46,11 @@ export function generateCode(): string {
  * A plain hash of six digits is a lookup table of a million entries — anyone
  * with database access could reverse every live code instantly. The pepper is
  * a Worker secret, so the stored value is only checkable by us.
+ *
+ * The HMAC itself is `hmacHex` — this was a byte-identical second copy of it.
+ * Named separately because the call sites read better for what they hash.
  */
-export async function hashCode(code: string, pepper: string): Promise<string> {
-  const enc = new TextEncoder()
-  const key = await crypto.subtle.importKey(
-    'raw',
-    enc.encode(pepper),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign'],
-  )
-  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(code))
-  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, '0')).join('')
-}
+export const hashCode = (code: string, pepper: string) => hmacHex(code, pepper)
 
 /** Normalised so casing and stray spaces cannot dodge the per-email cap. */
 export function normaliseEmail(email: string): string {
