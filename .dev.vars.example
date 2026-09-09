@@ -1,0 +1,17 @@
+# Local-only secrets for `next dev` / `wrangler dev`. Copy to `.dev.vars`:
+#   cp .dev.vars.example .dev.vars
+#
+# `.dev.vars` is gitignored and read once at startup — restart after editing.
+# Staging and production set these with:
+#   pnpm exec wrangler secret put <NAME> --env <env>
+#
+# Full walkthrough: docs/ai-chatbot-local-testing.md
+
+# The only one you cannot invent. From openrouter.ai — needs $10 of credits or
+# the free tiers share a ~50/day account quota and you hit 429 within minutes.
+OPENROUTER_API_KEY=
+
+# Required. Hashes visitor IPs, verification codes, and embed manage links.
+# Any string locally. Without it every tool route returns 503 and the URL box
+# shows "This tool is unavailable." — there is deliberately no fallback.
+TOOLS_IP_SALT=any-random-string-for-local

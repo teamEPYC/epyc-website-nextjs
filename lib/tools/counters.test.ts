@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { DatabaseSync } from 'node:sqlite'
 import { bumpCounter, underLimit, utcDay } from './counters'
 
@@ -118,5 +118,30 @@ describe('underLimit', () => {
     expect(await underLimit(db, 'ip:abc', 2, DAY)).toBe(true)
     await bumpCounter(db, 'ip:abc', 2, DAY)
     expect(await underLimit(db, 'ip:abc', 2, DAY)).toBe(false)
+  })
+})
+
+describe('local development bypass', () => {
+  // NODE_ENV is typed readonly, so the writes go through the env object itself.
+  const env = process.env as Record<string, string | undefined>
+  const real = env.NODE_ENV
+  afterEach(() => {
+    env.NODE_ENV = real
+  })
+
+  it('lets everything through under next dev, without touching the database', async () => {
+    env.NODE_ENV = 'development'
+    const db = null as unknown as D1Database // any query would throw
+
+    expect(await underLimit(db, 'ip:chatbot:x', 3, DAY)).toBe(true)
+    expect(await bumpCounter(db, 'ip:chatbot:x', 3, DAY)).toBe(true)
+  })
+
+  it('keeps caps on when NODE_ENV is unset — a limit must not fail open', async () => {
+    delete env.NODE_ENV
+    const db = fakeD1()
+
+    for (let i = 0; i < 3; i++) expect(await bumpCounter(db, 'k', 3, DAY)).toBe(true)
+    expect(await bumpCounter(db, 'k', 3, DAY)).toBe(false)
   })
 })

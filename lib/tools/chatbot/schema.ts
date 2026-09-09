@@ -8,12 +8,6 @@ import { z } from 'zod'
  * schema lives here.
  */
 
-export const crawlSchema = z.object({
-  url: z.string().min(1).max(2048),
-  /** Set by the "read my site again" button — bypasses the 24h reuse cache. */
-  force: z.boolean().optional().default(false),
-})
-
 export const messageSchema = z.object({
   sessionId: z.string().uuid(),
   message: z.string().min(1).max(2000),
@@ -56,7 +50,6 @@ export const verifyCheckSchema = z.object({
   code: z.string().regex(/^\d{6}$/, 'Enter the 6-digit code.'),
 })
 
-export type CrawlInput = z.infer<typeof crawlSchema>
 export type MessageInput = z.infer<typeof messageSchema>
 export type ClaimInput = z.infer<typeof claimSchema>
 export type EmbedMessageInput = z.infer<typeof embedMessageSchema>

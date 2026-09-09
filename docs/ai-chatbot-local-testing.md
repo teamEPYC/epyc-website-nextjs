@@ -12,17 +12,17 @@ Create `.dev.vars` in the repo root. It is gitignored — never commit it.
 ```
 OPENROUTER_API_KEY=sk-or-v1-…
 TOOLS_IP_SALT=any-random-string-for-local
-TOOLS_SESSIONS_PER_IP=100
 ```
 
 | Key | Why |
 |---|---|
 | `OPENROUTER_API_KEY` | The only one you cannot invent. Get it from openrouter.ai |
 | `TOOLS_IP_SALT` | **Required.** Hashes visitor IPs, verification codes, and embed manage links. Any string locally, but without it every tool route returns 503 — there is deliberately no fallback, since a known salt would make manage links forgeable and stored IP hashes reversible |
-| `TOOLS_SESSIONS_PER_IP` | Local only. Without it you get 3 crawls a day, because localhost has no per-visitor IP and everything shares one counter |
 
-**`TOOLS_SESSIONS_PER_IP` must stay unset in staging and production.** It
-switches off a real limit.
+**Every daily cap is off under `next dev`.** `lib/tools/counters.ts` skips the
+counters whenever `NODE_ENV === 'development'`, because localhost has no
+per-visitor IP and everything would share one counter. A deployed Worker runs a
+production build, so there is nothing to unset and no env var to forget.
 
 Nothing is needed to preview the widget. An embed key answers any `localhost`
 origin by design, on a separate 20-a-day allowance that cannot touch the live
@@ -186,7 +186,7 @@ SELECT key, bound_host, email FROM tool_embeds ORDER BY created_at DESC;
 |---|---|
 | "The assistant is unavailable" | `OPENROUTER_API_KEY` missing, or dev server not restarted after adding it |
 | `429` from the model | OpenRouter free quota. Add $10 of credits |
-| "You've used your 3 checks" | `TOOLS_SESSIONS_PER_IP` not set, or not restarted. Or clear `tool_counters` |
+| "You've used your 3 checks" | Should not happen under `next dev` — caps are off there. Check `NODE_ENV`, or clear `tool_counters` |
 | Widget does not appear | Snippet points at the wrong origin. Check the browser console for a `403` — the message names the host the key is bound to |
 | "That link is no longer valid" on manage | `TOOLS_IP_SALT` changed since the key was claimed. The token is derived from it. Claim again |
 | Same site returns instantly | Working as intended — crawls are reused for 24h. Use **Read my site again** to force a fresh one |

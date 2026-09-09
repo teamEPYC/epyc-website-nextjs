@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS tool_pages (
   PRIMARY KEY (session_id, url)
 );
 
--- Atomic daily counters. key: 'global-messages' | 'ip:<hash>' | later 'embed:<key>'
+-- Atomic daily counters. key: 'global-messages' | 'ip:<tool>:<hash>' | later 'embed:<key>'
 CREATE TABLE IF NOT EXISTS tool_counters (
   day  TEXT    NOT NULL,                     -- UTC YYYY-MM-DD
   key  TEXT    NOT NULL,

@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS tool_pages (
   PRIMARY KEY (session_id, url)
 );
 
--- Atomic daily counters. key: 'global-messages' | 'ip:<hash>' | later 'embed:<key>'
+-- Atomic daily counters. key: 'global-messages' | 'ip:<tool>:<hash>' | later 'embed:<key>'
 CREATE TABLE IF NOT EXISTS tool_counters (
   day  TEXT    NOT NULL,
   key  TEXT    NOT NULL,
@@ -122,13 +122,13 @@ All four routes live under `app/api/tools/chatbot/`. They follow `app/api/contac
 Order of operations — cheapest rejection first:
 
 1. Validate and normalise the URL (`lib/crawl/validate-url.ts`). Reject non-`http(s)` schemes, IP literals, `localhost`, userinfo in the authority, and hosts that resolve to a private range. `400`.
-2. **Read** `ip:<hash>` against 3/day. Over cap → `429` with a "back tomorrow" body. Do **not** increment yet — see below.
+2. **Read** `ip:<tool>:<hash>` against 3/day. Over cap → `429` with a "back tomorrow" body. Do **not** increment yet — see below.
 3. **Reuse:** unless `force` is set, if a `tool_sessions` row for the same `host` is under 24h old and `status = 'ready'`, copy its `tool_pages` into a new session and stream a single `done` event. Instant, and it stops us re-crawling a prospect every time sales demos the same domain.
 4. Otherwise crawl (see [Crawler rules](#crawler-rules)), streaming one event per page.
 5. Write `tool_sessions` + `tool_pages`. If total extracted text is under the empty-corpus threshold, set `status = 'empty'` and score the report now (see [Report scoring](#report-scoring)).
-6. **Increment `ip:<hash>` only once a session actually exists.** Checking and incrementing separately is not atomic, but the failure mode is one extra free crawl under a race, which is the right way to be wrong here — incrementing up front means a typo'd URL or a dead host burns one of the visitor's three daily sessions.
+6. **Increment `ip:<tool>:<hash>` only once a session actually exists.** Checking and incrementing separately is not atomic, but the failure mode is one extra free crawl under a race, which is the right way to be wrong here — incrementing up front means a typo'd URL or a dead host burns one of the visitor's three daily sessions.
 
-**`force: true` is what the manual re-crawl button sends.** Without it the button collides with the 24h reuse cache: a visitor who reads the report, fixes their content and re-runs would be handed the stale corpus and an unchanged score, which breaks the exact conversion moment the button exists to create. Re-crawls still consume a session against `ip:<hash>`.
+**`force: true` is what the manual re-crawl button sends.** Without it the button collides with the 24h reuse cache: a visitor who reads the report, fixes their content and re-runs would be handed the stale corpus and an unchanged score, which breaks the exact conversion moment the button exists to create. Re-crawls still consume a session against `ip:<tool>:<hash>`.
 
 The IP comes from the `CF-Connecting-IP` header, then HMAC-SHA256 with `TOOLS_IP_SALT`. Never store or log the raw address.
 
@@ -278,7 +278,7 @@ The 10 buyer questions live in `data/buyer-questions.ts` as a typed const array 
 | Redirects | 3 | fetch options |
 | Whole crawl | 20s wall clock | crawl route |
 | Messages per session | 8, then report + CTA | message route |
-| Sessions per IP per day | 3 | `tool_counters`, key `ip:<hash>` |
+| Sessions per IP per day | 3 | `tool_counters`, key `ip:<tool>:<hash>` — this tool's own bucket |
 | Global messages per day | 200 to start | `tool_counters`, key `global-messages` |
 
 On a free model these bound abuse and upstream rate limits, not spend. No dollar ceiling — spend is bounded structurally.

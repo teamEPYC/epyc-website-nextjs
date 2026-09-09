@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { crawlSite, type CrawlProgress } from '@/lib/crawl/fetch-pages'
 import { validateUrl } from '@/lib/crawl/validate-url'
-import { crawlSchema } from '@/lib/tools/chatbot/schema'
-import { bumpCounter, capsFor, counterKeys, underLimit } from '@/lib/tools/counters'
+import { crawlSchema } from '@/lib/tools/schema'
+import { CAPS, bumpCounter, counterKeys, underLimit } from '@/lib/tools/counters'
 import { scoreDeterministic } from '@/lib/tools/chatbot/diagnosis'
 import {
   copyPages,
@@ -19,7 +19,13 @@ import {
 } from '@/lib/tools/session'
 
 /**
- * Read a visitor's website and build the corpus their chatbot answers from.
+ * Read a visitor's website and store the corpus every free tool answers from.
+ *
+ * Shared by all of them. `tool` in the request body only reaches
+ * `createSession` — the crawl, the caps and the stored site checks are
+ * identical whoever asked, so there is deliberately no branch on it below.
+ * It was `/api/tools/chatbot/crawl` until the llms.txt generator needed the
+ * same 190 lines; see docs/llms-txt-architecture.md §2.1.
  *
  * Runs the crawl inline and streams progress as Server-Sent Events, rather
  * than handing it to a queue and polling for status — see
@@ -57,16 +63,17 @@ export async function POST(req: Request) {
 
   const ip = req.headers.get('cf-connecting-ip') ?? '0.0.0.0'
   const ipHash = await hashIp(ip, salt)
-  const ipKey = counterKeys.ip(ipHash)
+  // Per tool, not per visitor: each tool has its own daily allowance, so
+  // trying one never spends another's. See counterKeys.ip.
+  const ipKey = counterKeys.ip(parsed.data.tool, ipHash)
 
   // Checked, not consumed: a crawl that fails should not cost the visitor one
   // of their three. The counter is bumped once a session actually exists.
-  const caps = capsFor(env)
-  if (!(await underLimit(db, ipKey, caps.sessionsPerIp))) {
+  if (!(await underLimit(db, ipKey, CAPS.sessionsPerIp))) {
     return NextResponse.json(
       {
         ok: false,
-        error: `You've used your ${caps.sessionsPerIp} checks for today. They reset at midnight UTC.`,
+        error: `You've used your ${CAPS.sessionsPerIp} checks for today. They reset at midnight UTC.`,
         capped: true,
       },
       { status: 429 },
@@ -85,7 +92,7 @@ export async function POST(req: Request) {
       try {
         await createSession(db, {
           id: sessionId,
-          tool: 'chatbot',
+          tool: parsed.data.tool,
           targetUrl: checked.url,
           host: checked.host,
           ipHash,
@@ -98,7 +105,7 @@ export async function POST(req: Request) {
           if (recent) {
             const copied = await copyPages(db, recent.id, sessionId)
             await finishSession(db, sessionId, 'ready', copied)
-            await bumpCounter(db, ipKey, caps.sessionsPerIp)
+            await bumpCounter(db, ipKey, CAPS.sessionsPerIp)
 
             // Copy the report too, not just the pages. Same host, same corpus,
             // so the scores are identical — and it saves a model call.
@@ -138,7 +145,7 @@ export async function POST(req: Request) {
 
         await savePages(db, sessionId, result.pages)
         await finishSession(db, sessionId, status, result.pages.length)
-        await bumpCounter(db, ipKey, caps.sessionsPerIp)
+        await bumpCounter(db, ipKey, CAPS.sessionsPerIp)
 
         // Three of the five dimensions are free — they come straight from what
         // we just extracted. Scoring them now means a visitor who never sends a

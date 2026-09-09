@@ -13,6 +13,19 @@
  * single-statement atomicity.
  */
 
+/**
+ * Every daily cap is off on localhost.
+ *
+ * There is no `CF-Connecting-IP` in local development, so every request hashes
+ * to the same visitor and three crawls exhausts the day for everyone testing.
+ *
+ * Keyed on `NODE_ENV === 'development'`, not on an env var: `next dev` is the
+ * only thing that sets it, and a deployed Worker runs a production build. The
+ * comparison is positive rather than `!== 'production'` so an undefined
+ * NODE_ENV keeps the caps on — a limit must never fail open.
+ */
+const capsDisabled = () => process.env.NODE_ENV === 'development'
+
 /** UTC day key, `YYYY-MM-DD`. UTC so the reset time never moves with DST. */
 export function utcDay(now: Date = new Date()): string {
   return now.toISOString().slice(0, 10)
@@ -30,6 +43,8 @@ export async function bumpCounter(
   limit: number,
   day: string = utcDay(),
 ): Promise<boolean> {
+  if (capsDisabled()) return true
+
   const res = await db
     .prepare(
       `INSERT INTO tool_counters (day, key, n) VALUES (?, ?, 1)
@@ -56,6 +71,8 @@ export async function underLimit(
   limit: number,
   day: string = utcDay(),
 ): Promise<boolean> {
+  if (capsDisabled()) return true
+
   const row = await db
     .prepare('SELECT n FROM tool_counters WHERE day = ? AND key = ?')
     .bind(day, key)
@@ -69,37 +86,32 @@ export async function underLimit(
  * abuse and upstream rate limits rather than spend — see docs/ai-chatbot-plan.md.
  */
 export const CAPS = {
-  /** Demo sessions per visitor per day. Key: `ip:<hash>`. */
+  /** Demo sessions per visitor per day, per tool. Key: `ip:<tool>:<hash>`. */
   sessionsPerIp: 3,
   /** Messages per day across everyone. Key: `global-messages`. */
   globalMessages: 200,
-  /** Messages per demo session, then the report. Enforced on the session row. */
-  messagesPerSession: 8,
+  /**
+   * Messages per demo session, then the report. Enforced on the session row by
+   * `reserveTurn`, so `capsDisabled` cannot reach it — the value itself lifts.
+   */
+  messagesPerSession: capsDisabled() ? 10_000 : 8,
 } as const
 
-/**
- * Caps, with an environment override.
- *
- * Local development shares one counter across every request — there is no
- * `CF-Connecting-IP` on localhost, so everything hashes to the same visitor and
- * three crawls exhausts the day. Set `TOOLS_SESSIONS_PER_IP` in `.dev.vars` to
- * test freely.
- *
- * Unset in staging and production, so the real limits apply there. A junk value
- * falls back to the default rather than disabling the cap — a typo in an env
- * var must never quietly turn a limit off.
- */
-export type Caps = { -readonly [K in keyof typeof CAPS]: number }
-
-export function capsFor(env: { TOOLS_SESSIONS_PER_IP?: string }): Caps {
-  const override = Number(env.TOOLS_SESSIONS_PER_IP)
-  return {
-    ...CAPS,
-    sessionsPerIp: Number.isInteger(override) && override > 0 ? override : CAPS.sessionsPerIp,
-  }
-}
-
 export const counterKeys = {
-  ip: (ipHash: string) => `ip:${ipHash}`,
+  /**
+   * One bucket per tool per visitor, never one shared across tools.
+   *
+   * The crawl route is shared, so the key has to carry the tool or the first
+   * tool a visitor tries spends the allowance for all of them — someone who
+   * runs the chatbot on their site would find the llms.txt generator already
+   * exhausted, with an error message naming a limit they had not knowingly
+   * used.
+   *
+   * Applied to every tool rather than special-casing the newest one: the day
+   * this changed, in-flight `ip:<hash>` counters were simply abandoned. They
+   * are daily abuse counters, so the cost of that reset was one day of
+   * slightly loose limits, once.
+   */
+  ip: (tool: string, ipHash: string) => `ip:${tool}:${ipHash}`,
   globalMessages: () => 'global-messages',
 } as const
