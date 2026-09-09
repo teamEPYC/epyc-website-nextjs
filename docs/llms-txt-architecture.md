@@ -70,6 +70,17 @@ Flat because grouping is deterministic and a model that has to close nested
 structures correctly under a token limit fails in ways that cost a retry.
 Grouping into sections happens in our code, where it cannot be malformed.
 
+**The token ceiling is load-bearing and its failure is silent.** The reply is
+one JSON document covering every page, so it grows with the site; when it is cut
+off, `JSON.parse` fails on a truncated `pages` array and the error is
+indistinguishable from a model that cannot write JSON. The fallback chain does
+not help, because every tier is cut at the same ceiling. Adding the overview and
+a per-page quote pushed a real 20-page site past the original 3000-token budget,
+so it is 6000 now, and `evidence` — which is verification-only and never
+rendered — is capped at a dozen words rather than a full sentence. If a site
+truncates again, the fix is salvaging the complete elements out of the cut reply,
+not a larger number: a partial file beats a 503.
+
 `overview` is the part that makes this a document rather than a link dump: two
 or three factual sentences that render between the blockquote and the first
 heading, where the convention reserves free-form context. An assistant reads it

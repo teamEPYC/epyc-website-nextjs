@@ -42,8 +42,8 @@ export const GENERATIONS_PER_SESSION = 3
  * Per-visitor limits do not protect a shared account quota. OpenRouter meters
  * free usage per *account*, not per model (docs/ai-chatbot-plan.md → Checks
  * first, #1), so the chatbot and this tool spend the same allowance — and one
- * generation is a heavier call than a chat turn: the whole corpus in, 3000
- * tokens out. Without this, a script rotating IPs through the generator
+ * generation is a heavier call than a chat turn: the whole corpus in, up to
+ * 6000 tokens out. Without this, a script rotating IPs through the generator
  * exhausts the quota and takes the chatbot down with it.
  *
  * Its own key rather than sharing the chatbot's `global-messages`: the quota is
@@ -58,6 +58,17 @@ const MAX_DESCRIPTION_CHARS = 200
 
 /** The overview is context, not an essay — three sentences of it at most. */
 const MAX_OVERVIEW_SENTENCES = 3
+
+/**
+ * How much quote to ask for per page.
+ *
+ * `evidence` is never rendered — it exists so `quoted()` can check the
+ * description against the page — so a full sentence per page is output we pay
+ * for in the token ceiling and then throw away. Twenty pages of it is what
+ * pushed the reply past `maxTokens` and truncated the JSON. A dozen words is
+ * still plenty to locate in the source text.
+ */
+const MAX_EVIDENCE_WORDS = 12
 
 /**
  * A description shorter than this says nothing a title did not.
@@ -134,7 +145,20 @@ export async function generateLlmsTxt(
     apiKey,
     chain: SCORING_CHAIN,
     allowPaid: opts.allowPaid,
-    maxTokens: 3000,
+    // 3000 was enough when a page cost a URL, a section and one sentence. It is
+    // not enough now that each page also carries a quote and the document
+    // carries an overview: against a real 20-page site the reply was cut at
+    // ~10,500 characters, mid-array, and `JSON.parse` failed on a truncated
+    // `pages` list. Every tier truncates at the same ceiling, so the fallback
+    // chain cannot save it — the visitor just gets a 503.
+    //
+    // Truncation is silent from here: it looks exactly like a model that cannot
+    // write JSON. `MAX_EVIDENCE_WORDS` below is the other half of the fix.
+    // ponytail: a fixed ceiling with ~2x headroom rather than a budget computed
+    // from page count. If a site ever truncates again, the honest upgrade is
+    // salvaging the complete array elements out of the cut reply, not a bigger
+    // number — a partial file beats an error.
+    maxTokens: 6000,
     messages: [
       {
         role: 'system',
@@ -150,7 +174,7 @@ Write an llms.txt for this site. Its reader is an AI assistant that has never he
 - "summary": ONE line, under 25 words, saying what this company does and who for. Plain language, no marketing adjectives.
 - "overview": ${MAX_OVERVIEW_SENTENCES} short sentences at most, stating only facts the pages state — what the company sells, who its customers are, how it works with them, where it operates, what it is known for. This is the part an assistant reads before it opens any link, so make it the most useful ${MAX_OVERVIEW_SENTENCES} sentences on the whole site. No adjectives that cannot be checked ('leading', 'innovative', 'world-class'), no figure the pages do not state. Leave it empty if the site never says what it does.
 - For each page, write "description": one factual sentence, under 25 words, saying what a reader finds ON THAT PAGE — the specific offerings, audience, or facts it names. Not a summary of the company. Do not restate the page title, and never open with filler such as 'Learn more about', 'This page', 'Welcome to' or 'Discover'.
-- "evidence": the exact words from that page's text that your description is based on, copied verbatim. If the page does not plainly say what it is for, return an EMPTY description and an EMPTY evidence string. Leaving it blank is correct and expected — do not guess.
+- "evidence": the exact words from that page's text that your description is based on, copied verbatim — at most ${MAX_EVIDENCE_WORDS} words, just enough to find the sentence again. If the page does not plainly say what it is for, return an EMPTY description and an EMPTY evidence string. Leaving it blank is correct and expected — do not guess.
 - "section": group the page. Prefer one of ${SUGGESTED_SECTIONS.map((s) => `"${s}"`).join(', ')}. Use "${OPTIONAL_SECTION}" for blog posts, news, legal pages and anything a reader could skip.
 - Use ONLY the URLs listed in the content below. Never write a URL that does not appear there. Do not list paginated archives, tag or category indexes, or search pages.
 - Numbers must be consistent with the pages and with each other: if the summary, the overview and a description all mention how many customers there are, they must all say the number the site says.
