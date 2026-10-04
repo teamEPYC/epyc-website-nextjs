@@ -104,7 +104,9 @@ export class PayloadProvider implements CMSProvider {
 
   private async list<T>(collection: string, params: Record<string, string> = {}): Promise<T[]> {
     if (!this.base) throw new Error('Payload: PAYLOAD_URL is required when CMS_PROVIDER=payload')
-    const url = new URL(`/api/${collection}`, this.base)
+    // PAYLOAD_URL carries the CMS's /admin prefix. Concatenate: new URL('/api/…',
+    // base) resolves against the origin and silently drops the prefix.
+    const url = new URL(`${this.base}/api/${collection}`)
     Object.entries({ depth: '2', limit: '100', draft: String(this.draft), ...params }).forEach(([key, value]) =>
       url.searchParams.set(key, value),
     )

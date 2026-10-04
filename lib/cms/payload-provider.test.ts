@@ -108,6 +108,12 @@ describe('PayloadProvider requests', () => {
     await expect(provider().listBlogs()).rejects.toThrow('Payload 502: blogs')
   })
 
+  it('keeps the path of a base URL that has one', async () => {
+    const calls = stubFetch([])
+    await new PayloadProvider({ baseUrl: 'https://cms.test/admin/' }).listBlogs()
+    expect(calls[0].url.origin + calls[0].url.pathname).toBe('https://cms.test/admin/api/blogs')
+  })
+
   it('requires a base URL', async () => {
     await expect(new PayloadProvider({ baseUrl: '' }).listBlogs()).rejects.toThrow('PAYLOAD_URL is required')
   })
