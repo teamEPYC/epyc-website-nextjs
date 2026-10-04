@@ -106,7 +106,7 @@ Dynamic content (projects, blog posts, gallery, authors) is fetched from Payload
 through `getCMS()` in `lib/cms/index.ts`. Strapi was removed in full after the
 2026 cutover — there is no provider switch and no rollback path in the code.
 
-- `PAYLOAD_URL` points at the Payload Worker (`https://epyc-payload-cms.epyc.workers.dev`). `PAYLOAD_READ_TOKEN` (published reads) or `PAYLOAD_PREVIEW_TOKEN` (draft reads) supplies the credential.
+- `PAYLOAD_URL` points at the Payload Worker (`https://epyc-payload-cms.epyc.workers.dev/admin`). The CMS serves everything under `/admin` (editors use `https://epyc.in/admin`, a Worker route in front of this site), so the prefix is part of the base URL. `PAYLOAD_READ_TOKEN` (published reads) or `PAYLOAD_PREVIEW_TOKEN` (draft reads) supplies the credential.
 - One Payload instance serves both environments. Staging and production read the *same* content; they differ only in which revision they read.
 - **Draft reads need `CMS_MODE=draft` AND `DEPLOYMENT_ROLE=preview` together** (`lib/cms/config.ts`). Any other combination fails closed to published content, so a single mistyped variable cannot leak drafts onto epyc.in.
 - Shared content types are in `lib/cms/types.ts`; the Payload-specific mapping lives in `lib/cms/payload-provider.ts`.
