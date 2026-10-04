@@ -31,7 +31,7 @@
 	"vars": {
 		"CMS_MODE": "published",
 		"DEPLOYMENT_ROLE": "development",
-		"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev",
+		"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev/admin",
 	},
 
 	// Producer side of the contact-form webhook job. The consumer is a separate
@@ -64,7 +64,7 @@
 			"vars": {
 				"CMS_MODE": "draft",
 				"DEPLOYMENT_ROLE": "preview",
-				"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev",
+				"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev/admin",
 			},
 			"d1_databases": [
 				{
@@ -87,7 +87,7 @@
 			"vars": {
 				"CMS_MODE": "published",
 				"DEPLOYMENT_ROLE": "production",
-				"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev",
+				"PAYLOAD_URL": "https://epyc-payload-cms.epyc.workers.dev/admin",
 			},
 			"d1_databases": [
 				{

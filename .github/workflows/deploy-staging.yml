@@ -47,7 +47,7 @@ jobs:
           # so these must be present here as well as in the Worker's vars.
           CMS_MODE: draft
           DEPLOYMENT_ROLE: preview
-          PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev
+          PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev/admin
           PAYLOAD_PREVIEW_TOKEN: ${{ secrets.STAGING_PAYLOAD_PREVIEW_TOKEN }}
           CMS_REVALIDATION_SECRET: ${{ secrets.CMS_REVALIDATION_SECRET }}
 

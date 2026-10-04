@@ -52,4 +52,4 @@ jobs:
           # without credentials. Without this the build dies on every pull
           # request. Not a secret: the deploy workflows carry the same literal,
           # and published reads need no token.
-          PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev
+          PAYLOAD_URL: https://epyc-payload-cms.epyc.workers.dev/admin
